@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webクイズラリー - ラスト問題</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        h1 {
+            color: #ff6f61;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        .lock-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .lock {
+            width: 60px;
+            height: 80px;
+            background-color: #ccc;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+            color: #666;
+            position: relative;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .lock.unlocked {
+            background-color: #4CAF50;
+            color: white;
+            transform: translateY(-10px);
+        }
+        .lock img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+        }
+        .key-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+        .key-button:hover {
+            background-color: #0056b3;
+        }
+        .last-problem-area {
+            margin-top: 30px;
+            border: 2px dashed #ddd;
+            padding: 20px;
+            border-radius: 10px;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.1em;
+            color: #666;
+        }
+        .last-problem-area.active {
+            border-color: #ff6f61;
+            color: #333;
+        }
+        .last-problem-area h2 {
+            color: #ff6f61;
+            margin-bottom: 15px;
+        }
+        .last-problem-area input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+        .last-problem-area button {
+            background-color: #ff6f61;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .last-problem-area button:hover {
+            background-color: #e05a50;
+        }
+
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.3s ease;
+        }
+        .popup-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+        .popup-content {
+            background-color: #fff;
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        .popup-overlay.active .popup-content {
+            transform: scale(1);
+        }
+        .popup-content h2 {
+            color: #007bff;
+            margin-bottom: 15px;
+            font-size: 1.6em;
+        }
+        .popup-content p {
+            font-size: 1.1em;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+        .popup-content button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .popup-content button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ラスト問題への道</h1>
+        <p>鍵を5つ集めて、ラスト問題を解き明かそう！</p>
+        <div class="lock-container" id="lockContainer">
+            <div class="lock" id="lock1"><img src="https://via.placeholder.com/60x80?text=LOCK" alt="鍵"></div>
+            <div class="lock" id="lock2"><img src="https://via.placeholder.com/60x80?text=LOCK" alt="鍵"></div>
+            <div class="lock" id="lock3"><img src="https://via.placeholder.com/60x80?text=LOCK" alt="鍵"></div>
+            <div class="lock" id="lock4"><img src="https://via.placeholder.com/60x80?text=LOCK" alt="鍵"></div>
+            <div class="lock" id="lock5"><img src="https://via.placeholder.com/60x80?text=LOCK" alt="鍵"></div>
+        </div>
+        <button class="key-button" onclick="openKeyPopup()">鍵を使う</button>
+
+        <div class="last-problem-area" id="lastProblemArea">
+            <p>全ての鍵を解除すると、ラスト問題が表示されます。</p>
+        </div>
+    </div>
+
+    <div class="popup-overlay" id="keyPopupOverlay">
+        <div class="popup-content">
+            <h2>鍵を使いますか？</h2>
+            <p>手に入れた鍵を使って、鎖を一つ解除します。</p>
+            <button onclick="useKey()">はい</button>
+            <button class="close-button" onclick="closeKeyPopup()">いいえ</button>
+        </div>
+    </div>
+
+    <script>
+        let unlockedLocks = 0; // 解除された鍵の数
+        const totalLocks = 5;
+        const lockContainer = document.getElementById("lockContainer");
+        const lastProblemArea = document.getElementById("lastProblemArea");
+        const keyPopupOverlay = document.getElementById("keyPopupOverlay");
+
+        function openKeyPopup() {
+            if (unlockedLocks < totalLocks) {
+                keyPopupOverlay.classList.add("active");
+            } else {
+                alert("全ての鍵が解除されています！");
+            }
+        }
+
+        function closeKeyPopup() {
+            keyPopupOverlay.classList.remove("active");
+        }
+
+        function useKey() {
+            if (unlockedLocks < totalLocks) {
+                unlockedLocks++;
+                const lockId = "lock" + unlockedLocks;
+                document.getElementById(lockId).classList.add("unlocked");
+                alert(`鍵を使い、鎖を${unlockedLocks}つ解除しました！`);
+                closeKeyPopup();
+
+                if (unlockedLocks === totalLocks) {
+                    displayLastProblem();
+                }
+            } else {
+                alert("全ての鍵が解除されています！");
+            }
+        }
+
+        function displayLastProblem() {
+            lastProblemArea.classList.add("active");
+            lastProblemArea.innerHTML = `
+                <h2>最終問題！</h2>
+                <p>学園祭の隠された秘宝の真の姿とは？</p>
+                <input type="text" id="finalAnswer" placeholder="回答を入力してください">
+                <button onclick="checkFinalAnswer()">回答する</button>
+            `;
+        }
+
+        function checkFinalAnswer() {
+            const finalAnswer = document.getElementById("finalAnswer").value.trim();
+            if (finalAnswer === "真の秘宝") { // 仮の正解
+                alert("大正解！全ての謎が解き明かされた！");
+                window.location.href = "success.html"; // 正解画面へ遷移
+            } else {
+                alert("残念！不正解です。もう一度考えてみよう！");
+            }
+        }
+    </script>
+</body>
+</html>
+

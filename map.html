@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webクイズラリー - マップ</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+            position: relative;
+        }
+        .map-container {
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+            overflow: hidden;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .map-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .hint-bubble {
+            position: absolute;
+            background-color: #ff6f61;
+            color: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease;
+        }
+        .hint-bubble:hover {
+            transform: scale(1.1);
+        }
+        /* Example positions for hint bubbles (adjust as needed) */
+        .hint-bubble.loc1 { top: 20%; left: 30%; }
+        .hint-bubble.loc2 { top: 45%; left: 60%; }
+        .hint-bubble.loc3 { top: 70%; left: 20%; }
+        .hint-bubble.loc4 { top: 30%; left: 75%; }
+        .hint-bubble.loc5 { top: 60%; left: 40%; }
+
+        .last-problem-button {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 20px;
+            font-size: 1.1em;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+            z-index: 10;
+        }
+        .last-problem-button:hover {
+            background-color: #45a049;
+        }
+
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.3s ease;
+        }
+        .popup-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+        .popup-content {
+            background-color: #fff;
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        .popup-overlay.active .popup-content {
+            transform: scale(1);
+        }
+        .popup-content h2 {
+            color: #ff6f61;
+            margin-bottom: 15px;
+            font-size: 1.6em;
+        }
+        .popup-content p {
+            font-size: 1.1em;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+        .popup-content input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+        .popup-content button {
+            background-color: #ff6f61;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 0 10px;
+        }
+        .popup-content button:hover {
+            background-color: #e05a50;
+        }
+        .popup-content .close-button {
+            background-color: #ccc;
+        }
+        .popup-content .close-button:hover {
+            background-color: #bbb;
+        }
+    </style>
+</head>
+<body>
+    <div class="map-container">
+        <img src="https://via.placeholder.com/600x800?text=学校マップ" alt="学校マップ" class="map-image">
+        <div class="hint-bubble loc1" onclick="openQuizPopup(1)">1</div>
+        <div class="hint-bubble loc2" onclick="openQuizPopup(2)">2</div>
+        <div class="hint-bubble loc3" onclick="openQuizPopup(3)">3</div>
+        <div class="hint-bubble loc4" onclick="openQuizPopup(4)">4</div>
+        <div class="hint-bubble loc5" onclick="openQuizPopup(5)">5</div>
+        <button class="last-problem-button" onclick="location.href='last_problem.html'">ラスト問題</button>
+    </div>
+
+    <div class="popup-overlay" id="quizPopupOverlay">
+        <div class="popup-content">
+            <h2 id="quizTitle">問題</h2>
+            <p id="quizQuestion">ここに問題文が入ります。</p>
+            <input type="text" id="quizAnswer" placeholder="回答を入力してください">
+            <button onclick="checkAnswer()">回答する</button>
+            <button class="close-button" onclick="closeQuizPopup()">閉じる</button>
+        </div>
+    </div>
+
+    <script>
+        const quizPopupOverlay = document.getElementById('quizPopupOverlay');
+        const quizTitle = document.getElementById('quizTitle');
+        const quizQuestion = document.getElementById('quizQuestion');
+        const quizAnswerInput = document.getElementById('quizAnswer');
+
+        const quizzes = {
+            1: { title: '第1問', question: '学園の正門にある時計台の針は何時を指している？', answer: '10時' },
+            2: { title: '第2問', question: '図書館の入り口にある像の名前は？', answer: '知恵の女神' },
+            3: { title: '第3問', question: '体育館の屋根の色は何色？', answer: '青' },
+            4: { title: '第4問', question: '中庭にある噴水の高さは何メートル？', answer: '3メートル' },
+            5: { title: '第5問', question: '美術室の窓から見える山の名前は？', answer: '富士山' }
+        };
+
+        let currentQuizId = null;
+
+        function openQuizPopup(quizId) {
+            currentQuizId = quizId;
+            const quiz = quizzes[quizId];
+            quizTitle.textContent = quiz.title;
+            quizQuestion.textContent = quiz.question;
+            quizAnswerInput.value = ''; // 回答欄をクリア
+            quizPopupOverlay.classList.add('active');
+        }
+
+        function closeQuizPopup() {
+            quizPopupOverlay.classList.remove('active');
+            currentQuizId = null;
+        }
+
+        function checkAnswer() {
+            const userAnswer = quizAnswerInput.value.trim();
+            const correctAnswer = quizzes[currentQuizId].answer;
+
+            if (userAnswer === correctAnswer) {
+                alert('正解！鍵を一つ手に入れた！');
+                // 正解したらラスト問題画面へ遷移
+                window.location.href = 'last_problem.html';
+            } else {
+                alert('不正解！もう一度挑戦しよう！');
+            }
+            closeQuizPopup();
+        }
+    </script>
+</body>
+</html>
+
