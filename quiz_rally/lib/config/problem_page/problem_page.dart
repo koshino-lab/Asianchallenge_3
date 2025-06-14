@@ -9,7 +9,7 @@ class ProblemPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text('鎖の問題')),
       body: Container(
-        color: Styles.primaryColor700,
+        color: Styles.primaryColor,
         width: double.infinity,
         child: ListView(
           children: <Widget>[

@@ -7,7 +7,7 @@ class SuccessPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text('成功')),
       body: Container(
-        color: Styles.primaryColor700,
+        color: Styles.primaryColor,
         width: double.infinity,
         child: ListView(
           children: <Widget>[],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:quiz_rally/config/map_page/map_page.dart';
+import 'package:quiz_rally/config/styles.dart';
 import 'package:quiz_rally/page_router.dart';
 
 Future<void> main() async {
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Styles.primaryColor),
       ),
       home: MapPage(),
     );

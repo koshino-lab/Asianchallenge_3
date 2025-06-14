@@ -23,7 +23,6 @@ abstract class Styles {
 // #f1f7d9 second
   static const Color contentsColor = Colors.white;
   static const Color primaryColor = Color.fromARGB(255, 255, 251, 227);
-  static const Color primaryColor700 = Color.fromARGB(255, 252, 250, 236);
   static const Color accentColor = Color.fromARGB(255, 135, 144, 220);
   static const Color myButtonColor = Color.fromARGB(255, 253, 234, 234);
 
