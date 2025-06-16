@@ -9,15 +9,15 @@ class TutorialPopup extends ConsumerWidget {
 
   static final _pageData = [
     (
-      image: 'assets/images/story1.png',
+      image: Assets.images.story1.image(),
       description: '富、名声、力 かつてこの世の全てを手に入れた男 ”高専王・Mr.K”',
     ),
     (
-      image: 'assets/images/story2.png',
+      image: Assets.images.story2.image(),
       description: '彼の退職際に放った一言は全高専生を森へと駆り立てた',
     ),
     (
-      image: 'assets/images/story3.png',
+      image: Assets.images.story3.image(),
       description: '『おれの財宝か？欲しけりゃくれてやる・・・。探せ！高専の全てをそこに置いてきた』\n世はまさに大津幡時代！！',
     ),
   ];
@@ -41,7 +41,7 @@ class TutorialPopup extends ConsumerWidget {
                   duration: const Duration(milliseconds: 300),
                   child: _TutorialPage(
                     key: ValueKey(pageIndex),
-                    image_path: _pageData[pageIndex].image,
+                    image: _pageData[pageIndex].image,
                     description: _pageData[pageIndex].description,
                   ),
                   transitionBuilder: (child, animation) =>
@@ -99,11 +99,11 @@ class TutorialPopup extends ConsumerWidget {
 }
 
 class _TutorialPage extends StatelessWidget {
-  final String image_path;
+  final Widget image;
   final String description;
   const _TutorialPage({
     Key? key,
-    required this.image_path,
+    required this.image,
     required this.description,
   }) : super(key: key);
 
@@ -113,7 +113,8 @@ class _TutorialPage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         //child: UniversalImage(Assets.images.icon),
-        Image.asset(image_path, width: 160, height: 160, fit: BoxFit.cover),
+        // Image.asset(image_path, width: 160, height: 160, fit: BoxFit.cover),
+        SizedBox(width: 160, height: 160, child: image),
         const SizedBox(height: 24),
         Text(
           description,
