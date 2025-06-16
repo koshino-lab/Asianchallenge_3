@@ -15,6 +15,31 @@ class $AssetsImagesGen {
   /// File path: assets/images/Icon.svg
   String get icon => 'assets/images/Icon.svg';
 
+  /// File path: assets/images/container.png
+  AssetGenImage get container =>
+      const AssetGenImage('assets/images/container.png');
+
+  /// File path: assets/images/key.png
+  AssetGenImage get key => const AssetGenImage('assets/images/key.png');
+
+  /// File path: assets/images/map.png
+  AssetGenImage get map => const AssetGenImage('assets/images/map.png');
+
+  /// File path: assets/images/pin1.svg
+  String get pin1 => 'assets/images/pin1.svg';
+
+  /// File path: assets/images/pin2.svg
+  String get pin2 => 'assets/images/pin2.svg';
+
+  /// File path: assets/images/pin3.svg
+  String get pin3 => 'assets/images/pin3.svg';
+
+  /// File path: assets/images/pin4.svg
+  String get pin4 => 'assets/images/pin4.svg';
+
+  /// File path: assets/images/pin5.svg
+  String get pin5 => 'assets/images/pin5.svg';
+
   /// File path: assets/images/story1.png
   AssetGenImage get story1 => const AssetGenImage('assets/images/story1.png');
 
@@ -25,7 +50,20 @@ class $AssetsImagesGen {
   AssetGenImage get story3 => const AssetGenImage('assets/images/story3.png');
 
   /// List of all assets
-  List<dynamic> get values => [icon, story1, story2, story3];
+  List<dynamic> get values => [
+    icon,
+    container,
+    key,
+    map,
+    pin1,
+    pin2,
+    pin3,
+    pin4,
+    pin5,
+    story1,
+    story2,
+    story3,
+  ];
 }
 
 class Assets {
