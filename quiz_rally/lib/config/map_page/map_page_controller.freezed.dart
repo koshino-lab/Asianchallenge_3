@@ -16,9 +16,157 @@ final _privateConstructorUsedError = UnsupportedError(
 );
 
 /// @nodoc
+mixin _$MapPin {
+  String get riddle => throw _privateConstructorUsedError;
+  String get correctAnswer => throw _privateConstructorUsedError;
+
+  /// Create a copy of MapPin
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $MapPinCopyWith<MapPin> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $MapPinCopyWith<$Res> {
+  factory $MapPinCopyWith(MapPin value, $Res Function(MapPin) then) =
+      _$MapPinCopyWithImpl<$Res, MapPin>;
+  @useResult
+  $Res call({String riddle, String correctAnswer});
+}
+
+/// @nodoc
+class _$MapPinCopyWithImpl<$Res, $Val extends MapPin>
+    implements $MapPinCopyWith<$Res> {
+  _$MapPinCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of MapPin
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? riddle = null, Object? correctAnswer = null}) {
+    return _then(
+      _value.copyWith(
+            riddle: null == riddle
+                ? _value.riddle
+                : riddle // ignore: cast_nullable_to_non_nullable
+                      as String,
+            correctAnswer: null == correctAnswer
+                ? _value.correctAnswer
+                : correctAnswer // ignore: cast_nullable_to_non_nullable
+                      as String,
+          )
+          as $Val,
+    );
+  }
+}
+
+/// @nodoc
+abstract class _$$MapPinImplCopyWith<$Res> implements $MapPinCopyWith<$Res> {
+  factory _$$MapPinImplCopyWith(
+    _$MapPinImpl value,
+    $Res Function(_$MapPinImpl) then,
+  ) = __$$MapPinImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String riddle, String correctAnswer});
+}
+
+/// @nodoc
+class __$$MapPinImplCopyWithImpl<$Res>
+    extends _$MapPinCopyWithImpl<$Res, _$MapPinImpl>
+    implements _$$MapPinImplCopyWith<$Res> {
+  __$$MapPinImplCopyWithImpl(
+    _$MapPinImpl _value,
+    $Res Function(_$MapPinImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of MapPin
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? riddle = null, Object? correctAnswer = null}) {
+    return _then(
+      _$MapPinImpl(
+        riddle: null == riddle
+            ? _value.riddle
+            : riddle // ignore: cast_nullable_to_non_nullable
+                  as String,
+        correctAnswer: null == correctAnswer
+            ? _value.correctAnswer
+            : correctAnswer // ignore: cast_nullable_to_non_nullable
+                  as String,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$MapPinImpl implements _MapPin {
+  const _$MapPinImpl({required this.riddle, required this.correctAnswer});
+
+  @override
+  final String riddle;
+  @override
+  final String correctAnswer;
+
+  @override
+  String toString() {
+    return 'MapPin(riddle: $riddle, correctAnswer: $correctAnswer)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$MapPinImpl &&
+            (identical(other.riddle, riddle) || other.riddle == riddle) &&
+            (identical(other.correctAnswer, correctAnswer) ||
+                other.correctAnswer == correctAnswer));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, riddle, correctAnswer);
+
+  /// Create a copy of MapPin
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$MapPinImplCopyWith<_$MapPinImpl> get copyWith =>
+      __$$MapPinImplCopyWithImpl<_$MapPinImpl>(this, _$identity);
+}
+
+abstract class _MapPin implements MapPin {
+  const factory _MapPin({
+    required final String riddle,
+    required final String correctAnswer,
+  }) = _$MapPinImpl;
+
+  @override
+  String get riddle;
+  @override
+  String get correctAnswer;
+
+  /// Create a copy of MapPin
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$MapPinImplCopyWith<_$MapPinImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$MapPageState {
   bool get isTutorialShown => throw _privateConstructorUsedError;
   int get tutorialPageIndex => throw _privateConstructorUsedError;
+  Map<String, MapPin> get mapPins => throw _privateConstructorUsedError;
+  String get lastSubmissionResult => throw _privateConstructorUsedError;
 
   /// Create a copy of MapPageState
   /// with the given fields replaced by the non-null parameter values.
@@ -34,7 +182,12 @@ abstract class $MapPageStateCopyWith<$Res> {
     $Res Function(MapPageState) then,
   ) = _$MapPageStateCopyWithImpl<$Res, MapPageState>;
   @useResult
-  $Res call({bool isTutorialShown, int tutorialPageIndex});
+  $Res call({
+    bool isTutorialShown,
+    int tutorialPageIndex,
+    Map<String, MapPin> mapPins,
+    String lastSubmissionResult,
+  });
 }
 
 /// @nodoc
@@ -54,6 +207,8 @@ class _$MapPageStateCopyWithImpl<$Res, $Val extends MapPageState>
   $Res call({
     Object? isTutorialShown = null,
     Object? tutorialPageIndex = null,
+    Object? mapPins = null,
+    Object? lastSubmissionResult = null,
   }) {
     return _then(
       _value.copyWith(
@@ -65,6 +220,14 @@ class _$MapPageStateCopyWithImpl<$Res, $Val extends MapPageState>
                 ? _value.tutorialPageIndex
                 : tutorialPageIndex // ignore: cast_nullable_to_non_nullable
                       as int,
+            mapPins: null == mapPins
+                ? _value.mapPins
+                : mapPins // ignore: cast_nullable_to_non_nullable
+                      as Map<String, MapPin>,
+            lastSubmissionResult: null == lastSubmissionResult
+                ? _value.lastSubmissionResult
+                : lastSubmissionResult // ignore: cast_nullable_to_non_nullable
+                      as String,
           )
           as $Val,
     );
@@ -80,7 +243,12 @@ abstract class _$$MapPageStateImplCopyWith<$Res>
   ) = __$$MapPageStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isTutorialShown, int tutorialPageIndex});
+  $Res call({
+    bool isTutorialShown,
+    int tutorialPageIndex,
+    Map<String, MapPin> mapPins,
+    String lastSubmissionResult,
+  });
 }
 
 /// @nodoc
@@ -99,6 +267,8 @@ class __$$MapPageStateImplCopyWithImpl<$Res>
   $Res call({
     Object? isTutorialShown = null,
     Object? tutorialPageIndex = null,
+    Object? mapPins = null,
+    Object? lastSubmissionResult = null,
   }) {
     return _then(
       _$MapPageStateImpl(
@@ -110,6 +280,14 @@ class __$$MapPageStateImplCopyWithImpl<$Res>
             ? _value.tutorialPageIndex
             : tutorialPageIndex // ignore: cast_nullable_to_non_nullable
                   as int,
+        mapPins: null == mapPins
+            ? _value._mapPins
+            : mapPins // ignore: cast_nullable_to_non_nullable
+                  as Map<String, MapPin>,
+        lastSubmissionResult: null == lastSubmissionResult
+            ? _value.lastSubmissionResult
+            : lastSubmissionResult // ignore: cast_nullable_to_non_nullable
+                  as String,
       ),
     );
   }
@@ -121,7 +299,9 @@ class _$MapPageStateImpl implements _MapPageState {
   const _$MapPageStateImpl({
     this.isTutorialShown = false,
     this.tutorialPageIndex = 0,
-  });
+    final Map<String, MapPin> mapPins = const {},
+    this.lastSubmissionResult = '',
+  }) : _mapPins = mapPins;
 
   @override
   @JsonKey()
@@ -129,10 +309,22 @@ class _$MapPageStateImpl implements _MapPageState {
   @override
   @JsonKey()
   final int tutorialPageIndex;
+  final Map<String, MapPin> _mapPins;
+  @override
+  @JsonKey()
+  Map<String, MapPin> get mapPins {
+    if (_mapPins is EqualUnmodifiableMapView) return _mapPins;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_mapPins);
+  }
+
+  @override
+  @JsonKey()
+  final String lastSubmissionResult;
 
   @override
   String toString() {
-    return 'MapPageState(isTutorialShown: $isTutorialShown, tutorialPageIndex: $tutorialPageIndex)';
+    return 'MapPageState(isTutorialShown: $isTutorialShown, tutorialPageIndex: $tutorialPageIndex, mapPins: $mapPins, lastSubmissionResult: $lastSubmissionResult)';
   }
 
   @override
@@ -143,12 +335,20 @@ class _$MapPageStateImpl implements _MapPageState {
             (identical(other.isTutorialShown, isTutorialShown) ||
                 other.isTutorialShown == isTutorialShown) &&
             (identical(other.tutorialPageIndex, tutorialPageIndex) ||
-                other.tutorialPageIndex == tutorialPageIndex));
+                other.tutorialPageIndex == tutorialPageIndex) &&
+            const DeepCollectionEquality().equals(other._mapPins, _mapPins) &&
+            (identical(other.lastSubmissionResult, lastSubmissionResult) ||
+                other.lastSubmissionResult == lastSubmissionResult));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, isTutorialShown, tutorialPageIndex);
+  int get hashCode => Object.hash(
+    runtimeType,
+    isTutorialShown,
+    tutorialPageIndex,
+    const DeepCollectionEquality().hash(_mapPins),
+    lastSubmissionResult,
+  );
 
   /// Create a copy of MapPageState
   /// with the given fields replaced by the non-null parameter values.
@@ -163,12 +363,18 @@ abstract class _MapPageState implements MapPageState {
   const factory _MapPageState({
     final bool isTutorialShown,
     final int tutorialPageIndex,
+    final Map<String, MapPin> mapPins,
+    final String lastSubmissionResult,
   }) = _$MapPageStateImpl;
 
   @override
   bool get isTutorialShown;
   @override
   int get tutorialPageIndex;
+  @override
+  Map<String, MapPin> get mapPins;
+  @override
+  String get lastSubmissionResult;
 
   /// Create a copy of MapPageState
   /// with the given fields replaced by the non-null parameter values.
