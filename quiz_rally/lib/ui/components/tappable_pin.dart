@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_rally/ui/components/universal_image.dart';
 
-class TappablePin extends StatelessWidget {
+class AskQuestionPin extends StatelessWidget {
   final String imageAsset;
   final double width;
   final double height;
@@ -9,7 +9,7 @@ class TappablePin extends StatelessWidget {
   final String pinId;
   final Function(String pinId, String answer) onSubmitAnswer;
 
-  const TappablePin({
+  const AskQuestionPin({
     Key? key,
     required this.imageAsset,
     required this.width,

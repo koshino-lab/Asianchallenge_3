@@ -61,7 +61,7 @@ class MapPage extends HookConsumerWidget {
           Positioned(
             top: 100,
             left: 50,
-            child: TappablePin(
+            child: AskQuestionPin(
               imageAsset: Assets.images.pin1,
               width: pinSize,
               height: pinSize,
@@ -75,7 +75,7 @@ class MapPage extends HookConsumerWidget {
           Positioned(
             top: 200,
             right: 80,
-            child: TappablePin(
+            child: AskQuestionPin(
               imageAsset: Assets.images.pin2,
               width: pinSize,
               height: pinSize,
@@ -89,7 +89,7 @@ class MapPage extends HookConsumerWidget {
           Positioned(
             bottom: 150,
             left: 120,
-            child: TappablePin(
+            child: AskQuestionPin(
               imageAsset: Assets.images.pin3,
               width: pinSize,
               height: pinSize,
@@ -103,7 +103,7 @@ class MapPage extends HookConsumerWidget {
           Positioned(
             bottom: 50,
             right: 20,
-            child: TappablePin(
+            child: AskQuestionPin(
               imageAsset: Assets.images.pin4,
               width: pinSize,
               height: pinSize,
