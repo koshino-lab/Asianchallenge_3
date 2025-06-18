@@ -9,13 +9,7 @@ class MapPageState with _$MapPageState {
   const factory MapPageState({
     @Default(false) bool isTutorialShown,
     @Default(0) int tutorialPageIndex,
-    @Default({
-      'pin1': MapPin(riddle: 'これは最初の謎々です。', correctAnswer: '答え1'),
-      'pin2': MapPin(riddle: 'これは二番目の謎々です。', correctAnswer: '答え2'),
-      'pin3': MapPin(riddle: 'これは三番目の謎々です。', correctAnswer: '答え3'),
-      'pin4': MapPin(riddle: 'これは四番目の謎々です。', correctAnswer: '答え4'),
-    })
-    Map<String, MapPin> mapPins,
+    @Default({}) Map<String, MapPin> mapPins,
     @Default('') String lastSubmissionResult,
     @Default(<String>{}) Set<String> solvedPinIds,
     @Default(0) int usedKeyCount,
@@ -27,7 +21,19 @@ final mapPageProvider = StateNotifierProvider<MapPageController, MapPageState>(
 );
 
 class MapPageController extends StateNotifier<MapPageState> {
-  MapPageController() : super(const MapPageState());
+  MapPageController()
+    : super(
+        const MapPageState(
+          mapPins: {
+            'pin1': MapPin(riddle: 'これは最初の謎々です。', correctAnswer: '答え1'),
+            'pin2': MapPin(riddle: 'これは二番目の謎々です。', correctAnswer: '答え2'),
+            'pin3': MapPin(riddle: 'これは三番目の謎々です。', correctAnswer: '答え3'),
+            'pin4': MapPin(riddle: 'これは四番目の謎々です。', correctAnswer: '答え4'),
+          },
+          solvedPinIds: {},
+          usedKeyCount: 0,
+        ),
+      );
 
   void toggleTutorial() {
     state = state.copyWith(isTutorialShown: !state.isTutorialShown);
