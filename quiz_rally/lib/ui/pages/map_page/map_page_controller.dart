@@ -9,12 +9,14 @@ class MapPageState with _$MapPageState {
   const factory MapPageState({
     @Default({}) Map<String, MapPin> mapPins,
     @Default(0) int tutorialPageIndex,
-
+    // ↓cokieで保存したいデータ
     @Default(true) bool isFirstOpen,
     @Default('') String lastSubmissionResult,
     @Default(<String>{}) Set<String> solvedPinIds,
     @Default(<String>[]) List<String> usedKeyIds,
     @Default(0) int ownKeyCount,
+    @Default(false) bool isLastQuestionAvailable,
+    @Default(false) bool isGameCleared,
   }) = _MapPageState;
 }
 
@@ -32,8 +34,6 @@ class MapPageController extends StateNotifier<MapPageState> {
             'pin3': MapPin(riddle: 'これは三番目の謎々です。', correctAnswer: '答え3'),
             'pin4': MapPin(riddle: 'これは四番目の謎々です。', correctAnswer: '答え4'),
           },
-          solvedPinIds: {},
-          usedKeyIds: [],
         ),
       );
 

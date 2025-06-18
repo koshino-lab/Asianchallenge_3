@@ -18,12 +18,15 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$MapPageState {
   Map<String, MapPin> get mapPins => throw _privateConstructorUsedError;
-  int get tutorialPageIndex => throw _privateConstructorUsedError;
+  int get tutorialPageIndex =>
+      throw _privateConstructorUsedError; // ↓cokieで保存したいデータ
   bool get isFirstOpen => throw _privateConstructorUsedError;
   String get lastSubmissionResult => throw _privateConstructorUsedError;
   Set<String> get solvedPinIds => throw _privateConstructorUsedError;
   List<String> get usedKeyIds => throw _privateConstructorUsedError;
   int get ownKeyCount => throw _privateConstructorUsedError;
+  bool get isLastQuestionAvailable => throw _privateConstructorUsedError;
+  bool get isGameCleared => throw _privateConstructorUsedError;
 
   /// Create a copy of MapPageState
   /// with the given fields replaced by the non-null parameter values.
@@ -47,6 +50,8 @@ abstract class $MapPageStateCopyWith<$Res> {
     Set<String> solvedPinIds,
     List<String> usedKeyIds,
     int ownKeyCount,
+    bool isLastQuestionAvailable,
+    bool isGameCleared,
   });
 }
 
@@ -72,6 +77,8 @@ class _$MapPageStateCopyWithImpl<$Res, $Val extends MapPageState>
     Object? solvedPinIds = null,
     Object? usedKeyIds = null,
     Object? ownKeyCount = null,
+    Object? isLastQuestionAvailable = null,
+    Object? isGameCleared = null,
   }) {
     return _then(
       _value.copyWith(
@@ -103,6 +110,14 @@ class _$MapPageStateCopyWithImpl<$Res, $Val extends MapPageState>
                 ? _value.ownKeyCount
                 : ownKeyCount // ignore: cast_nullable_to_non_nullable
                       as int,
+            isLastQuestionAvailable: null == isLastQuestionAvailable
+                ? _value.isLastQuestionAvailable
+                : isLastQuestionAvailable // ignore: cast_nullable_to_non_nullable
+                      as bool,
+            isGameCleared: null == isGameCleared
+                ? _value.isGameCleared
+                : isGameCleared // ignore: cast_nullable_to_non_nullable
+                      as bool,
           )
           as $Val,
     );
@@ -126,6 +141,8 @@ abstract class _$$MapPageStateImplCopyWith<$Res>
     Set<String> solvedPinIds,
     List<String> usedKeyIds,
     int ownKeyCount,
+    bool isLastQuestionAvailable,
+    bool isGameCleared,
   });
 }
 
@@ -150,6 +167,8 @@ class __$$MapPageStateImplCopyWithImpl<$Res>
     Object? solvedPinIds = null,
     Object? usedKeyIds = null,
     Object? ownKeyCount = null,
+    Object? isLastQuestionAvailable = null,
+    Object? isGameCleared = null,
   }) {
     return _then(
       _$MapPageStateImpl(
@@ -181,6 +200,14 @@ class __$$MapPageStateImplCopyWithImpl<$Res>
             ? _value.ownKeyCount
             : ownKeyCount // ignore: cast_nullable_to_non_nullable
                   as int,
+        isLastQuestionAvailable: null == isLastQuestionAvailable
+            ? _value.isLastQuestionAvailable
+            : isLastQuestionAvailable // ignore: cast_nullable_to_non_nullable
+                  as bool,
+        isGameCleared: null == isGameCleared
+            ? _value.isGameCleared
+            : isGameCleared // ignore: cast_nullable_to_non_nullable
+                  as bool,
       ),
     );
   }
@@ -197,6 +224,8 @@ class _$MapPageStateImpl implements _MapPageState {
     final Set<String> solvedPinIds = const <String>{},
     final List<String> usedKeyIds = const <String>[],
     this.ownKeyCount = 0,
+    this.isLastQuestionAvailable = false,
+    this.isGameCleared = false,
   }) : _mapPins = mapPins,
        _solvedPinIds = solvedPinIds,
        _usedKeyIds = usedKeyIds;
@@ -213,6 +242,7 @@ class _$MapPageStateImpl implements _MapPageState {
   @override
   @JsonKey()
   final int tutorialPageIndex;
+  // ↓cokieで保存したいデータ
   @override
   @JsonKey()
   final bool isFirstOpen;
@@ -240,10 +270,16 @@ class _$MapPageStateImpl implements _MapPageState {
   @override
   @JsonKey()
   final int ownKeyCount;
+  @override
+  @JsonKey()
+  final bool isLastQuestionAvailable;
+  @override
+  @JsonKey()
+  final bool isGameCleared;
 
   @override
   String toString() {
-    return 'MapPageState(mapPins: $mapPins, tutorialPageIndex: $tutorialPageIndex, isFirstOpen: $isFirstOpen, lastSubmissionResult: $lastSubmissionResult, solvedPinIds: $solvedPinIds, usedKeyIds: $usedKeyIds, ownKeyCount: $ownKeyCount)';
+    return 'MapPageState(mapPins: $mapPins, tutorialPageIndex: $tutorialPageIndex, isFirstOpen: $isFirstOpen, lastSubmissionResult: $lastSubmissionResult, solvedPinIds: $solvedPinIds, usedKeyIds: $usedKeyIds, ownKeyCount: $ownKeyCount, isLastQuestionAvailable: $isLastQuestionAvailable, isGameCleared: $isGameCleared)';
   }
 
   @override
@@ -267,7 +303,14 @@ class _$MapPageStateImpl implements _MapPageState {
               _usedKeyIds,
             ) &&
             (identical(other.ownKeyCount, ownKeyCount) ||
-                other.ownKeyCount == ownKeyCount));
+                other.ownKeyCount == ownKeyCount) &&
+            (identical(
+                  other.isLastQuestionAvailable,
+                  isLastQuestionAvailable,
+                ) ||
+                other.isLastQuestionAvailable == isLastQuestionAvailable) &&
+            (identical(other.isGameCleared, isGameCleared) ||
+                other.isGameCleared == isGameCleared));
   }
 
   @override
@@ -280,6 +323,8 @@ class _$MapPageStateImpl implements _MapPageState {
     const DeepCollectionEquality().hash(_solvedPinIds),
     const DeepCollectionEquality().hash(_usedKeyIds),
     ownKeyCount,
+    isLastQuestionAvailable,
+    isGameCleared,
   );
 
   /// Create a copy of MapPageState
@@ -300,12 +345,14 @@ abstract class _MapPageState implements MapPageState {
     final Set<String> solvedPinIds,
     final List<String> usedKeyIds,
     final int ownKeyCount,
+    final bool isLastQuestionAvailable,
+    final bool isGameCleared,
   }) = _$MapPageStateImpl;
 
   @override
   Map<String, MapPin> get mapPins;
   @override
-  int get tutorialPageIndex;
+  int get tutorialPageIndex; // ↓cokieで保存したいデータ
   @override
   bool get isFirstOpen;
   @override
@@ -316,6 +363,10 @@ abstract class _MapPageState implements MapPageState {
   List<String> get usedKeyIds;
   @override
   int get ownKeyCount;
+  @override
+  bool get isLastQuestionAvailable;
+  @override
+  bool get isGameCleared;
 
   /// Create a copy of MapPageState
   /// with the given fields replaced by the non-null parameter values.
