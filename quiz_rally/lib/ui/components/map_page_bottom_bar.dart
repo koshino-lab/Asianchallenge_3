@@ -8,7 +8,7 @@ class MapPageBottomBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final solvedCount = ref.watch(mapPageProvider).solvedPinIds.length;
+    final solvedCount = ref.watch(mapPageProvider).ownKeyCount;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [

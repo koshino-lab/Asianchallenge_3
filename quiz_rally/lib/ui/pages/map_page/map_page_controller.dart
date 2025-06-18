@@ -12,7 +12,8 @@ class MapPageState with _$MapPageState {
     @Default({}) Map<String, MapPin> mapPins,
     @Default('') String lastSubmissionResult,
     @Default(<String>{}) Set<String> solvedPinIds,
-    @Default(0) int usedKeyCount,
+    @Default(<String>[]) List<String> usedKeyIds,
+    @Default(0) int ownKeyCount,
   }) = _MapPageState;
 }
 
@@ -31,7 +32,7 @@ class MapPageController extends StateNotifier<MapPageState> {
             'pin4': MapPin(riddle: 'これは四番目の謎々です。', correctAnswer: '答え4'),
           },
           solvedPinIds: {},
-          usedKeyCount: 0,
+          usedKeyIds: [],
         ),
       );
 
@@ -44,7 +45,7 @@ class MapPageController extends StateNotifier<MapPageState> {
       isTutorialShown: false,
       tutorialPageIndex: 0,
       solvedPinIds: {},
-      usedKeyCount: 0,
+      usedKeyIds: [],
     );
   }
 
@@ -56,14 +57,12 @@ class MapPageController extends StateNotifier<MapPageState> {
     final MapPin? pin = state.mapPins[pinId];
     if (pin != null) {
       if (answer.toLowerCase() == pin.correctAnswer.toLowerCase()) {
-        if (!state.solvedPinIds.contains(pinId)) {
-          state = state.copyWith(
-            lastSubmissionResult: '正解！',
-            solvedPinIds: {...state.solvedPinIds, pinId},
-          );
-        } else {
-          state = state.copyWith(lastSubmissionResult: '正解！');
-        }
+        state = state.copyWith(
+          lastSubmissionResult: '正解！',
+          solvedPinIds: {...state.solvedPinIds, pinId},
+          ownKeyCount: state.ownKeyCount + 1,
+        );
+
         print('正解！');
       } else {
         state = state.copyWith(lastSubmissionResult: '不正解！');
@@ -82,11 +81,11 @@ class MapPageController extends StateNotifier<MapPageState> {
   int get solvedPinCount => state.solvedPinIds.length;
 
   void useAllKeys() {
-    final ownKeys = state.solvedPinIds.length - state.usedKeyCount;
-    if (ownKeys > 0) {
+    final ownKeys = state.solvedPinIds.difference(state.usedKeyIds.toSet());
+    if (ownKeys.isNotEmpty) {
       state = state.copyWith(
-        solvedPinIds: {},
-        usedKeyCount: state.usedKeyCount + ownKeys,
+        usedKeyIds: [...state.usedKeyIds, ...ownKeys],
+        ownKeyCount: 0,
       );
     }
   }

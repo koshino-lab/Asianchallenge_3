@@ -22,8 +22,8 @@ mixin _$MapPageState {
   Map<String, MapPin> get mapPins => throw _privateConstructorUsedError;
   String get lastSubmissionResult => throw _privateConstructorUsedError;
   Set<String> get solvedPinIds => throw _privateConstructorUsedError;
-  Set<String> get usedPinIds => throw _privateConstructorUsedError;
-  int get usedKeyCount => throw _privateConstructorUsedError;
+  List<String> get usedKeyIds => throw _privateConstructorUsedError;
+  int get ownKeyCount => throw _privateConstructorUsedError;
 
   /// Create a copy of MapPageState
   /// with the given fields replaced by the non-null parameter values.
@@ -45,8 +45,8 @@ abstract class $MapPageStateCopyWith<$Res> {
     Map<String, MapPin> mapPins,
     String lastSubmissionResult,
     Set<String> solvedPinIds,
-    Set<String> usedPinIds,
-    int usedKeyCount,
+    List<String> usedKeyIds,
+    int ownKeyCount,
   });
 }
 
@@ -70,8 +70,8 @@ class _$MapPageStateCopyWithImpl<$Res, $Val extends MapPageState>
     Object? mapPins = null,
     Object? lastSubmissionResult = null,
     Object? solvedPinIds = null,
-    Object? usedPinIds = null,
-    Object? usedKeyCount = null,
+    Object? usedKeyIds = null,
+    Object? ownKeyCount = null,
   }) {
     return _then(
       _value.copyWith(
@@ -95,13 +95,13 @@ class _$MapPageStateCopyWithImpl<$Res, $Val extends MapPageState>
                 ? _value.solvedPinIds
                 : solvedPinIds // ignore: cast_nullable_to_non_nullable
                       as Set<String>,
-            usedPinIds: null == usedPinIds
-                ? _value.usedPinIds
-                : usedPinIds // ignore: cast_nullable_to_non_nullable
-                      as Set<String>,
-            usedKeyCount: null == usedKeyCount
-                ? _value.usedKeyCount
-                : usedKeyCount // ignore: cast_nullable_to_non_nullable
+            usedKeyIds: null == usedKeyIds
+                ? _value.usedKeyIds
+                : usedKeyIds // ignore: cast_nullable_to_non_nullable
+                      as List<String>,
+            ownKeyCount: null == ownKeyCount
+                ? _value.ownKeyCount
+                : ownKeyCount // ignore: cast_nullable_to_non_nullable
                       as int,
           )
           as $Val,
@@ -124,8 +124,8 @@ abstract class _$$MapPageStateImplCopyWith<$Res>
     Map<String, MapPin> mapPins,
     String lastSubmissionResult,
     Set<String> solvedPinIds,
-    Set<String> usedPinIds,
-    int usedKeyCount,
+    List<String> usedKeyIds,
+    int ownKeyCount,
   });
 }
 
@@ -148,8 +148,8 @@ class __$$MapPageStateImplCopyWithImpl<$Res>
     Object? mapPins = null,
     Object? lastSubmissionResult = null,
     Object? solvedPinIds = null,
-    Object? usedPinIds = null,
-    Object? usedKeyCount = null,
+    Object? usedKeyIds = null,
+    Object? ownKeyCount = null,
   }) {
     return _then(
       _$MapPageStateImpl(
@@ -173,13 +173,13 @@ class __$$MapPageStateImplCopyWithImpl<$Res>
             ? _value._solvedPinIds
             : solvedPinIds // ignore: cast_nullable_to_non_nullable
                   as Set<String>,
-        usedPinIds: null == usedPinIds
-            ? _value._usedPinIds
-            : usedPinIds // ignore: cast_nullable_to_non_nullable
-                  as Set<String>,
-        usedKeyCount: null == usedKeyCount
-            ? _value.usedKeyCount
-            : usedKeyCount // ignore: cast_nullable_to_non_nullable
+        usedKeyIds: null == usedKeyIds
+            ? _value._usedKeyIds
+            : usedKeyIds // ignore: cast_nullable_to_non_nullable
+                  as List<String>,
+        ownKeyCount: null == ownKeyCount
+            ? _value.ownKeyCount
+            : ownKeyCount // ignore: cast_nullable_to_non_nullable
                   as int,
       ),
     );
@@ -195,11 +195,11 @@ class _$MapPageStateImpl implements _MapPageState {
     final Map<String, MapPin> mapPins = const {},
     this.lastSubmissionResult = '',
     final Set<String> solvedPinIds = const <String>{},
-    final Set<String> usedPinIds = const <String>{},
-    this.usedKeyCount = 0,
+    final List<String> usedKeyIds = const <String>[],
+    this.ownKeyCount = 0,
   }) : _mapPins = mapPins,
        _solvedPinIds = solvedPinIds,
-       _usedPinIds = usedPinIds;
+       _usedKeyIds = usedKeyIds;
 
   @override
   @JsonKey()
@@ -228,22 +228,22 @@ class _$MapPageStateImpl implements _MapPageState {
     return EqualUnmodifiableSetView(_solvedPinIds);
   }
 
-  final Set<String> _usedPinIds;
+  final List<String> _usedKeyIds;
   @override
   @JsonKey()
-  Set<String> get usedPinIds {
-    if (_usedPinIds is EqualUnmodifiableSetView) return _usedPinIds;
+  List<String> get usedKeyIds {
+    if (_usedKeyIds is EqualUnmodifiableListView) return _usedKeyIds;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableSetView(_usedPinIds);
+    return EqualUnmodifiableListView(_usedKeyIds);
   }
 
   @override
   @JsonKey()
-  final int usedKeyCount;
+  final int ownKeyCount;
 
   @override
   String toString() {
-    return 'MapPageState(isTutorialShown: $isTutorialShown, tutorialPageIndex: $tutorialPageIndex, mapPins: $mapPins, lastSubmissionResult: $lastSubmissionResult, solvedPinIds: $solvedPinIds, usedPinIds: $usedPinIds, usedKeyCount: $usedKeyCount)';
+    return 'MapPageState(isTutorialShown: $isTutorialShown, tutorialPageIndex: $tutorialPageIndex, mapPins: $mapPins, lastSubmissionResult: $lastSubmissionResult, solvedPinIds: $solvedPinIds, usedKeyIds: $usedKeyIds, ownKeyCount: $ownKeyCount)';
   }
 
   @override
@@ -263,11 +263,11 @@ class _$MapPageStateImpl implements _MapPageState {
               _solvedPinIds,
             ) &&
             const DeepCollectionEquality().equals(
-              other._usedPinIds,
-              _usedPinIds,
+              other._usedKeyIds,
+              _usedKeyIds,
             ) &&
-            (identical(other.usedKeyCount, usedKeyCount) ||
-                other.usedKeyCount == usedKeyCount));
+            (identical(other.ownKeyCount, ownKeyCount) ||
+                other.ownKeyCount == ownKeyCount));
   }
 
   @override
@@ -278,8 +278,8 @@ class _$MapPageStateImpl implements _MapPageState {
     const DeepCollectionEquality().hash(_mapPins),
     lastSubmissionResult,
     const DeepCollectionEquality().hash(_solvedPinIds),
-    const DeepCollectionEquality().hash(_usedPinIds),
-    usedKeyCount,
+    const DeepCollectionEquality().hash(_usedKeyIds),
+    ownKeyCount,
   );
 
   /// Create a copy of MapPageState
@@ -298,8 +298,8 @@ abstract class _MapPageState implements MapPageState {
     final Map<String, MapPin> mapPins,
     final String lastSubmissionResult,
     final Set<String> solvedPinIds,
-    final Set<String> usedPinIds,
-    final int usedKeyCount,
+    final List<String> usedKeyIds,
+    final int ownKeyCount,
   }) = _$MapPageStateImpl;
 
   @override
@@ -313,9 +313,9 @@ abstract class _MapPageState implements MapPageState {
   @override
   Set<String> get solvedPinIds;
   @override
-  Set<String> get usedPinIds;
+  List<String> get usedKeyIds;
   @override
-  int get usedKeyCount;
+  int get ownKeyCount;
 
   /// Create a copy of MapPageState
   /// with the given fields replaced by the non-null parameter values.

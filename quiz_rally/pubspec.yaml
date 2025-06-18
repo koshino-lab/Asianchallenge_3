@@ -39,6 +39,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   json_serializable: ^6.9.5
   universal_image: ^1.0.10
+  web: ^0.5.1
 
 dev_dependencies:
   freezed: ^2.4.6

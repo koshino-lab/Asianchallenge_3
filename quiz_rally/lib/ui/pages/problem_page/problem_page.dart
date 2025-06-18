@@ -8,7 +8,7 @@ class ProblemPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final usedKeyCount = ref.watch(mapPageProvider).usedKeyCount;
+    final usedKeyCount = ref.watch(mapPageProvider).usedKeyIds.length;
     return Scaffold(
       appBar: AppBar(title: Text('鎖の問題')),
       body: Container(
