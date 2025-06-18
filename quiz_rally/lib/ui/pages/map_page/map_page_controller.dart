@@ -82,11 +82,11 @@ class MapPageController extends StateNotifier<MapPageState> {
   int get solvedPinCount => state.solvedPinIds.length;
 
   void useAllKeys() {
-    final usedNow = state.solvedPinIds.length;
-    if (usedNow > 0) {
+    final ownKeys = state.solvedPinIds.length - state.usedKeyCount;
+    if (ownKeys > 0) {
       state = state.copyWith(
         solvedPinIds: {},
-        usedKeyCount: state.usedKeyCount + usedNow,
+        usedKeyCount: state.usedKeyCount + ownKeys,
       );
     }
   }
