@@ -8,7 +8,9 @@ class ProblemPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final usedKeyCount = ref.watch(mapPageProvider).usedKeyIds.length;
+    final isLastQuestionAvailable = ref
+        .watch(mapPageProvider)
+        .isLastQuestionAvailable;
     return Scaffold(
       appBar: AppBar(title: Text('鎖の問題')),
       body: Container(
@@ -16,7 +18,7 @@ class ProblemPage extends ConsumerWidget {
         width: double.infinity,
         child: ListView(
           children: <Widget>[
-            if (usedKeyCount >= 4)
+            if (isLastQuestionAvailable)
               ElevatedButton(
                 onPressed: () async {
                   await Navigator.of(context).pushNamed('/success');

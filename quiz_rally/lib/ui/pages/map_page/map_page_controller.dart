@@ -88,5 +88,9 @@ class MapPageController extends StateNotifier<MapPageState> {
         ownKeyCount: 0,
       );
     }
+    final usedKeyCount = state.usedKeyIds.length;
+    if (usedKeyCount >= 4) {
+      state = state.copyWith(isLastQuestionAvailable: true);
+    }
   }
 }
