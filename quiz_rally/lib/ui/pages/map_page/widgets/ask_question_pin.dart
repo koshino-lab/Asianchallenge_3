@@ -3,6 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:quiz_rally/ui/pages/map_page/map_page_controller.dart';
 import 'package:quiz_rally/gen/assets.gen.dart';
 import 'package:quiz_rally/ui/components/universal_image.dart';
+import 'package:quiz_rally/ui/pages/map_page/widgets/answer_dialog.dart';
+import 'package:quiz_rally/ui/pages/map_page/widgets/solveDialog.dart';
 
 class PositionedQuestionPin extends ConsumerWidget {
   final double? top;
@@ -41,60 +43,18 @@ class PositionedQuestionPin extends ConsumerWidget {
             showDialog(
               context: context,
               builder: (BuildContext dialogContext) {
-                return AlertDialog(
-                  title: const Text('正解済み'),
-                  content: const Text('この問題はすでに正解しています。'),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(dialogContext).pop();
-                      },
-                      child: const Text('閉じる'),
-                    ),
-                  ],
-                );
+                return const SolvedDialog();
               },
             );
           } else {
             showDialog(
               context: context,
               builder: (BuildContext dialogContext) {
-                final TextEditingController _answerController =
-                    TextEditingController();
-                return AlertDialog(
-                  title: const Text('謎々'),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(riddle),
-                      TextField(
-                        controller: _answerController,
-                        decoration: const InputDecoration(
-                          hintText: '解答を入力してください',
-                        ),
-                      ),
-                    ],
-                  ),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(dialogContext).pop();
-                        _answerController.dispose();
-                      },
-                      child: const Text('閉じる'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        mapPageController.submitPinAnswer(
-                          pinId,
-                          _answerController.text,
-                        );
-                        Navigator.of(dialogContext).pop();
-                        _answerController.dispose();
-                      },
-                      child: const Text('解答する'),
-                    ),
-                  ],
+                return AnswerDialog(
+                  riddle: riddle,
+                  onSubmit: (answer) {
+                    mapPageController.submitPinAnswer(pinId, answer);
+                  },
                 );
               },
             );

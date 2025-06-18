@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:quiz_rally/ui/components/map_page_bottom_bar.dart';
-import 'package:quiz_rally/ui/components/ask_question_pin.dart';
-import '../../components/tutorial_popup.dart';
+import 'package:quiz_rally/ui/pages/map_page/widgets/map_page_bottom_bar.dart';
+import 'package:quiz_rally/ui/pages/map_page/widgets/ask_question_pin.dart';
+import 'widgets/tutorial_popup.dart';
 import 'map_page_controller.dart';
 import 'package:quiz_rally/gen/assets.gen.dart';
 

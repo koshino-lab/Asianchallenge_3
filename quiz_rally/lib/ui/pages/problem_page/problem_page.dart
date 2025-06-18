@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quiz_rally/config/styles.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:quiz_rally/ui/pages/map_page/map_page_controller.dart';
+import 'package:quiz_rally/ui/pages/problem_page/LastQuestionSubmitButton.dart';
 
 class ProblemPage extends ConsumerWidget {
   const ProblemPage({super.key});
@@ -40,23 +41,10 @@ class ProblemPage extends ConsumerWidget {
               ),
               const SizedBox(height: 16),
               Center(
-                child: ElevatedButton(
-                  onPressed: () async {
-                    final answer = controller.text.trim();
-                    final isCorrect = ref
-                        .read(mapPageProvider.notifier)
-                        .checkLastAnswer(answer);
-                    if (isCorrect) {
-                      await Navigator.of(
-                        context,
-                      ).pushReplacementNamed('/success');
-                    } else {
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(const SnackBar(content: Text('不正解です。')));
-                    }
-                  },
-                  child: const Text('送信'),
+                child: LastQuestionSubmitButton(
+                  controller: controller,
+                  ref: ref,
+                  context: context,
                 ),
               ),
             ],
