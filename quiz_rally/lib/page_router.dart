@@ -26,7 +26,7 @@ class QuizRally extends StatelessWidget {
         primaryColor: Styles.primaryColor,
         brightness: Brightness.light,
         appBarTheme: Styles.appBarTheme,
-        scaffoldBackgroundColor: Styles.pageBackground,
+        // scaffoldBackgroundColor: Styles.pageBackground,
         // textTheme: GoogleFonts.mPlusRounded1cTextTheme(
         //   Styles.textTheme,
         // ),
