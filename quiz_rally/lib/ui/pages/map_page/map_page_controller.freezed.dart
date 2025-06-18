@@ -15,9 +15,12 @@ final _privateConstructorUsedError = UnsupportedError(
   'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
 );
 
+MapPageState _$MapPageStateFromJson(Map<String, dynamic> json) {
+  return _MapPageState.fromJson(json);
+}
+
 /// @nodoc
 mixin _$MapPageState {
-  Map<String, MapPin> get mapPins => throw _privateConstructorUsedError;
   int get tutorialPageIndex =>
       throw _privateConstructorUsedError; // ↓cokieで保存したいデータ
   bool get isFirstOpen => throw _privateConstructorUsedError;
@@ -27,6 +30,9 @@ mixin _$MapPageState {
   int get ownKeyCount => throw _privateConstructorUsedError;
   bool get isLastQuestionAvailable => throw _privateConstructorUsedError;
   bool get isGameCleared => throw _privateConstructorUsedError;
+
+  /// Serializes this MapPageState to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
   /// Create a copy of MapPageState
   /// with the given fields replaced by the non-null parameter values.
@@ -43,7 +49,6 @@ abstract class $MapPageStateCopyWith<$Res> {
   ) = _$MapPageStateCopyWithImpl<$Res, MapPageState>;
   @useResult
   $Res call({
-    Map<String, MapPin> mapPins,
     int tutorialPageIndex,
     bool isFirstOpen,
     String lastSubmissionResult,
@@ -70,7 +75,6 @@ class _$MapPageStateCopyWithImpl<$Res, $Val extends MapPageState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? mapPins = null,
     Object? tutorialPageIndex = null,
     Object? isFirstOpen = null,
     Object? lastSubmissionResult = null,
@@ -82,10 +86,6 @@ class _$MapPageStateCopyWithImpl<$Res, $Val extends MapPageState>
   }) {
     return _then(
       _value.copyWith(
-            mapPins: null == mapPins
-                ? _value.mapPins
-                : mapPins // ignore: cast_nullable_to_non_nullable
-                      as Map<String, MapPin>,
             tutorialPageIndex: null == tutorialPageIndex
                 ? _value.tutorialPageIndex
                 : tutorialPageIndex // ignore: cast_nullable_to_non_nullable
@@ -134,7 +134,6 @@ abstract class _$$MapPageStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    Map<String, MapPin> mapPins,
     int tutorialPageIndex,
     bool isFirstOpen,
     String lastSubmissionResult,
@@ -160,7 +159,6 @@ class __$$MapPageStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? mapPins = null,
     Object? tutorialPageIndex = null,
     Object? isFirstOpen = null,
     Object? lastSubmissionResult = null,
@@ -172,10 +170,6 @@ class __$$MapPageStateImplCopyWithImpl<$Res>
   }) {
     return _then(
       _$MapPageStateImpl(
-        mapPins: null == mapPins
-            ? _value._mapPins
-            : mapPins // ignore: cast_nullable_to_non_nullable
-                  as Map<String, MapPin>,
         tutorialPageIndex: null == tutorialPageIndex
             ? _value.tutorialPageIndex
             : tutorialPageIndex // ignore: cast_nullable_to_non_nullable
@@ -214,10 +208,9 @@ class __$$MapPageStateImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$MapPageStateImpl implements _MapPageState {
   const _$MapPageStateImpl({
-    final Map<String, MapPin> mapPins = const {},
     this.tutorialPageIndex = 0,
     this.isFirstOpen = true,
     this.lastSubmissionResult = '',
@@ -226,18 +219,11 @@ class _$MapPageStateImpl implements _MapPageState {
     this.ownKeyCount = 0,
     this.isLastQuestionAvailable = false,
     this.isGameCleared = false,
-  }) : _mapPins = mapPins,
-       _solvedPinIds = solvedPinIds,
+  }) : _solvedPinIds = solvedPinIds,
        _usedKeyIds = usedKeyIds;
 
-  final Map<String, MapPin> _mapPins;
-  @override
-  @JsonKey()
-  Map<String, MapPin> get mapPins {
-    if (_mapPins is EqualUnmodifiableMapView) return _mapPins;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_mapPins);
-  }
+  factory _$MapPageStateImpl.fromJson(Map<String, dynamic> json) =>
+      _$$MapPageStateImplFromJson(json);
 
   @override
   @JsonKey()
@@ -279,7 +265,7 @@ class _$MapPageStateImpl implements _MapPageState {
 
   @override
   String toString() {
-    return 'MapPageState(mapPins: $mapPins, tutorialPageIndex: $tutorialPageIndex, isFirstOpen: $isFirstOpen, lastSubmissionResult: $lastSubmissionResult, solvedPinIds: $solvedPinIds, usedKeyIds: $usedKeyIds, ownKeyCount: $ownKeyCount, isLastQuestionAvailable: $isLastQuestionAvailable, isGameCleared: $isGameCleared)';
+    return 'MapPageState(tutorialPageIndex: $tutorialPageIndex, isFirstOpen: $isFirstOpen, lastSubmissionResult: $lastSubmissionResult, solvedPinIds: $solvedPinIds, usedKeyIds: $usedKeyIds, ownKeyCount: $ownKeyCount, isLastQuestionAvailable: $isLastQuestionAvailable, isGameCleared: $isGameCleared)';
   }
 
   @override
@@ -287,7 +273,6 @@ class _$MapPageStateImpl implements _MapPageState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$MapPageStateImpl &&
-            const DeepCollectionEquality().equals(other._mapPins, _mapPins) &&
             (identical(other.tutorialPageIndex, tutorialPageIndex) ||
                 other.tutorialPageIndex == tutorialPageIndex) &&
             (identical(other.isFirstOpen, isFirstOpen) ||
@@ -313,10 +298,10 @@ class _$MapPageStateImpl implements _MapPageState {
                 other.isGameCleared == isGameCleared));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
     runtimeType,
-    const DeepCollectionEquality().hash(_mapPins),
     tutorialPageIndex,
     isFirstOpen,
     lastSubmissionResult,
@@ -334,11 +319,15 @@ class _$MapPageStateImpl implements _MapPageState {
   @pragma('vm:prefer-inline')
   _$$MapPageStateImplCopyWith<_$MapPageStateImpl> get copyWith =>
       __$$MapPageStateImplCopyWithImpl<_$MapPageStateImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$MapPageStateImplToJson(this);
+  }
 }
 
 abstract class _MapPageState implements MapPageState {
   const factory _MapPageState({
-    final Map<String, MapPin> mapPins,
     final int tutorialPageIndex,
     final bool isFirstOpen,
     final String lastSubmissionResult,
@@ -349,8 +338,9 @@ abstract class _MapPageState implements MapPageState {
     final bool isGameCleared,
   }) = _$MapPageStateImpl;
 
-  @override
-  Map<String, MapPin> get mapPins;
+  factory _MapPageState.fromJson(Map<String, dynamic> json) =
+      _$MapPageStateImpl.fromJson;
+
   @override
   int get tutorialPageIndex; // ↓cokieで保存したいデータ
   @override

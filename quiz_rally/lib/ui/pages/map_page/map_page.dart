@@ -29,23 +29,6 @@ class MapPage extends HookConsumerWidget {
       return null;
     }, [ref, mapPageController]);
 
-    useEffect(() {
-      final currentLastSubmissionResult = ref
-          .watch(mapPageProvider)
-          .lastSubmissionResult;
-      if (currentLastSubmissionResult.isNotEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(currentLastSubmissionResult),
-            duration: const Duration(seconds: 2),
-          ),
-        );
-        // Clear the message after showing it
-        mapPageController.clearSubmissionResult();
-      }
-      return null;
-    }, [ref, mapPageController]);
-
     return Scaffold(
       body: Stack(
         children: [
@@ -65,7 +48,7 @@ class MapPage extends HookConsumerWidget {
               imageAsset: Assets.images.pin1,
               width: pinSize,
               height: pinSize,
-              riddle: mapPageState.mapPins['pin1']!.riddle,
+              riddle: MapPageController.mapPins['pin1']!.riddle,
               pinId: 'pin1',
               onSubmitAnswer: (pinId, answer) {
                 mapPageController.submitPinAnswer(pinId, answer);
@@ -80,7 +63,7 @@ class MapPage extends HookConsumerWidget {
               imageAsset: Assets.images.pin2,
               width: pinSize,
               height: pinSize,
-              riddle: mapPageState.mapPins['pin2']!.riddle,
+              riddle: MapPageController.mapPins['pin2']!.riddle,
               pinId: 'pin2',
               onSubmitAnswer: (pinId, answer) {
                 mapPageController.submitPinAnswer(pinId, answer);
@@ -95,7 +78,7 @@ class MapPage extends HookConsumerWidget {
               imageAsset: Assets.images.pin3,
               width: pinSize,
               height: pinSize,
-              riddle: mapPageState.mapPins['pin3']!.riddle,
+              riddle: MapPageController.mapPins['pin3']!.riddle,
               pinId: 'pin3',
               onSubmitAnswer: (pinId, answer) {
                 mapPageController.submitPinAnswer(pinId, answer);
@@ -110,7 +93,7 @@ class MapPage extends HookConsumerWidget {
               imageAsset: Assets.images.pin4,
               width: pinSize,
               height: pinSize,
-              riddle: mapPageState.mapPins['pin4']!.riddle,
+              riddle: MapPageController.mapPins['pin4']!.riddle,
               pinId: 'pin4',
               onSubmitAnswer: (pinId, answer) {
                 mapPageController.submitPinAnswer(pinId, answer);
