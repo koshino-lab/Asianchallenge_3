@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:quiz_rally/ui/components/map_page_bottom_bar.dart';
 import 'package:quiz_rally/ui/components/universal_image.dart';
 import 'package:quiz_rally/ui/components/ask_question_pin.dart';
-import '../../ui/components/tutorial_popup.dart';
+import '../../components/tutorial_popup.dart';
 import 'map_page_controller.dart';
 import 'package:quiz_rally/gen/assets.gen.dart';
 

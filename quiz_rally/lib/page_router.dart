@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:quiz_rally/config/error_page/error.dart';
-import 'package:quiz_rally/config/problem_page/problem_page.dart';
+import 'package:quiz_rally/ui/pages/error_page/error.dart';
+import 'package:quiz_rally/ui/pages/problem_page/problem_page.dart';
 import 'package:quiz_rally/config/styles.dart';
-import 'package:quiz_rally/config/success_page/success_page.dart';
-import 'package:quiz_rally/config/top_page/top_page.dart';
-import 'package:quiz_rally/help_page/help_page.dart';
+import 'package:quiz_rally/ui/pages/success_page/success_page.dart';
+import 'package:quiz_rally/ui/pages/top_page/top_page.dart';
+import 'package:quiz_rally/ui/pages/help_page/help_page.dart';
 
 class QuizRally extends StatelessWidget {
   @override

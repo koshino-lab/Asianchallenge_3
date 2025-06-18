@@ -6,8 +6,6 @@ class TopPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: TopPageRoute(),
-    );
+    return Scaffold(body: TopPageRoute());
   }
 }

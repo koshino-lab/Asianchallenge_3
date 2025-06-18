@@ -1,15 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:quiz_rally/models/map_pin.dart';
 
 part 'map_page_controller.freezed.dart';
-
-@freezed
-class MapPin with _$MapPin {
-  const factory MapPin({
-    required String riddle,
-    required String correctAnswer,
-  }) = _MapPin;
-}
 
 @freezed
 class MapPageState with _$MapPageState {

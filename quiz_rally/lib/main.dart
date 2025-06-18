@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:quiz_rally/config/map_page/map_page.dart';
+import 'package:quiz_rally/ui/pages/map_page/map_page.dart';
 import 'package:quiz_rally/config/styles.dart';
 import 'package:quiz_rally/page_router.dart';
 
