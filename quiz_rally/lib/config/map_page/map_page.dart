@@ -3,7 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:quiz_rally/ui/components/map_page_bottom_bar.dart';
 import 'package:quiz_rally/ui/components/universal_image.dart';
-import 'package:quiz_rally/ui/components/tappable_pin.dart';
+import 'package:quiz_rally/ui/components/ask_question_pin.dart';
 import '../../ui/components/tutorial_popup.dart';
 import 'map_page_controller.dart';
 import 'package:quiz_rally/gen/assets.gen.dart';
@@ -70,6 +70,7 @@ class MapPage extends HookConsumerWidget {
               onSubmitAnswer: (pinId, answer) {
                 mapPageController.submitPinAnswer(pinId, answer);
               },
+              isSolved: mapPageState.solvedPinIds.contains('pin1'),
             ),
           ),
           Positioned(
@@ -84,6 +85,7 @@ class MapPage extends HookConsumerWidget {
               onSubmitAnswer: (pinId, answer) {
                 mapPageController.submitPinAnswer(pinId, answer);
               },
+              isSolved: mapPageState.solvedPinIds.contains('pin2'),
             ),
           ),
           Positioned(
@@ -98,6 +100,7 @@ class MapPage extends HookConsumerWidget {
               onSubmitAnswer: (pinId, answer) {
                 mapPageController.submitPinAnswer(pinId, answer);
               },
+              isSolved: mapPageState.solvedPinIds.contains('pin3'),
             ),
           ),
           Positioned(
@@ -112,14 +115,9 @@ class MapPage extends HookConsumerWidget {
               onSubmitAnswer: (pinId, answer) {
                 mapPageController.submitPinAnswer(pinId, answer);
               },
+              isSolved: mapPageState.solvedPinIds.contains('pin4'),
             ),
           ),
-          // ElevatedButton(
-          //   onPressed: () async {
-          //     await Navigator.of(context).pushNamed('/problem');
-          //   },
-          //   child: const Text('問題へすすむ'),
-          // ),
         ],
       ),
       bottomNavigationBar: const MapPageBottomBar(),

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_rally/config/styles.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:quiz_rally/config/map_page/map_page_controller.dart';
 
-class ProblemPage extends StatelessWidget {
+class ProblemPage extends ConsumerWidget {
   const ProblemPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final usedKeyCount = ref.watch(mapPageProvider).usedKeyCount;
     return Scaffold(
       appBar: AppBar(title: Text('鎖の問題')),
       body: Container(
@@ -13,11 +16,13 @@ class ProblemPage extends StatelessWidget {
         width: double.infinity,
         child: ListView(
           children: <Widget>[
-            ElevatedButton(
+            if (usedKeyCount >= 4)
+              ElevatedButton(
                 onPressed: () async {
                   await Navigator.of(context).pushNamed('/success');
                 },
-                child: const Text('成功画面にすすむ'))
+                child: const Text('成功画面にすすむ'),
+              ),
           ],
         ),
       ),

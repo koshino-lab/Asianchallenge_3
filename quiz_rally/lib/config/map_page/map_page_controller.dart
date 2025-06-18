@@ -18,6 +18,8 @@ class MapPageState with _$MapPageState {
     @Default(0) int tutorialPageIndex,
     @Default({}) Map<String, MapPin> mapPins,
     @Default('') String lastSubmissionResult,
+    @Default(<String>{}) Set<String> solvedPinIds,
+    @Default(0) int usedKeyCount,
   }) = _MapPageState;
 }
 
@@ -35,6 +37,8 @@ class MapPageController extends StateNotifier<MapPageState> {
             'pin3': MapPin(riddle: 'これは三番目の謎々です。', correctAnswer: '答え3'),
             'pin4': MapPin(riddle: 'これは四番目の謎々です。', correctAnswer: '答え4'),
           },
+          solvedPinIds: {},
+          usedKeyCount: 0,
         ),
       );
 
@@ -43,7 +47,12 @@ class MapPageController extends StateNotifier<MapPageState> {
   }
 
   void resetTutorial() {
-    state = const MapPageState(isTutorialShown: false, tutorialPageIndex: 0);
+    state = const MapPageState(
+      isTutorialShown: false,
+      tutorialPageIndex: 0,
+      solvedPinIds: {},
+      usedKeyCount: 0,
+    );
   }
 
   void setTutorialPageIndex(int index) {
@@ -54,7 +63,14 @@ class MapPageController extends StateNotifier<MapPageState> {
     final MapPin? pin = state.mapPins[pinId];
     if (pin != null) {
       if (answer.toLowerCase() == pin.correctAnswer.toLowerCase()) {
-        state = state.copyWith(lastSubmissionResult: '正解！');
+        if (!state.solvedPinIds.contains(pinId)) {
+          state = state.copyWith(
+            lastSubmissionResult: '正解！',
+            solvedPinIds: {...state.solvedPinIds, pinId},
+          );
+        } else {
+          state = state.copyWith(lastSubmissionResult: '正解！');
+        }
         print('正解！');
       } else {
         state = state.copyWith(lastSubmissionResult: '不正解！');
@@ -68,5 +84,17 @@ class MapPageController extends StateNotifier<MapPageState> {
 
   void clearSubmissionResult() {
     state = state.copyWith(lastSubmissionResult: '');
+  }
+
+  int get solvedPinCount => state.solvedPinIds.length;
+
+  void useAllKeys() {
+    final usedNow = state.solvedPinIds.length;
+    if (usedNow > 0) {
+      state = state.copyWith(
+        solvedPinIds: {},
+        usedKeyCount: state.usedKeyCount + usedNow,
+      );
+    }
   }
 }

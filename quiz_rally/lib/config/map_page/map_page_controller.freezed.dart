@@ -167,6 +167,8 @@ mixin _$MapPageState {
   int get tutorialPageIndex => throw _privateConstructorUsedError;
   Map<String, MapPin> get mapPins => throw _privateConstructorUsedError;
   String get lastSubmissionResult => throw _privateConstructorUsedError;
+  Set<String> get solvedPinIds => throw _privateConstructorUsedError;
+  int get usedKeyCount => throw _privateConstructorUsedError;
 
   /// Create a copy of MapPageState
   /// with the given fields replaced by the non-null parameter values.
@@ -187,6 +189,8 @@ abstract class $MapPageStateCopyWith<$Res> {
     int tutorialPageIndex,
     Map<String, MapPin> mapPins,
     String lastSubmissionResult,
+    Set<String> solvedPinIds,
+    int usedKeyCount,
   });
 }
 
@@ -209,6 +213,8 @@ class _$MapPageStateCopyWithImpl<$Res, $Val extends MapPageState>
     Object? tutorialPageIndex = null,
     Object? mapPins = null,
     Object? lastSubmissionResult = null,
+    Object? solvedPinIds = null,
+    Object? usedKeyCount = null,
   }) {
     return _then(
       _value.copyWith(
@@ -228,6 +234,14 @@ class _$MapPageStateCopyWithImpl<$Res, $Val extends MapPageState>
                 ? _value.lastSubmissionResult
                 : lastSubmissionResult // ignore: cast_nullable_to_non_nullable
                       as String,
+            solvedPinIds: null == solvedPinIds
+                ? _value.solvedPinIds
+                : solvedPinIds // ignore: cast_nullable_to_non_nullable
+                      as Set<String>,
+            usedKeyCount: null == usedKeyCount
+                ? _value.usedKeyCount
+                : usedKeyCount // ignore: cast_nullable_to_non_nullable
+                      as int,
           )
           as $Val,
     );
@@ -248,6 +262,8 @@ abstract class _$$MapPageStateImplCopyWith<$Res>
     int tutorialPageIndex,
     Map<String, MapPin> mapPins,
     String lastSubmissionResult,
+    Set<String> solvedPinIds,
+    int usedKeyCount,
   });
 }
 
@@ -269,6 +285,8 @@ class __$$MapPageStateImplCopyWithImpl<$Res>
     Object? tutorialPageIndex = null,
     Object? mapPins = null,
     Object? lastSubmissionResult = null,
+    Object? solvedPinIds = null,
+    Object? usedKeyCount = null,
   }) {
     return _then(
       _$MapPageStateImpl(
@@ -288,6 +306,14 @@ class __$$MapPageStateImplCopyWithImpl<$Res>
             ? _value.lastSubmissionResult
             : lastSubmissionResult // ignore: cast_nullable_to_non_nullable
                   as String,
+        solvedPinIds: null == solvedPinIds
+            ? _value._solvedPinIds
+            : solvedPinIds // ignore: cast_nullable_to_non_nullable
+                  as Set<String>,
+        usedKeyCount: null == usedKeyCount
+            ? _value.usedKeyCount
+            : usedKeyCount // ignore: cast_nullable_to_non_nullable
+                  as int,
       ),
     );
   }
@@ -301,7 +327,10 @@ class _$MapPageStateImpl implements _MapPageState {
     this.tutorialPageIndex = 0,
     final Map<String, MapPin> mapPins = const {},
     this.lastSubmissionResult = '',
-  }) : _mapPins = mapPins;
+    final Set<String> solvedPinIds = const <String>{},
+    this.usedKeyCount = 0,
+  }) : _mapPins = mapPins,
+       _solvedPinIds = solvedPinIds;
 
   @override
   @JsonKey()
@@ -321,10 +350,22 @@ class _$MapPageStateImpl implements _MapPageState {
   @override
   @JsonKey()
   final String lastSubmissionResult;
+  final Set<String> _solvedPinIds;
+  @override
+  @JsonKey()
+  Set<String> get solvedPinIds {
+    if (_solvedPinIds is EqualUnmodifiableSetView) return _solvedPinIds;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableSetView(_solvedPinIds);
+  }
+
+  @override
+  @JsonKey()
+  final int usedKeyCount;
 
   @override
   String toString() {
-    return 'MapPageState(isTutorialShown: $isTutorialShown, tutorialPageIndex: $tutorialPageIndex, mapPins: $mapPins, lastSubmissionResult: $lastSubmissionResult)';
+    return 'MapPageState(isTutorialShown: $isTutorialShown, tutorialPageIndex: $tutorialPageIndex, mapPins: $mapPins, lastSubmissionResult: $lastSubmissionResult, solvedPinIds: $solvedPinIds, usedKeyCount: $usedKeyCount)';
   }
 
   @override
@@ -338,7 +379,13 @@ class _$MapPageStateImpl implements _MapPageState {
                 other.tutorialPageIndex == tutorialPageIndex) &&
             const DeepCollectionEquality().equals(other._mapPins, _mapPins) &&
             (identical(other.lastSubmissionResult, lastSubmissionResult) ||
-                other.lastSubmissionResult == lastSubmissionResult));
+                other.lastSubmissionResult == lastSubmissionResult) &&
+            const DeepCollectionEquality().equals(
+              other._solvedPinIds,
+              _solvedPinIds,
+            ) &&
+            (identical(other.usedKeyCount, usedKeyCount) ||
+                other.usedKeyCount == usedKeyCount));
   }
 
   @override
@@ -348,6 +395,8 @@ class _$MapPageStateImpl implements _MapPageState {
     tutorialPageIndex,
     const DeepCollectionEquality().hash(_mapPins),
     lastSubmissionResult,
+    const DeepCollectionEquality().hash(_solvedPinIds),
+    usedKeyCount,
   );
 
   /// Create a copy of MapPageState
@@ -365,6 +414,8 @@ abstract class _MapPageState implements MapPageState {
     final int tutorialPageIndex,
     final Map<String, MapPin> mapPins,
     final String lastSubmissionResult,
+    final Set<String> solvedPinIds,
+    final int usedKeyCount,
   }) = _$MapPageStateImpl;
 
   @override
@@ -375,6 +426,10 @@ abstract class _MapPageState implements MapPageState {
   Map<String, MapPin> get mapPins;
   @override
   String get lastSubmissionResult;
+  @override
+  Set<String> get solvedPinIds;
+  @override
+  int get usedKeyCount;
 
   /// Create a copy of MapPageState
   /// with the given fields replaced by the non-null parameter values.
