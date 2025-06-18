@@ -11,6 +11,8 @@ class ProblemPage extends ConsumerWidget {
     final isLastQuestionAvailable = ref
         .watch(mapPageProvider)
         .isLastQuestionAvailable;
+    final isGameCleared = ref.watch(mapPageProvider).isGameCleared;
+    final controller = TextEditingController();
     return Scaffold(
       appBar: AppBar(title: Text('鎖の問題')),
       body: Container(
@@ -18,12 +20,52 @@ class ProblemPage extends ConsumerWidget {
         width: double.infinity,
         child: ListView(
           children: <Widget>[
-            if (isLastQuestionAvailable)
-              ElevatedButton(
-                onPressed: () async {
-                  await Navigator.of(context).pushNamed('/success');
-                },
-                child: const Text('成功画面にすすむ'),
+            if (isLastQuestionAvailable && !isGameCleared) ...[
+              const SizedBox(height: 32),
+              const Text(
+                '最後の問題: "アジアのチャレンジ"の合言葉は？',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: TextField(
+                  controller: controller,
+                  decoration: const InputDecoration(
+                    labelText: '回答を入力',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    final answer = controller.text.trim();
+                    final isCorrect = ref
+                        .read(mapPageProvider.notifier)
+                        .checkLastAnswer(answer);
+                    if (isCorrect) {
+                      await Navigator.of(
+                        context,
+                      ).pushReplacementNamed('/success');
+                    } else {
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(const SnackBar(content: Text('不正解です。')));
+                    }
+                  },
+                  child: const Text('送信'),
+                ),
+              ),
+            ],
+            if (isGameCleared)
+              const Center(
+                child: Text(
+                  'ゲームクリア済みです！',
+                  style: TextStyle(fontSize: 18, color: Colors.green),
+                ),
               ),
           ],
         ),

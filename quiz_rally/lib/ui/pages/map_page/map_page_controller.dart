@@ -29,10 +29,10 @@ class MapPageController extends StateNotifier<MapPageState> {
     : super(
         const MapPageState(
           mapPins: {
-            'pin1': MapPin(riddle: 'これは最初の謎々です。', correctAnswer: '答え1'),
-            'pin2': MapPin(riddle: 'これは二番目の謎々です。', correctAnswer: '答え2'),
-            'pin3': MapPin(riddle: 'これは三番目の謎々です。', correctAnswer: '答え3'),
-            'pin4': MapPin(riddle: 'これは四番目の謎々です。', correctAnswer: '答え4'),
+            'pin1': MapPin(riddle: 'これは最初の謎々です。', correctAnswer: '1'),
+            'pin2': MapPin(riddle: 'これは二番目の謎々です。', correctAnswer: '2'),
+            'pin3': MapPin(riddle: 'これは三番目の謎々です。', correctAnswer: '3'),
+            'pin4': MapPin(riddle: 'これは四番目の謎々です。', correctAnswer: '4'),
           },
         ),
       );
@@ -91,6 +91,17 @@ class MapPageController extends StateNotifier<MapPageState> {
     final usedKeyCount = state.usedKeyIds.length;
     if (usedKeyCount >= 4) {
       state = state.copyWith(isLastQuestionAvailable: true);
+    }
+  }
+
+  /// 最後の問題の回答を判定し、正解ならisGameClearedをtrueにする
+  bool checkLastAnswer(String answer) {
+    // 正解は「アジア」など、必要に応じて変更
+    if (answer.trim() == 'アジア') {
+      state = state.copyWith(isGameCleared: true);
+      return true;
+    } else {
+      return false;
     }
   }
 }
