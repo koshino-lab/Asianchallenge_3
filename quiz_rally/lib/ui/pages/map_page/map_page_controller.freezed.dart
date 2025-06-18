@@ -17,9 +17,9 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$MapPageState {
-  bool get isTutorialShown => throw _privateConstructorUsedError;
-  int get tutorialPageIndex => throw _privateConstructorUsedError;
   Map<String, MapPin> get mapPins => throw _privateConstructorUsedError;
+  int get tutorialPageIndex => throw _privateConstructorUsedError;
+  bool get isFirstOpen => throw _privateConstructorUsedError;
   String get lastSubmissionResult => throw _privateConstructorUsedError;
   Set<String> get solvedPinIds => throw _privateConstructorUsedError;
   List<String> get usedKeyIds => throw _privateConstructorUsedError;
@@ -40,9 +40,9 @@ abstract class $MapPageStateCopyWith<$Res> {
   ) = _$MapPageStateCopyWithImpl<$Res, MapPageState>;
   @useResult
   $Res call({
-    bool isTutorialShown,
-    int tutorialPageIndex,
     Map<String, MapPin> mapPins,
+    int tutorialPageIndex,
+    bool isFirstOpen,
     String lastSubmissionResult,
     Set<String> solvedPinIds,
     List<String> usedKeyIds,
@@ -65,9 +65,9 @@ class _$MapPageStateCopyWithImpl<$Res, $Val extends MapPageState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? isTutorialShown = null,
-    Object? tutorialPageIndex = null,
     Object? mapPins = null,
+    Object? tutorialPageIndex = null,
+    Object? isFirstOpen = null,
     Object? lastSubmissionResult = null,
     Object? solvedPinIds = null,
     Object? usedKeyIds = null,
@@ -75,18 +75,18 @@ class _$MapPageStateCopyWithImpl<$Res, $Val extends MapPageState>
   }) {
     return _then(
       _value.copyWith(
-            isTutorialShown: null == isTutorialShown
-                ? _value.isTutorialShown
-                : isTutorialShown // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            tutorialPageIndex: null == tutorialPageIndex
-                ? _value.tutorialPageIndex
-                : tutorialPageIndex // ignore: cast_nullable_to_non_nullable
-                      as int,
             mapPins: null == mapPins
                 ? _value.mapPins
                 : mapPins // ignore: cast_nullable_to_non_nullable
                       as Map<String, MapPin>,
+            tutorialPageIndex: null == tutorialPageIndex
+                ? _value.tutorialPageIndex
+                : tutorialPageIndex // ignore: cast_nullable_to_non_nullable
+                      as int,
+            isFirstOpen: null == isFirstOpen
+                ? _value.isFirstOpen
+                : isFirstOpen // ignore: cast_nullable_to_non_nullable
+                      as bool,
             lastSubmissionResult: null == lastSubmissionResult
                 ? _value.lastSubmissionResult
                 : lastSubmissionResult // ignore: cast_nullable_to_non_nullable
@@ -119,9 +119,9 @@ abstract class _$$MapPageStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    bool isTutorialShown,
-    int tutorialPageIndex,
     Map<String, MapPin> mapPins,
+    int tutorialPageIndex,
+    bool isFirstOpen,
     String lastSubmissionResult,
     Set<String> solvedPinIds,
     List<String> usedKeyIds,
@@ -143,9 +143,9 @@ class __$$MapPageStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? isTutorialShown = null,
-    Object? tutorialPageIndex = null,
     Object? mapPins = null,
+    Object? tutorialPageIndex = null,
+    Object? isFirstOpen = null,
     Object? lastSubmissionResult = null,
     Object? solvedPinIds = null,
     Object? usedKeyIds = null,
@@ -153,18 +153,18 @@ class __$$MapPageStateImplCopyWithImpl<$Res>
   }) {
     return _then(
       _$MapPageStateImpl(
-        isTutorialShown: null == isTutorialShown
-            ? _value.isTutorialShown
-            : isTutorialShown // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        tutorialPageIndex: null == tutorialPageIndex
-            ? _value.tutorialPageIndex
-            : tutorialPageIndex // ignore: cast_nullable_to_non_nullable
-                  as int,
         mapPins: null == mapPins
             ? _value._mapPins
             : mapPins // ignore: cast_nullable_to_non_nullable
                   as Map<String, MapPin>,
+        tutorialPageIndex: null == tutorialPageIndex
+            ? _value.tutorialPageIndex
+            : tutorialPageIndex // ignore: cast_nullable_to_non_nullable
+                  as int,
+        isFirstOpen: null == isFirstOpen
+            ? _value.isFirstOpen
+            : isFirstOpen // ignore: cast_nullable_to_non_nullable
+                  as bool,
         lastSubmissionResult: null == lastSubmissionResult
             ? _value.lastSubmissionResult
             : lastSubmissionResult // ignore: cast_nullable_to_non_nullable
@@ -190,9 +190,9 @@ class __$$MapPageStateImplCopyWithImpl<$Res>
 
 class _$MapPageStateImpl implements _MapPageState {
   const _$MapPageStateImpl({
-    this.isTutorialShown = false,
-    this.tutorialPageIndex = 0,
     final Map<String, MapPin> mapPins = const {},
+    this.tutorialPageIndex = 0,
+    this.isFirstOpen = true,
     this.lastSubmissionResult = '',
     final Set<String> solvedPinIds = const <String>{},
     final List<String> usedKeyIds = const <String>[],
@@ -201,12 +201,6 @@ class _$MapPageStateImpl implements _MapPageState {
        _solvedPinIds = solvedPinIds,
        _usedKeyIds = usedKeyIds;
 
-  @override
-  @JsonKey()
-  final bool isTutorialShown;
-  @override
-  @JsonKey()
-  final int tutorialPageIndex;
   final Map<String, MapPin> _mapPins;
   @override
   @JsonKey()
@@ -216,6 +210,12 @@ class _$MapPageStateImpl implements _MapPageState {
     return EqualUnmodifiableMapView(_mapPins);
   }
 
+  @override
+  @JsonKey()
+  final int tutorialPageIndex;
+  @override
+  @JsonKey()
+  final bool isFirstOpen;
   @override
   @JsonKey()
   final String lastSubmissionResult;
@@ -243,7 +243,7 @@ class _$MapPageStateImpl implements _MapPageState {
 
   @override
   String toString() {
-    return 'MapPageState(isTutorialShown: $isTutorialShown, tutorialPageIndex: $tutorialPageIndex, mapPins: $mapPins, lastSubmissionResult: $lastSubmissionResult, solvedPinIds: $solvedPinIds, usedKeyIds: $usedKeyIds, ownKeyCount: $ownKeyCount)';
+    return 'MapPageState(mapPins: $mapPins, tutorialPageIndex: $tutorialPageIndex, isFirstOpen: $isFirstOpen, lastSubmissionResult: $lastSubmissionResult, solvedPinIds: $solvedPinIds, usedKeyIds: $usedKeyIds, ownKeyCount: $ownKeyCount)';
   }
 
   @override
@@ -251,11 +251,11 @@ class _$MapPageStateImpl implements _MapPageState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$MapPageStateImpl &&
-            (identical(other.isTutorialShown, isTutorialShown) ||
-                other.isTutorialShown == isTutorialShown) &&
+            const DeepCollectionEquality().equals(other._mapPins, _mapPins) &&
             (identical(other.tutorialPageIndex, tutorialPageIndex) ||
                 other.tutorialPageIndex == tutorialPageIndex) &&
-            const DeepCollectionEquality().equals(other._mapPins, _mapPins) &&
+            (identical(other.isFirstOpen, isFirstOpen) ||
+                other.isFirstOpen == isFirstOpen) &&
             (identical(other.lastSubmissionResult, lastSubmissionResult) ||
                 other.lastSubmissionResult == lastSubmissionResult) &&
             const DeepCollectionEquality().equals(
@@ -273,9 +273,9 @@ class _$MapPageStateImpl implements _MapPageState {
   @override
   int get hashCode => Object.hash(
     runtimeType,
-    isTutorialShown,
-    tutorialPageIndex,
     const DeepCollectionEquality().hash(_mapPins),
+    tutorialPageIndex,
+    isFirstOpen,
     lastSubmissionResult,
     const DeepCollectionEquality().hash(_solvedPinIds),
     const DeepCollectionEquality().hash(_usedKeyIds),
@@ -293,9 +293,9 @@ class _$MapPageStateImpl implements _MapPageState {
 
 abstract class _MapPageState implements MapPageState {
   const factory _MapPageState({
-    final bool isTutorialShown,
-    final int tutorialPageIndex,
     final Map<String, MapPin> mapPins,
+    final int tutorialPageIndex,
+    final bool isFirstOpen,
     final String lastSubmissionResult,
     final Set<String> solvedPinIds,
     final List<String> usedKeyIds,
@@ -303,11 +303,11 @@ abstract class _MapPageState implements MapPageState {
   }) = _$MapPageStateImpl;
 
   @override
-  bool get isTutorialShown;
+  Map<String, MapPin> get mapPins;
   @override
   int get tutorialPageIndex;
   @override
-  Map<String, MapPin> get mapPins;
+  bool get isFirstOpen;
   @override
   String get lastSubmissionResult;
   @override

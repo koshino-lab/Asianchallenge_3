@@ -16,14 +16,14 @@ class MapPage extends HookConsumerWidget {
     final pinSize = 80.0;
 
     useEffect(() {
-      if (!ref.watch(mapPageProvider).isTutorialShown) {
+      if (ref.watch(mapPageProvider).isFirstOpen) {
         Future.microtask(() async {
           await showDialog(
             context: context,
             barrierDismissible: false,
             builder: (_) => const TutorialPopup(),
           );
-          mapPageController.toggleTutorial();
+          mapPageController.setFirstOpenFalse();
         });
       }
       return null;

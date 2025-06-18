@@ -7,9 +7,10 @@ part 'map_page_controller.freezed.dart';
 @freezed
 class MapPageState with _$MapPageState {
   const factory MapPageState({
-    @Default(false) bool isTutorialShown,
-    @Default(0) int tutorialPageIndex,
     @Default({}) Map<String, MapPin> mapPins,
+    @Default(0) int tutorialPageIndex,
+
+    @Default(true) bool isFirstOpen,
     @Default('') String lastSubmissionResult,
     @Default(<String>{}) Set<String> solvedPinIds,
     @Default(<String>[]) List<String> usedKeyIds,
@@ -36,13 +37,12 @@ class MapPageController extends StateNotifier<MapPageState> {
         ),
       );
 
-  void toggleTutorial() {
-    state = state.copyWith(isTutorialShown: !state.isTutorialShown);
+  void setFirstOpenFalse() {
+    state = state.copyWith(isFirstOpen: false);
   }
 
   void resetTutorial() {
     state = const MapPageState(
-      isTutorialShown: false,
       tutorialPageIndex: 0,
       solvedPinIds: {},
       usedKeyIds: [],
