@@ -43,6 +43,17 @@ class $AssetsImagesGen {
     'assets/images/letter_dialog_rectangle_with_wanted.png',
   );
 
+  /// File path: assets/images/letter_dialog_rectangle_with_wanted_and_goldrect.png
+  AssetGenImage get letterDialogRectangleWithWantedAndGoldrect =>
+      const AssetGenImage(
+        'assets/images/letter_dialog_rectangle_with_wanted_and_goldrect.png',
+      );
+
+  /// File path: assets/images/letter_dialog_rectangle_with_wanted_gold.png
+  AssetGenImage get letterDialogRectangleWithWantedGold => const AssetGenImage(
+    'assets/images/letter_dialog_rectangle_with_wanted_gold.png',
+  );
+
   /// File path: assets/images/letter_dialog_square.png
   AssetGenImage get letterDialogSquare =>
       const AssetGenImage('assets/images/letter_dialog_square.png');
@@ -53,6 +64,18 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/map.png
   AssetGenImage get map => const AssetGenImage('assets/images/map.png');
+
+  /// File path: assets/images/padlock_bottom.png
+  AssetGenImage get padlockBottom =>
+      const AssetGenImage('assets/images/padlock_bottom.png');
+
+  /// File path: assets/images/padlock_middle.png
+  AssetGenImage get padlockMiddle =>
+      const AssetGenImage('assets/images/padlock_middle.png');
+
+  /// File path: assets/images/padlock_second_top.png
+  AssetGenImage get padlockSecondTop =>
+      const AssetGenImage('assets/images/padlock_second_top.png');
 
   /// File path: assets/images/pin1.svg
   String get pin1 => 'assets/images/pin1.svg';
@@ -73,9 +96,21 @@ class $AssetsImagesGen {
   AssetGenImage get problemPageFilter =>
       const AssetGenImage('assets/images/problem_page_filter.png');
 
+  /// File path: assets/images/problem_page_filter_with_brown.png
+  AssetGenImage get problemPageFilterWithBrown =>
+      const AssetGenImage('assets/images/problem_page_filter_with_brown.png');
+
   /// File path: assets/images/rectangle_back.png
   AssetGenImage get rectangleBack =>
       const AssetGenImage('assets/images/rectangle_back.png');
+
+  /// File path: assets/images/red_decorated_button_submit.png
+  AssetGenImage get redDecoratedButtonSubmit =>
+      const AssetGenImage('assets/images/red_decorated_button_submit.png');
+
+  /// File path: assets/images/red_decorated_button_submit_use.png
+  AssetGenImage get redDecoratedButtonSubmitUse =>
+      const AssetGenImage('assets/images/red_decorated_button_submit_use.png');
 
   /// File path: assets/images/right_trapezoid_with_end.png
   AssetGenImage get rightTrapezoidWithEnd =>
@@ -108,16 +143,24 @@ class $AssetsImagesGen {
     keyWithShadow,
     letterDialogRectangle,
     letterDialogRectangleWithWanted,
+    letterDialogRectangleWithWantedAndGoldrect,
+    letterDialogRectangleWithWantedGold,
     letterDialogSquare,
     letterDialogSquareWithQuiz,
     map,
+    padlockBottom,
+    padlockMiddle,
+    padlockSecondTop,
     pin1,
     pin2,
     pin3,
     pin4,
     pin5,
     problemPageFilter,
+    problemPageFilterWithBrown,
     rectangleBack,
+    redDecoratedButtonSubmit,
+    redDecoratedButtonSubmitUse,
     rightTrapezoidWithEnd,
     rightTrapezoidWithNext,
     rightTrapezoidWithStart,
