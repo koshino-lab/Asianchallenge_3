@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:quiz_rally/config/styles.dart';
+import 'package:quiz_rally/ui/components/theme_text.dart';
+import 'package:quiz_rally/ui/components/universal_image.dart';
 import 'package:quiz_rally/ui/pages/map_page/map_page_controller.dart';
 import 'package:quiz_rally/gen/assets.gen.dart';
-import 'package:quiz_rally/ui/components/universal_image.dart';
 
 class TutorialPopup extends ConsumerWidget {
   const TutorialPopup({super.key});
@@ -18,7 +20,7 @@ class TutorialPopup extends ConsumerWidget {
     ),
     (
       image: Assets.images.story3.image(),
-      description: '『おれの財宝か？欲しけりゃくれてやる・・・。探せ！高専の全てをそこに置いてきた』\n世はまさに大津幡時代！！',
+      description: '『おれの財宝か？欲しけりゃくれてやる・・・。\n探せ！高専の全てをそこに置いてきた』\n\n世はまさに大津幡時代！！',
     ),
   ];
 
@@ -27,13 +29,22 @@ class TutorialPopup extends ConsumerWidget {
     final pageIndex = ref.watch(mapPageProvider).tutorialPageIndex;
     final mapPageController = ref.read(mapPageProvider.notifier);
 
-    return AlertDialog(
-      contentPadding: const EdgeInsets.all(0),
-      content: SizedBox(
-        width: 320,
-        height: 420,
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      insetPadding: EdgeInsets.zero,
+      child: Container(
+        width: 336,
+        height: 540,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(
+              Assets.images.letterDialogRectangleWithWanted.path,
+            ),
+            fit: BoxFit.fitHeight,
+          ),
+        ),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           child: Column(
             children: [
               Expanded(
@@ -48,48 +59,70 @@ class TutorialPopup extends ConsumerWidget {
                       FadeTransition(opacity: animation, child: child),
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 8),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(
-                  _pageData.length,
-                  (index) => Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 4),
-                    width: 8,
-                    height: 8,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: pageIndex == index ? Colors.blue : Colors.grey,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   if (pageIndex > 0)
-                    TextButton(
-                      onPressed: () =>
-                          mapPageController.setTutorialPageIndex(pageIndex - 1),
-                      child: const Text('前へ'),
+                    Container(
+                      padding: const EdgeInsets.only(left: 70),
+                      width: 85,
+                      child: InkWell(
+                        onTap: () => mapPageController.setTutorialPageIndex(
+                          pageIndex - 1,
+                        ),
+                        child: UniversalImage(
+                          Assets.images.rectangleBack.path,
+                          height: 25,
+                        ),
+                      ),
                     )
                   else
-                    const SizedBox(width: 64),
+                    const SizedBox(width: 85),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(
+                        _pageData.length,
+                        (index) => Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 4),
+                          width: 8,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: pageIndex == index
+                                ? Styles.primaryColor
+                                : Colors.grey,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                   if (pageIndex < _pageData.length - 1)
-                    TextButton(
-                      onPressed: () =>
+                    InkWell(
+                      onTap: () =>
                           mapPageController.setTutorialPageIndex(pageIndex + 1),
-                      child: const Text('次へ'),
+                      child: UniversalImage(
+                        Assets.images.rightTrapezoidWithNext.path,
+                        height: 25,
+                      ),
                     )
                   else
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('はじめる'),
+                    InkWell(
+                      onTap: () => Navigator.of(context).pop(),
+                      child: UniversalImage(
+                        Assets.images.rightTrapezoidWithStart.path,
+                        height: 25,
+                      ),
                     ),
                 ],
               ),
               const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [],
+              ),
             ],
           ),
         ),
@@ -101,6 +134,7 @@ class TutorialPopup extends ConsumerWidget {
 class _TutorialPage extends StatelessWidget {
   final Widget image;
   final String description;
+
   const _TutorialPage({
     Key? key,
     required this.image,
@@ -110,17 +144,12 @@ class _TutorialPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        //child: UniversalImage(Assets.images.icon),
-        // Image.asset(image_path, width: 160, height: 160, fit: BoxFit.cover),
-        SizedBox(width: 160, height: 160, child: image),
+        const SizedBox(height: 120),
+        SizedBox(width: 180, child: image),
         const SizedBox(height: 24),
-        Text(
-          description,
-          style: const TextStyle(fontSize: 16),
-          textAlign: TextAlign.center,
-        ),
+        SizedBox(width: 245, child: DarkBrownTexts(description, 20)),
       ],
     );
   }

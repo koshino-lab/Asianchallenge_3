@@ -40,14 +40,9 @@ class PositionedQuestionPin extends ConsumerWidget {
       left: left,
       bottom: bottom,
       child: GestureDetector(
-        onTap: () {
+        onTap: () async {
           if (isSolved) {
-            showDialog(
-              context: context,
-              builder: (BuildContext dialogContext) {
-                return const SolvedDialog();
-              },
-            );
+            await SolvedDialog.show(context);
           } else {
             if (pinId == 'pin1') {
               XFile? imageFile;
