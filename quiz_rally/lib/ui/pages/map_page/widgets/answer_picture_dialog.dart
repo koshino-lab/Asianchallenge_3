@@ -4,12 +4,12 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'dart:typed_data';
 
-class AnswerDialog extends StatelessWidget {
+class AnswerPictureDialog extends StatelessWidget {
   final String riddle;
   final void Function(String answer) onSubmit;
   final VoidCallback? onCameraPressed;
   final XFile? imageFile;
-  const AnswerDialog({
+  const AnswerPictureDialog({
     super.key,
     required this.riddle,
     required this.onSubmit,
@@ -30,11 +30,10 @@ class AnswerDialog extends StatelessWidget {
             controller: _answerController,
             decoration: const InputDecoration(hintText: '解答を入力してください'),
           ),
-          if (onCameraPressed != null)
-            IconButton(
-              icon: const Icon(Icons.camera_alt),
-              onPressed: onCameraPressed,
-            ),
+          IconButton(
+            icon: const Icon(Icons.camera_alt),
+            onPressed: onCameraPressed,
+          ),
           if (imageFile != null)
             Padding(
               padding: const EdgeInsets.only(top: 8.0),

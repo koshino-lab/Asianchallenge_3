@@ -3,7 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:quiz_rally/ui/pages/map_page/map_page_controller.dart';
 import 'package:quiz_rally/gen/assets.gen.dart';
 import 'package:quiz_rally/ui/components/universal_image.dart';
-import 'package:quiz_rally/ui/pages/map_page/widgets/answer_dialog.dart';
+import 'package:quiz_rally/ui/pages/map_page/widgets/answer_text_dialog.dart';
+import 'package:quiz_rally/ui/pages/map_page/widgets/answer_picture_dialog.dart';
 import 'package:quiz_rally/ui/pages/map_page/widgets/solveDialog.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -55,7 +56,7 @@ class PositionedQuestionPin extends ConsumerWidget {
                 builder: (BuildContext dialogContext) {
                   return StatefulBuilder(
                     builder: (context, setState) {
-                      return AnswerDialog(
+                      return AnswerPictureDialog(
                         riddle: riddle,
                         onSubmit: (answer) {
                           mapPageController.submitPinAnswer(pinId, answer);
@@ -84,7 +85,7 @@ class PositionedQuestionPin extends ConsumerWidget {
               showDialog(
                 context: context,
                 builder: (BuildContext dialogContext) {
-                  return AnswerDialog(
+                  return AnswerTextDialog(
                     riddle: riddle,
                     onSubmit: (answer) {
                       mapPageController.submitPinAnswer(pinId, answer);
