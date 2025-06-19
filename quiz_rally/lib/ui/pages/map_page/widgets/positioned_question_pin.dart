@@ -5,6 +5,7 @@ import 'package:quiz_rally/gen/assets.gen.dart';
 import 'package:quiz_rally/ui/components/universal_image.dart';
 import 'package:quiz_rally/ui/pages/map_page/widgets/answer_dialog.dart';
 import 'package:quiz_rally/ui/pages/map_page/widgets/solveDialog.dart';
+import 'package:image_picker/image_picker.dart';
 
 class PositionedQuestionPin extends ConsumerWidget {
   final double? top;
@@ -47,17 +48,51 @@ class PositionedQuestionPin extends ConsumerWidget {
               },
             );
           } else {
-            showDialog(
-              context: context,
-              builder: (BuildContext dialogContext) {
-                return AnswerDialog(
-                  riddle: riddle,
-                  onSubmit: (answer) {
-                    mapPageController.submitPinAnswer(pinId, answer);
-                  },
-                );
-              },
-            );
+            if (pinId == 'pin1') {
+              XFile? imageFile;
+              showDialog(
+                context: context,
+                builder: (BuildContext dialogContext) {
+                  return StatefulBuilder(
+                    builder: (context, setState) {
+                      return AnswerDialog(
+                        riddle: riddle,
+                        onSubmit: (answer) {
+                          mapPageController.submitPinAnswer(pinId, answer);
+                        },
+                        onCameraPressed: () async {
+                          final picker = ImagePicker();
+                          final pickedFile = await picker.pickImage(
+                            source: ImageSource.camera,
+                          );
+                          if (pickedFile != null) {
+                            setState(() {
+                              imageFile = pickedFile;
+                            });
+                            ScaffoldMessenger.of(dialogContext).showSnackBar(
+                              const SnackBar(content: Text('写真を撮影しました')),
+                            );
+                          }
+                        },
+                        imageFile: imageFile,
+                      );
+                    },
+                  );
+                },
+              );
+            } else {
+              showDialog(
+                context: context,
+                builder: (BuildContext dialogContext) {
+                  return AnswerDialog(
+                    riddle: riddle,
+                    onSubmit: (answer) {
+                      mapPageController.submitPinAnswer(pinId, answer);
+                    },
+                  );
+                },
+              );
+            }
           }
         },
         child: UniversalImage(imageAsset, width: pinSize, height: pinSize),
