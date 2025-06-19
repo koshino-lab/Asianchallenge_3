@@ -2,5 +2,15 @@
 
 
 ## flutter_web
-ビルド
-https://dev.classmethod.jp/articles/flutter-getting-start-web-page/
+ビルドコマンド:
+- chromeの場合
+```
+flutter run -d chrome
+```
+- ローカルサーバを立ててアクセスする場合
+以下のコマンドを実行し、http://0.0.0.0:8000にアクセス（スマホなどで試す場合は0.0.0.0にmacのIPアドレスを入れる）
+```
+flutter run -d web-server --web-port=
+8000 --web-hostname=0.0.0.0
+```
+
