@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 
-class AnswerDialog extends StatelessWidget {
+class AnswerTextDialog extends StatelessWidget {
   final String riddle;
   final void Function(String answer) onSubmit;
-  const AnswerDialog({super.key, required this.riddle, required this.onSubmit});
+  const AnswerTextDialog({
+    super.key,
+    required this.riddle,
+    required this.onSubmit,
+  });
 
   @override
   Widget build(BuildContext context) {
