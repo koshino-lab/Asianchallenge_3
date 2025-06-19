@@ -15,6 +15,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/Icon.svg
   String get icon => 'assets/images/Icon.svg';
 
+  /// File path: assets/images/close_red_button.png
+  AssetGenImage get closeRedButton =>
+      const AssetGenImage('assets/images/close_red_button.png');
+
   /// File path: assets/images/container.png
   AssetGenImage get container =>
       const AssetGenImage('assets/images/container.png');
@@ -97,6 +101,7 @@ class $AssetsImagesGen {
   /// List of all assets
   List<dynamic> get values => [
     icon,
+    closeRedButton,
     container,
     designdRedButtom,
     key,
