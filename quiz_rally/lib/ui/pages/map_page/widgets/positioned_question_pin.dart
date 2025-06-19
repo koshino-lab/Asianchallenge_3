@@ -79,10 +79,14 @@ class PositionedQuestionPin extends ConsumerWidget {
             } else {
               AnswerTextDialog.show(
                 context: context,
+                ref: ref,
                 riddle: riddle,
                 pinId: pinId,
                 onSubmit: (answer) {
                   mapPageController.submitPinAnswer(pinId, answer);
+                },
+                isCorrectAns: (answer) {
+                  return mapPageController.isCorrectAnswer(pinId, answer);
                 },
               );
             }

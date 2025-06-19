@@ -72,10 +72,20 @@ class MapPageController extends StateNotifier<MapPageState> {
     // チュートリアルインデックスはcookie保存対象外
   }
 
+  bool isCorrectAnswer(String pinId, String answer) {
+    final MapPin? pin = mapPins[pinId];
+    if (pin == null ||
+        answer.toLowerCase() != pin.correctAnswer.toLowerCase()) {
+      return false;
+    }
+
+    return true;
+  }
+
   void submitPinAnswer(String pinId, String answer) {
     final MapPin? pin = mapPins[pinId];
     if (pin != null) {
-      if (answer.toLowerCase() == pin.correctAnswer.toLowerCase()) {
+      if (isCorrectAnswer(pinId, answer)) {
         state = state.copyWith(
           lastSubmissionResult: '正解！',
           solvedPinIds: {...state.solvedPinIds, pinId},

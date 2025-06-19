@@ -110,7 +110,9 @@ class TutorialPopup extends ConsumerWidget {
                     )
                   else
                     InkWell(
-                      onTap: () => Navigator.of(context).pop(),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
                       child: UniversalImage(
                         Assets.images.rightTrapezoidWithStart.path,
                         height: 25,
