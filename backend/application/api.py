@@ -54,7 +54,7 @@ def quiz():
       if answer.filename == '':
         return jsonify({ "error": "Bad Request" }), 400
 
-      model_path = os.getenv('MODEL_DIR', '') + quiz['answer']
+      model_path = os.getenv('MODEL_DIR', './model/') + quiz['answer']
       if not os.path.isfile(model_path):
         return jsonify({ "error": "Internal Server Error" }), 500
 
