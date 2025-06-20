@@ -42,7 +42,7 @@ class PositionedQuestionPin extends ConsumerWidget {
       child: GestureDetector(
         onTap: () async {
           if (isSolved) {
-            await SolvedDialog.show(context);
+            await SolvedDialog.show(context, pinId);
           } else {
             if (pinId == 'pin1') {
               XFile? imageFile;

@@ -6,7 +6,7 @@ import 'package:quiz_rally/ui/components/universal_image.dart';
 import 'package:quiz_rally/ui/pages/map_page/widgets/correct_contents.dart';
 import 'package:quiz_rally/ui/pages/map_page/widgets/wrong_contents.dart';
 
-final dialogIndexProvider = StateProvider<int>(
+final dialogIndexProvider = StateProvider.autoDispose<int>(
   (ref) => 0,
 ); //0:回答画面 1:正解画面 2:不正解画面
 

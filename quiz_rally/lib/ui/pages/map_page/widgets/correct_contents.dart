@@ -22,7 +22,7 @@ class CorrectContents extends StatelessWidget {
           width: 180,
           height: 180,
         ),
-        DarkBrownTexts('鍵1をゲットした。\nMap画面で使ってみよう', 20),
+        DarkBrownTexts('鍵$pinIdをゲットした。\nMap画面で使ってみよう', 20),
       ],
     );
   }

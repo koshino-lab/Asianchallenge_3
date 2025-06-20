@@ -32,9 +32,7 @@ class WrongContents extends StatelessWidget {
           children: [
             const SizedBox(width: 40),
             InkWell(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
+              onTap: back,
               child: UniversalImage(
                 Assets.images.rectangleBack.path,
                 height: 30,

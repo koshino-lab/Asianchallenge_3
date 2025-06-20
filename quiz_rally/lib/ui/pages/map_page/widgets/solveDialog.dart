@@ -4,7 +4,7 @@ import 'package:quiz_rally/ui/components/universal_image.dart';
 import 'package:quiz_rally/ui/pages/map_page/widgets/solved_contents.dart';
 
 class SolvedDialog {
-  static Future<String?> show(BuildContext context) {
+  static Future<String?> show(BuildContext context, String pinId) {
     return showDialog<String>(
       context: context,
       barrierDismissible: false,
@@ -30,8 +30,6 @@ class SolvedDialog {
                   ),
                 ),
                 child: SolvedContents(pinId: '1'),
-                // child: CorrectContents(pinId: '1'),
-                // child: WrongContents(pinId: '1', hint: 'これはヒントであり、AをBしてCすると正解を得られるかも？'),
               ),
               Positioned(
                 child: Container(
