@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_rally/gen/assets.gen.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:quiz_rally/ui/components/universal_image.dart';
 import 'package:quiz_rally/ui/pages/map_page/map_page_controller.dart';
 
 class MapPageBottomBar extends ConsumerWidget {
@@ -31,20 +32,22 @@ class MapPageBottomBar extends ConsumerWidget {
                         solvedCount,
                         (index) => Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                          child: Assets.images.key.image(width: 64, height: 64),
+                          child: Assets.images.keyWithShadow.image(
+                            width: 64,
+                            height: 64,
+                          ),
                         ),
                       ),
-                      ElevatedButton(
-                        onPressed: () async {
+                      Spacer(),
+                      InkWell(
+                        onTap: () async {
                           ref.read(mapPageProvider.notifier).useAllKeys();
                           await Navigator.of(context).pushNamed('/problem');
                         },
-                        style: ElevatedButton.styleFrom(
-                          shape: const CircleBorder(),
-                          minimumSize: const Size(64, 64),
-                          padding: EdgeInsets.zero,
+                        child: UniversalImage(
+                          Assets.images.redDecoratedButtonSubmitUse.path,
+                          height: 64,
                         ),
-                        child: Text("使う"),
                       ),
                     ],
                   ),

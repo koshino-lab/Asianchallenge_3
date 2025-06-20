@@ -11,6 +11,7 @@ class _ThemeText extends StatelessWidget {
     this.overflow,
     this.maxLines,
     this.decoration,
+    this.height,
   });
 
   final String text;
@@ -20,6 +21,7 @@ class _ThemeText extends StatelessWidget {
   final TextOverflow? overflow;
   final int? maxLines;
   final TextDecoration? decoration;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class _ThemeText extends StatelessWidget {
         color: color,
         fontSize: size,
         fontFamily: fontFamily,
-        height: 1.5,
+        height: height ?? 1.5,
         overflow: overflow,
         decoration: decoration,
       ),
@@ -41,29 +43,33 @@ class _ThemeText extends StatelessWidget {
 }
 
 class GrayText extends _ThemeText {
-  const GrayText(
-    super.text,
-    super.size, {
-    super.key,
-  }) : super(color: Styles.commonTextColor, weight: FontWeight.w400);
+  const GrayText(super.text, super.size, {super.key})
+    : super(color: Styles.commonTextColor, weight: FontWeight.w400);
 
-  const GrayText.bold(
-    super.text,
-    super.size, {
-    super.key,
-  }) : super(color: Styles.commonTextColor, weight: FontWeight.w700);
+  const GrayText.bold(super.text, super.size, {super.key})
+    : super(color: Styles.commonTextColor, weight: FontWeight.w700);
 }
 
 class WhiteText extends _ThemeText {
-  const WhiteText(
-    super.text,
-    super.size, {
-    super.key,
-  }) : super(color: Styles.secondaryTextColor, weight: FontWeight.w400);
+  const WhiteText(super.text, super.size, {super.key})
+    : super(color: Styles.secondaryTextColor, weight: FontWeight.w400);
 
-  const WhiteText.bold(
-    super.text,
-    super.size, {
-    super.key,
-  }) : super(color: Styles.secondaryTextColor, weight: FontWeight.w700);
+  const WhiteText.bold(super.text, super.size, {super.key})
+    : super(color: Styles.secondaryTextColor, weight: FontWeight.w700);
+}
+
+class DarkBrownTexts extends _ThemeText {
+  const DarkBrownTexts(super.text, super.size, {super.key})
+    : super(
+        color: Styles.commonTextColor,
+        weight: FontWeight.w400,
+        height: 1.0,
+      );
+
+  const DarkBrownTexts.bold(super.text, super.size, {super.key})
+    : super(
+        color: Styles.commonTextColor,
+        weight: FontWeight.w900,
+        height: 1.0,
+      );
 }

@@ -40,14 +40,9 @@ class PositionedQuestionPin extends ConsumerWidget {
       left: left,
       bottom: bottom,
       child: GestureDetector(
-        onTap: () {
+        onTap: () async {
           if (isSolved) {
-            showDialog(
-              context: context,
-              builder: (BuildContext dialogContext) {
-                return const SolvedDialog();
-              },
-            );
+            await SolvedDialog.show(context, pinId);
           } else {
             if (pinId == 'pin1') {
               XFile? imageFile;
@@ -76,21 +71,29 @@ class PositionedQuestionPin extends ConsumerWidget {
                           }
                         },
                         imageFile: imageFile,
+                        pinId: pinId,
+                        isCorrectAns: (answer) {
+                          return mapPageController.isCorrectAnswer(
+                            pinId,
+                            answer,
+                          );
+                        },
                       );
                     },
                   );
                 },
               );
             } else {
-              showDialog(
+              AnswerTextDialog.show(
                 context: context,
-                builder: (BuildContext dialogContext) {
-                  return AnswerTextDialog(
-                    riddle: riddle,
-                    onSubmit: (answer) {
-                      mapPageController.submitPinAnswer(pinId, answer);
-                    },
-                  );
+                ref: ref,
+                riddle: riddle,
+                pinId: pinId,
+                onSubmit: (answer) {
+                  mapPageController.submitPinAnswer(pinId, answer);
+                },
+                isCorrectAns: (answer) {
+                  return mapPageController.isCorrectAnswer(pinId, answer);
                 },
               );
             }

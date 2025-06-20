@@ -15,15 +15,67 @@ class $AssetsImagesGen {
   /// File path: assets/images/Icon.svg
   String get icon => 'assets/images/Icon.svg';
 
+  /// File path: assets/images/close_red_button.png
+  AssetGenImage get closeRedButton =>
+      const AssetGenImage('assets/images/close_red_button.png');
+
   /// File path: assets/images/container.png
   AssetGenImage get container =>
       const AssetGenImage('assets/images/container.png');
 
+  /// File path: assets/images/designd_red_buttom.png
+  AssetGenImage get designdRedButtom =>
+      const AssetGenImage('assets/images/designd_red_buttom.png');
+
   /// File path: assets/images/key.png
   AssetGenImage get key => const AssetGenImage('assets/images/key.png');
 
+  /// File path: assets/images/key_with_shadow.png
+  AssetGenImage get keyWithShadow =>
+      const AssetGenImage('assets/images/key_with_shadow.png');
+
+  /// File path: assets/images/letter_dialog_rectangle.png
+  AssetGenImage get letterDialogRectangle =>
+      const AssetGenImage('assets/images/letter_dialog_rectangle.png');
+
+  /// File path: assets/images/letter_dialog_rectangle_with_wanted.png
+  AssetGenImage get letterDialogRectangleWithWanted => const AssetGenImage(
+    'assets/images/letter_dialog_rectangle_with_wanted.png',
+  );
+
+  /// File path: assets/images/letter_dialog_rectangle_with_wanted_and_goldrect.png
+  AssetGenImage get letterDialogRectangleWithWantedAndGoldrect =>
+      const AssetGenImage(
+        'assets/images/letter_dialog_rectangle_with_wanted_and_goldrect.png',
+      );
+
+  /// File path: assets/images/letter_dialog_rectangle_with_wanted_gold.png
+  AssetGenImage get letterDialogRectangleWithWantedGold => const AssetGenImage(
+    'assets/images/letter_dialog_rectangle_with_wanted_gold.png',
+  );
+
+  /// File path: assets/images/letter_dialog_square.png
+  AssetGenImage get letterDialogSquare =>
+      const AssetGenImage('assets/images/letter_dialog_square.png');
+
+  /// File path: assets/images/letter_dialog_square_with_quiz.png
+  AssetGenImage get letterDialogSquareWithQuiz =>
+      const AssetGenImage('assets/images/letter_dialog_square_with_quiz.png');
+
   /// File path: assets/images/map.png
   AssetGenImage get map => const AssetGenImage('assets/images/map.png');
+
+  /// File path: assets/images/padlock_bottom.png
+  AssetGenImage get padlockBottom =>
+      const AssetGenImage('assets/images/padlock_bottom.png');
+
+  /// File path: assets/images/padlock_middle.png
+  AssetGenImage get padlockMiddle =>
+      const AssetGenImage('assets/images/padlock_middle.png');
+
+  /// File path: assets/images/padlock_second_top.png
+  AssetGenImage get padlockSecondTop =>
+      const AssetGenImage('assets/images/padlock_second_top.png');
 
   /// File path: assets/images/pin1.svg
   String get pin1 => 'assets/images/pin1.svg';
@@ -40,6 +92,38 @@ class $AssetsImagesGen {
   /// File path: assets/images/pin5.svg
   String get pin5 => 'assets/images/pin5.svg';
 
+  /// File path: assets/images/problem_page_filter.png
+  AssetGenImage get problemPageFilter =>
+      const AssetGenImage('assets/images/problem_page_filter.png');
+
+  /// File path: assets/images/problem_page_filter_with_brown.png
+  AssetGenImage get problemPageFilterWithBrown =>
+      const AssetGenImage('assets/images/problem_page_filter_with_brown.png');
+
+  /// File path: assets/images/rectangle_back.png
+  AssetGenImage get rectangleBack =>
+      const AssetGenImage('assets/images/rectangle_back.png');
+
+  /// File path: assets/images/red_decorated_button_submit.png
+  AssetGenImage get redDecoratedButtonSubmit =>
+      const AssetGenImage('assets/images/red_decorated_button_submit.png');
+
+  /// File path: assets/images/red_decorated_button_submit_use.png
+  AssetGenImage get redDecoratedButtonSubmitUse =>
+      const AssetGenImage('assets/images/red_decorated_button_submit_use.png');
+
+  /// File path: assets/images/right_trapezoid_with_end.png
+  AssetGenImage get rightTrapezoidWithEnd =>
+      const AssetGenImage('assets/images/right_trapezoid_with_end.png');
+
+  /// File path: assets/images/right_trapezoid_with_next.png
+  AssetGenImage get rightTrapezoidWithNext =>
+      const AssetGenImage('assets/images/right_trapezoid_with_next.png');
+
+  /// File path: assets/images/right_trapezoid_with_start.png
+  AssetGenImage get rightTrapezoidWithStart =>
+      const AssetGenImage('assets/images/right_trapezoid_with_start.png');
+
   /// File path: assets/images/story1.png
   AssetGenImage get story1 => const AssetGenImage('assets/images/story1.png');
 
@@ -52,14 +136,34 @@ class $AssetsImagesGen {
   /// List of all assets
   List<dynamic> get values => [
     icon,
+    closeRedButton,
     container,
+    designdRedButtom,
     key,
+    keyWithShadow,
+    letterDialogRectangle,
+    letterDialogRectangleWithWanted,
+    letterDialogRectangleWithWantedAndGoldrect,
+    letterDialogRectangleWithWantedGold,
+    letterDialogSquare,
+    letterDialogSquareWithQuiz,
     map,
+    padlockBottom,
+    padlockMiddle,
+    padlockSecondTop,
     pin1,
     pin2,
     pin3,
     pin4,
     pin5,
+    problemPageFilter,
+    problemPageFilterWithBrown,
+    rectangleBack,
+    redDecoratedButtonSubmit,
+    redDecoratedButtonSubmitUse,
+    rightTrapezoidWithEnd,
+    rightTrapezoidWithNext,
+    rightTrapezoidWithStart,
     story1,
     story2,
     story3,

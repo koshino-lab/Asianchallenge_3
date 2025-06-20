@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:quiz_rally/config/styles.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:quiz_rally/config/styles.dart';
+import 'package:quiz_rally/gen/assets.gen.dart';
 import 'package:quiz_rally/ui/pages/map_page/map_page_controller.dart';
 import 'package:quiz_rally/ui/pages/problem_page/LastQuestionSubmitButton.dart';
 
@@ -14,49 +15,89 @@ class ProblemPage extends ConsumerWidget {
         .isLastQuestionAvailable;
     final isGameCleared = ref.watch(mapPageProvider).isGameCleared;
     final controller = TextEditingController();
+
+    final isLastQuestionShow = isLastQuestionAvailable && !isGameCleared;
+
     return Scaffold(
-      appBar: AppBar(title: Text('鎖の問題')),
-      body: Container(
-        color: Styles.primaryColor,
-        width: double.infinity,
-        child: ListView(
-          children: <Widget>[
-            if (isLastQuestionAvailable && !isGameCleared) ...[
-              const SizedBox(height: 32),
-              const Text(
-                '最後の問題: "アジアのチャレンジ"の合言葉は？',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 24),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: TextField(
-                  controller: controller,
-                  decoration: const InputDecoration(
-                    labelText: '回答を入力',
-                    border: OutlineInputBorder(),
+      backgroundColor: Styles.pageBackgroundDark,
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
+          Center(
+            child: Container(
+              width: 336,
+              height: 540,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    Assets
+                        .images
+                        .letterDialogRectangleWithWantedAndGoldrect
+                        .path,
                   ),
+                  fit: BoxFit.fitHeight,
                 ),
               ),
-              const SizedBox(height: 16),
-              Center(
-                child: LastQuestionSubmitButton(
-                  controller: controller,
-                  ref: ref,
-                  context: context,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 32,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 24),
+                    if (isLastQuestionShow) ...[
+                      // if (true) ...[
+                      const Text(
+                        '最後の問題:\n"アジアのチャレンジ"の合言葉は？',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 24),
+                      TextField(
+                        controller: controller,
+                        decoration: const InputDecoration(
+                          hintText: '回答を入力',
+                          border: OutlineInputBorder(),
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      LastQuestionSubmitButton(
+                        controller: controller,
+                        ref: ref,
+                        context: context,
+                      ),
+                    ],
+                    if (isGameCleared)
+                      const Center(
+                        child: Text(
+                          'ゲームクリア済みです！',
+                          style: TextStyle(fontSize: 18, color: Colors.green),
+                        ),
+                      ),
+                  ],
                 ),
               ),
-            ],
-            if (isGameCleared)
-              const Center(
-                child: Text(
-                  'ゲームクリア済みです！',
-                  style: TextStyle(fontSize: 18, color: Colors.green),
+            ),
+          ),
+          if (!isLastQuestionShow && !isGameCleared)
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    Assets.images.problemPageFilterWithBrown.path,
+                  ),
+                  fit: BoxFit.fitHeight,
                 ),
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }
