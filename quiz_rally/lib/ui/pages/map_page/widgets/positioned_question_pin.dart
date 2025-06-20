@@ -71,6 +71,13 @@ class PositionedQuestionPin extends ConsumerWidget {
                           }
                         },
                         imageFile: imageFile,
+                        pinId: pinId,
+                        isCorrectAns: (answer) {
+                          return mapPageController.isCorrectAnswer(
+                            pinId,
+                            answer,
+                          );
+                        },
                       );
                     },
                   );

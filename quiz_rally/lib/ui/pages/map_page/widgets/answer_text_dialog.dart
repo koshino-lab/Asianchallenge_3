@@ -81,7 +81,7 @@ class AnswerTextDialog extends ConsumerWidget {
                       DarkBrownTexts(riddle, 20),
                       const SizedBox(height: 26),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        padding: const EdgeInsets.symmetric(horizontal: 35),
                         child: TextField(
                           controller: _answerController,
                           decoration: const InputDecoration(
@@ -95,7 +95,6 @@ class AnswerTextDialog extends ConsumerWidget {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      // Spacer(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -117,7 +116,7 @@ class AnswerTextDialog extends ConsumerWidget {
                               height: 60,
                             ),
                           ),
-                          const SizedBox(width: 30),
+                          const SizedBox(width: 35),
                         ],
                       ),
                       const SizedBox(height: 16),
