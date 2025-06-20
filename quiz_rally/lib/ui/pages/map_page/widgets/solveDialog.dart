@@ -29,7 +29,7 @@ class SolvedDialog {
                     fit: BoxFit.fitHeight,
                   ),
                 ),
-                child: SolvedContents(pinId: '1'),
+                child: SolvedContents(pinId: pinId),
               ),
               Positioned(
                 child: Container(

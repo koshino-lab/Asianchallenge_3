@@ -86,7 +86,7 @@ class ProblemPage extends ConsumerWidget {
               ),
             ),
           ),
-          if (!isLastQuestionAvailable || !isGameCleared)
+          if (!isLastQuestionShow && !isGameCleared)
             Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
