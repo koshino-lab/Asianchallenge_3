@@ -16,6 +16,7 @@ class PositionedQuestionPin extends ConsumerWidget {
   final double? bottom;
   final int pinId;
   final double pinSize = 80.0;
+  final double checkIconSize = 40.0;
 
   const PositionedQuestionPin({
     super.key,
@@ -102,7 +103,18 @@ class PositionedQuestionPin extends ConsumerWidget {
             }
           }
         },
-        child: UniversalImage(imageAsset, width: pinSize, height: pinSize),
+        child: Column(
+          children: [
+            SizedBox(
+              width: checkIconSize,
+              height: checkIconSize,
+              child: mapPageState.solvedPinIds.contains(pinId)
+                  ? UniversalImage(Assets.images.check)
+                  : const SizedBox.shrink(),
+            ),
+            UniversalImage(imageAsset, width: pinSize, height: pinSize),
+          ],
+        ),
       ),
     );
   }

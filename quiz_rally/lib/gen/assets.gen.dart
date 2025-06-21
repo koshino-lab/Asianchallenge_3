@@ -23,6 +23,9 @@ class $AssetsImagesGen {
   AssetGenImage get beforeChain =>
       const AssetGenImage('assets/images/before_chain.png');
 
+  /// File path: assets/images/check.svg
+  String get check => 'assets/images/check.svg';
+
   /// File path: assets/images/close_red_button.png
   AssetGenImage get closeRedButton =>
       const AssetGenImage('assets/images/close_red_button.png');
@@ -142,6 +145,7 @@ class $AssetsImagesGen {
     icon,
     afterChain,
     beforeChain,
+    check,
     closeRedButton,
     container,
     designdRedButtom,
