@@ -78,12 +78,6 @@ class PositionedQuestionPin extends ConsumerWidget {
                           },
                           imageFile: imageFile,
                           pinId: pinId,
-                          // isCorrectAns: (answer) {
-                          //   return mapPageController.isCorrectAnswer(
-                          //     pinId,
-                          //     answer,
-                          //   );
-                          // },
                         );
                       },
                     );
@@ -98,9 +92,6 @@ class PositionedQuestionPin extends ConsumerWidget {
                   hint: hint,
                   onSubmit: (answer) =>
                       mapPageController.checkAnswer(pinId, answer),
-                  // isCorrectAns: (answer) {
-                  //   return mapPageController.isCorrectAnswer(pinId, answer);
-                  // },
                 );
               }
             } catch (e) {
