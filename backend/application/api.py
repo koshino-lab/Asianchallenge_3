@@ -25,6 +25,7 @@ def quiz():
     if quizID is None:
       app.logger.debug("quizID is None")
       return jsonify({ "error": "Bad Request" }), 400
+    quizID = int(quizID)
 
     res = Quiz.query.filter_by(quizID=quizID).first()
     if not res:
