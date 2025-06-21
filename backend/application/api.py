@@ -31,7 +31,7 @@ def quiz():
       app.logger.debug(f"Quiz does not exist(quizID={quizID})")
       return jsonify({ "error": "Bad Request" }), 400
 
-    return jsonify({ "quiz": res.problem, "type": res.type })
+    return jsonify({ "quiz": res.problem, "hint": res.hint, "type": res.type })
 
   elif request.method == 'POST':
     # クイズの答え合わせ
@@ -169,10 +169,10 @@ def correctAnswerRate():
 def initdb():
   db.create_all()
   quizzes = [
-    {'quizID': 1, 'problem': "1+1は？", 'answer': "2", 'type': 0},
-    {'quizID': 2, 'problem': "天照大神、月読命、素戔嗚尊、この三柱をまとめて何という？", 'answer': "三貴子", 'type': 0},
-    {'quizID': 3, 'problem': "Asian Bridge's logo", 'answer': "asian_logo.pt", 'type': 1},
-    {'quizID': 4, 'problem': "サメだ！殴れ！", 'answer': "SPC", 'type': 0},
+    {'quizID': 1, 'problem': "1+1は？", 'answer': "2", "hint": "田じゃないよ", 'type': 0},
+    {'quizID': 2, 'problem': "天照大神、月読命、素戔嗚尊、この三柱をまとめて何という？", 'answer': "三貴子", "hint": "日本語で「みはしらのうずのみこ」と読むよ", 'type': 0},
+    {'quizID': 3, 'problem': "Asian Bridge's logo", 'answer': "asian_logo.pt", "hint": "Asian Bridgeのロゴを探そう！", 'type': 1},
+    {'quizID': 4, 'problem': "サメだ！殴れ！", 'answer': "SPC", "hint": "サメ殴りセンター", 'type': 0},
   ]
   stmt = insert(Quiz).values(quizzes)
 

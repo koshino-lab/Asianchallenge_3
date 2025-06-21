@@ -13,6 +13,7 @@ class Quiz(db.Model):
   quizID = db.Column(db.SmallInteger, primary_key=True)
   problem = db.Column(db.String(512), nullable=False)
   answer = db.Column(db.String(64), nullable=False)
+  hint = db.Column(db.String(512), nullable=False)
   type = db.Column(db.SmallInteger, nullable=False)  # TinyInt 相当
 
   def __repr__(self):
