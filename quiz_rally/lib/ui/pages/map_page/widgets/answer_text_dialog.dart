@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:quiz_rally/gen/assets.gen.dart';
 import 'package:quiz_rally/ui/components/theme_text.dart';
 import 'package:quiz_rally/ui/components/universal_image.dart';
+import 'package:quiz_rally/ui/pages/map_page/map_page_controller.dart';
 import 'package:quiz_rally/ui/pages/map_page/widgets/correct_contents.dart';
 import 'package:quiz_rally/ui/pages/map_page/widgets/wrong_contents.dart';
 
@@ -15,6 +16,7 @@ class AnswerTextDialog extends ConsumerWidget {
   final int pinId;
   final String hint;
   final Future<bool> Function(String answer) onSubmit;
+  final double correctAnsRate;
   //final Future<bool> Function(String answer) isCorrectAns;
 
   const AnswerTextDialog({
@@ -22,7 +24,7 @@ class AnswerTextDialog extends ConsumerWidget {
     required this.riddle,
     required this.pinId,
     required this.onSubmit,
-    //  required this.isCorrectAns,
+    required this.correctAnsRate,
     this.hint = '',
   });
 
@@ -32,7 +34,7 @@ class AnswerTextDialog extends ConsumerWidget {
     required String riddle,
     required int pinId,
     required Future<bool> Function(String answer) onSubmit,
-    //required Future<bool> Function(String answer) isCorrectAns,
+    required double correctAnsRate,
     required String hint,
   }) {
     return showDialog<void>(
@@ -43,7 +45,7 @@ class AnswerTextDialog extends ConsumerWidget {
           riddle: riddle,
           pinId: pinId,
           onSubmit: onSubmit,
-          // isCorrectAns: isCorrectAns,
+          correctAnsRate: correctAnsRate,
           hint: hint,
         ),
       ),
@@ -73,6 +75,7 @@ class AnswerTextDialog extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                DarkBrownTexts('正答率: $correctAnsRate', 20),
                 if (dialogIndex == 0)
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,

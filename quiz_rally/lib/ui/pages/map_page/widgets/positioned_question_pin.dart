@@ -44,12 +44,15 @@ class PositionedQuestionPin extends ConsumerWidget {
           if (isSolved) {
             await SolvedDialog.show(context, pinId);
           } else {
+            final correctAnsRate = await ref
+                .read(mapPageProvider.notifier)
+                .getCorrectAnswerRate(pinId);
+            //print('✅ Fetching quiz for pinId: $pinId, correctAnsRate: $correctAnsRate');
             try {
               final quiz = await mapPageController.getQuiz(pinId);
               final riddle = quiz.quiz;
               final type = quiz.type;
               final hint = quiz.hint;
-              print('✅ Quiz fetched: $riddle, type: $type, hint: $hint');
               if (type == 1) {
                 XFile? imageFile;
                 showDialog(
@@ -78,6 +81,7 @@ class PositionedQuestionPin extends ConsumerWidget {
                           },
                           imageFile: imageFile,
                           pinId: pinId,
+                          correctAnsRate: correctAnsRate,
                         );
                       },
                     );
@@ -90,6 +94,7 @@ class PositionedQuestionPin extends ConsumerWidget {
                   riddle: riddle,
                   pinId: pinId,
                   hint: hint,
+                  correctAnsRate: correctAnsRate,
                   onSubmit: (answer) =>
                       mapPageController.checkAnswer(pinId, answer),
                 );
