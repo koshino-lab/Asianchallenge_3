@@ -1,7 +1,5 @@
-import os
-import json
-from application.DBcontroller.DBcontroller import MysqlOperator
+from flask_sqlalchemy import SQLAlchemy
 
-ope = MysqlOperator(os.getenv('DB_CONFIG_JSON', './db_config.json'))
+db = SQLAlchemy()
 
-
+from application.DBcontroller.DBcontroller import *
