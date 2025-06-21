@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:quiz_rally/services/quiz_service.dart';
 import 'package:quiz_rally/ui/pages/map_page/map_page_controller.dart';
 import 'package:quiz_rally/gen/assets.gen.dart';
 import 'package:quiz_rally/ui/components/universal_image.dart';
@@ -30,7 +31,6 @@ class PositionedQuestionPin extends ConsumerWidget {
     final mapPageState = ref.watch(mapPageProvider);
     final mapPageController = ref.read(mapPageProvider.notifier);
     final isSolved = mapPageState.solvedPinIds.contains(pinId);
-    final riddle = MapPageController.mapPins[pinId]?.riddle ?? '';
     final hint = MapPageController.mapPins[pinId]?.hint ?? '';
     // 画像アセット名をpinIdから取得
     final imageAsset = _getImageAsset(pinId);
@@ -45,60 +45,70 @@ class PositionedQuestionPin extends ConsumerWidget {
           if (isSolved) {
             await SolvedDialog.show(context, pinId);
           } else {
-            if (pinId == '1') {
-              XFile? imageFile;
-              showDialog(
-                context: context,
-                builder: (BuildContext dialogContext) {
-                  return StatefulBuilder(
-                    builder: (context, setState) {
-                      return AnswerPictureDialog(
-                        riddle: riddle,
-                        hint: hint,
-                        onSubmit: (answer) {
-                          mapPageController.submitPinAnswer(pinId, answer);
-                        },
-                        onCameraPressed: () async {
-                          final picker = ImagePicker();
-                          final pickedFile = await picker.pickImage(
-                            source: ImageSource.camera,
-                          );
-                          if (pickedFile != null) {
-                            setState(() {
-                              imageFile = pickedFile;
-                            });
-                            ScaffoldMessenger.of(dialogContext).showSnackBar(
-                              const SnackBar(content: Text('写真を撮影しました')),
+            try {
+              final quiz = await mapPageController.getQuiz(pinId);
+              final riddle = quiz.quiz;
+              final type = quiz.type;
+              if (type == 1) {
+                XFile? imageFile;
+                showDialog(
+                  context: context,
+                  builder: (BuildContext dialogContext) {
+                    return StatefulBuilder(
+                      builder: (context, setState) {
+                        return AnswerPictureDialog(
+                          riddle: riddle,
+                          hint: hint,
+                          onSubmit: (answer) {
+                            mapPageController.submitPinAnswer(pinId, answer);
+                          },
+                          onCameraPressed: () async {
+                            final picker = ImagePicker();
+                            final pickedFile = await picker.pickImage(
+                              source: ImageSource.camera,
                             );
-                          }
-                        },
-                        imageFile: imageFile,
-                        pinId: pinId,
-                        isCorrectAns: (answer) {
-                          return mapPageController.isCorrectAnswer(
-                            pinId,
-                            answer,
-                          );
-                        },
-                      );
-                    },
-                  );
-                },
-              );
-            } else {
-              AnswerTextDialog.show(
-                context: context,
-                ref: ref,
-                riddle: riddle,
-                pinId: pinId,
-                hint: hint,
-                onSubmit: (answer) {
-                  mapPageController.submitPinAnswer(pinId, answer);
-                },
-                isCorrectAns: (answer) {
-                  return mapPageController.isCorrectAnswer(pinId, answer);
-                },
-              );
+                            if (pickedFile != null) {
+                              setState(() {
+                                imageFile = pickedFile;
+                              });
+                              ScaffoldMessenger.of(dialogContext).showSnackBar(
+                                const SnackBar(content: Text('写真を撮影しました')),
+                              );
+                            }
+                          },
+                          imageFile: imageFile,
+                          pinId: pinId,
+                          isCorrectAns: (answer) {
+                            return mapPageController.isCorrectAnswer(
+                              pinId,
+                              answer,
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
+                );
+              } else {
+                AnswerTextDialog.show(
+                  context: context,
+                  ref: ref,
+                  riddle: riddle,
+                  pinId: pinId,
+                  hint: hint,
+                  onSubmit: (answer) {
+                    mapPageController.submitPinAnswer(pinId, answer);
+                  },
+                  isCorrectAns: (answer) {
+                    return mapPageController.isCorrectAnswer(pinId, answer);
+                  },
+                );
+              }
+            } catch (e) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text('クイズの取得に失敗しました: $e')));
+              print('❌ Error fetching quiz: $e');
             }
           }
         },

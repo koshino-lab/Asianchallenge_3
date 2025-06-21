@@ -41,6 +41,7 @@ dependencies:
   universal_image: ^1.0.10
   web: ^0.5.1
   image_picker: ^1.1.2
+  http: ^1.4.0
 
 dev_dependencies:
   freezed: ^2.4.6

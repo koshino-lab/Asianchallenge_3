@@ -2,6 +2,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:quiz_rally/models/map_pin.dart';
 import 'package:quiz_rally/cookie_manager/cookie_manager.dart';
+import 'package:quiz_rally/models/quiz.dart';
+import 'package:quiz_rally/services/quiz_service.dart';
 
 part 'map_page_controller.freezed.dart';
 part 'map_page_controller.g.dart';
@@ -29,9 +31,11 @@ final mapPageProvider = StateNotifierProvider<MapPageController, MapPageState>(
 );
 
 class MapPageController extends StateNotifier<MapPageState> {
-  MapPageController() : super(const MapPageState()) {
+  MapPageController() : super(MapPageState()) {
     _init();
   }
+
+  final _quizService = QuizService();
 
   static const Map<String, MapPin> mapPins = {
     '1': MapPin(
@@ -63,7 +67,7 @@ class MapPageController extends StateNotifier<MapPageState> {
   }
 
   void resetTutorial() {
-    state = const MapPageState(
+    state = MapPageState(
       tutorialPageIndex: 0,
       solvedPinIds: {},
       usedKeyIds: [],
@@ -112,6 +116,10 @@ class MapPageController extends StateNotifier<MapPageState> {
   void clearSubmissionResult() {
     state = state.copyWith(lastSubmissionResult: '');
     _saveToCookie();
+  }
+
+  Future<Quiz> getQuiz(String quizId) async {
+    return _quizService.getQuiz(quizId);
   }
 
   int get solvedPinCount => state.solvedPinIds.length;
