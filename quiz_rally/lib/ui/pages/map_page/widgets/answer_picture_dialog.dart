@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert';
 
 import 'package:flutter/foundation.dart' show kIsWeb, Uint8List;
 import 'package:flutter/material.dart';
@@ -144,7 +145,8 @@ class AnswerPictureDialog extends ConsumerWidget {
                           InkWell(
                             onTap: () async {
                               if (imageFile != null) {
-                                const answer = '__photo_submission__';
+                                List<int> imageBytes = await imageFile!.readAsBytes();
+                                final answer = base64Encode(imageBytes);
                                 final isCorrectAns = await onSubmit(answer);
                                 if (isCorrectAns) {
                                   ref.read(dialogIndexProvider.notifier).state =
