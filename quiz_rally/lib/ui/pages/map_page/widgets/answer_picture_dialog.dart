@@ -87,20 +87,21 @@ class AnswerPictureDialog extends ConsumerWidget {
                       const SizedBox(height: 26),
                       DarkBrownTexts(riddle, 20),
                       const SizedBox(height: 26),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 35),
-                        child: TextField(
-                          controller: _answerController,
-                          decoration: const InputDecoration(
-                            hintText: '解答を入力してください',
-                            contentPadding: EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 8,
+                      if (pinId != '1')
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 35),
+                          child: TextField(
+                            controller: _answerController,
+                            decoration: const InputDecoration(
+                              hintText: '解答を入力してください',
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 8,
+                              ),
+                              border: OutlineInputBorder(),
                             ),
-                            border: OutlineInputBorder(),
                           ),
                         ),
-                      ),
                       IconButton(
                         icon: const Icon(Icons.camera_alt),
                         onPressed: onCameraPressed,
@@ -142,6 +143,26 @@ class AnswerPictureDialog extends ConsumerWidget {
                         children: [
                           InkWell(
                             onTap: () async {
+                              if (pinId == '1') {
+                                if (imageFile != null) {
+                                  const answer = '__photo_submission__';
+                                  onSubmit(answer);
+                                  if (isCorrectAns(answer)) {
+                                    ref
+                                            .read(dialogIndexProvider.notifier)
+                                            .state =
+                                        1; // 正解画面へ
+                                  } else {
+                                    ref
+                                            .read(dialogIndexProvider.notifier)
+                                            .state =
+                                        2; // 不正解画面へ
+                                  }
+                                }
+                                // 写真がなければ何もしない
+                                return;
+                              }
+
                               final ans = _answerController.text;
                               onSubmit(ans);
                               _answerController.dispose();

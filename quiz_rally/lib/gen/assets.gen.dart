@@ -15,6 +15,14 @@ class $AssetsImagesGen {
   /// File path: assets/images/Icon.svg
   String get icon => 'assets/images/Icon.svg';
 
+  /// File path: assets/images/after_chain.png
+  AssetGenImage get afterChain =>
+      const AssetGenImage('assets/images/after_chain.png');
+
+  /// File path: assets/images/before_chain.png
+  AssetGenImage get beforeChain =>
+      const AssetGenImage('assets/images/before_chain.png');
+
   /// File path: assets/images/close_red_button.png
   AssetGenImage get closeRedButton =>
       const AssetGenImage('assets/images/close_red_button.png');
@@ -96,10 +104,6 @@ class $AssetsImagesGen {
   AssetGenImage get problemPageFilter =>
       const AssetGenImage('assets/images/problem_page_filter.png');
 
-  /// File path: assets/images/problem_page_filter_with_brown.png
-  AssetGenImage get problemPageFilterWithBrown =>
-      const AssetGenImage('assets/images/problem_page_filter_with_brown.png');
-
   /// File path: assets/images/rectangle_back.png
   AssetGenImage get rectangleBack =>
       const AssetGenImage('assets/images/rectangle_back.png');
@@ -136,6 +140,8 @@ class $AssetsImagesGen {
   /// List of all assets
   List<dynamic> get values => [
     icon,
+    afterChain,
+    beforeChain,
     closeRedButton,
     container,
     designdRedButtom,
@@ -157,7 +163,6 @@ class $AssetsImagesGen {
     pin4,
     pin5,
     problemPageFilter,
-    problemPageFilterWithBrown,
     rectangleBack,
     redDecoratedButtonSubmit,
     redDecoratedButtonSubmitUse,

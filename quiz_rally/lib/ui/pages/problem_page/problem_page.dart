@@ -15,6 +15,7 @@ class ProblemPage extends ConsumerWidget {
         .isLastQuestionAvailable;
     final isGameCleared = ref.watch(mapPageProvider).isGameCleared;
     final controller = TextEditingController();
+    final usedKeyIds = ref.watch(mapPageProvider).usedKeyIds;
 
     final isLastQuestionShow = isLastQuestionAvailable && !isGameCleared;
 
@@ -87,16 +88,46 @@ class ProblemPage extends ConsumerWidget {
             ),
           ),
           if (!isLastQuestionShow && !isGameCleared)
-            Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(
-                    Assets.images.problemPageFilterWithBrown.path,
+            Stack(
+              alignment: Alignment.center,
+
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(Assets.images.problemPageFilter.path),
+                      fit: BoxFit.fitHeight,
+                    ),
                   ),
-                  fit: BoxFit.fitHeight,
                 ),
-              ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(4, (index) {
+                    // Assuming key IDs are 1, 2, 3, 4
+                    final keyId = index + 1;
+                    final image = usedKeyIds.contains(keyId.toString())
+                        ? Assets.images.afterChain
+                        : Assets.images.beforeChain;
+                    return Transform.rotate(
+                      angle: (index % 2 == 0) ? 0.2 : -0.2,
+                      child: Image.asset(image.path),
+                    );
+                  }),
+                ),
+              ],
             ),
+          Positioned(
+            top: 20,
+            left: 20,
+            child: IconButton(
+              icon: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+                size: 28,
+              ),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ),
         ],
       ),
     );

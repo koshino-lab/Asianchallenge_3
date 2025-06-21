@@ -34,7 +34,11 @@ class MapPageController extends StateNotifier<MapPageState> {
   }
 
   static const Map<String, MapPin> mapPins = {
-    '1': MapPin(riddle: 'これは最初の謎々です。', correctAnswer: '1', hint: '数字の1だよ'),
+    '1': MapPin(
+      riddle: 'これは最初の謎々です。',
+      correctAnswer: '__photo_submission__',
+      hint: '数字の1だよ',
+    ),
     '2': MapPin(riddle: 'これは二番目の謎々です。', correctAnswer: '2', hint: '数字の2だよ'),
     '3': MapPin(riddle: 'これは三番目の謎々です。', correctAnswer: '3', hint: '数字の3だよ'),
     '4': MapPin(riddle: 'これは四番目の謎々です。', correctAnswer: '4', hint: '数字の4だよ'),
