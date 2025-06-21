@@ -105,7 +105,7 @@ class ProblemPage extends ConsumerWidget {
                   children: List.generate(4, (index) {
                     // Assuming key IDs are 1, 2, 3, 4
                     final keyId = index + 1;
-                    final image = usedKeyIds.contains(keyId.toString())
+                    final image = usedKeyIds.contains(keyId)
                         ? Assets.images.afterChain
                         : Assets.images.beforeChain;
                     return Transform.rotate(

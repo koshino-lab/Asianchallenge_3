@@ -27,7 +27,7 @@ class QuizService {
     }
   }
 
-  Future<String> checkQuiz(int quizId, String answer, String userId) async {
+  Future<String> checkAnswer(int quizId, String answer, String userId) async {
     final uri = Uri.parse('$_baseUrl/api/quiz');
 
     final response = await http.post(
@@ -41,16 +41,38 @@ class QuizService {
         'userID': userId,
       }),
     );
-
+    print('✅ header: ${response.headers}, body: ${response.body}');
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body);
       return body['status'];
     } else if (response.statusCode == 400) {
       final errorBody = jsonDecode(response.body);
-      throw Exception('Failed to check quiz: ${errorBody['error']}');
+      throw Exception('❌ Failed to check quiz: ${errorBody['error']}');
     } else {
       throw Exception(
-        'Failed to check quiz with status code: ${response.statusCode}',
+        '❌ Failed to check quiz with status code: ${response.statusCode}',
+      );
+    }
+  }
+
+  Future<double> getCorrectAnswerRate(int quizId) async {
+    final uri = Uri.parse(
+      '$_baseUrl/api/quiz/rate',
+    ).replace(queryParameters: {'quizID': quizId.toString()});
+
+    final response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      final body = jsonDecode(response.body);
+      return (body['correctAnswerRate'] as num).toDouble();
+    } else if (response.statusCode == 400) {
+      final errorBody = jsonDecode(response.body);
+      throw Exception(
+        'Failed to get correct answer rate: ${errorBody['error']}',
+      );
+    } else {
+      throw Exception(
+        'Failed to get correct answer rate with status code: ${response.statusCode}',
       );
     }
   }

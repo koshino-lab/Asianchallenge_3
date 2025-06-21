@@ -4,7 +4,7 @@ import 'package:quiz_rally/ui/components/theme_text.dart';
 import 'package:quiz_rally/ui/components/universal_image.dart';
 
 class SolvedContents extends StatelessWidget {
-  final String pinId;
+  final int pinId;
 
   const SolvedContents({super.key, required this.pinId});
 

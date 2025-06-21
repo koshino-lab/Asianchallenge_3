@@ -4,6 +4,7 @@ import 'package:quiz_rally/models/map_pin.dart';
 import 'package:quiz_rally/cookie_manager/cookie_manager.dart';
 import 'package:quiz_rally/models/quiz.dart';
 import 'package:quiz_rally/services/quiz_service.dart';
+import 'package:quiz_rally/services/user_service.dart';
 
 part 'map_page_controller.freezed.dart';
 part 'map_page_controller.g.dart';
@@ -14,12 +15,12 @@ class MapPageState with _$MapPageState {
     @Default(0) int tutorialPageIndex,
     // ↓cokieで保存したいデータ
     @Default(true) bool isFirstOpen,
-    @Default('') String lastSubmissionResult,
-    @Default(<String>{}) Set<String> solvedPinIds,
-    @Default(<String>[]) List<String> usedKeyIds,
+    @Default(<int>{}) Set<int> solvedPinIds,
+    @Default(<int>[]) List<int> usedKeyIds,
     @Default(0) int ownKeyCount,
     @Default(false) bool isLastQuestionAvailable,
     @Default(false) bool isGameCleared,
+    @Default('') String userId,
   }) = _MapPageState;
 
   factory MapPageState.fromJson(Map<String, dynamic> json) =>
@@ -36,6 +37,7 @@ class MapPageController extends StateNotifier<MapPageState> {
   }
 
   final _quizService = QuizService();
+  final _userService = UserService();
 
   static const Map<String, MapPin> mapPins = {
     '1': MapPin(
@@ -80,46 +82,33 @@ class MapPageController extends StateNotifier<MapPageState> {
     // チュートリアルインデックスはcookie保存対象外
   }
 
-  bool isCorrectAnswer(String pinId, String answer) {
-    final MapPin? pin = mapPins[pinId];
-    if (pin == null ||
-        answer.toLowerCase() != pin.correctAnswer.toLowerCase()) {
-      return false;
-    }
+  // bool isCorrectAnswer(String pinId, String answer) {
+  //   final MapPin? pin = mapPins[pinId];
+  //   if (pin == null ||
+  //       answer.toLowerCase() != pin.correctAnswer.toLowerCase()) {
+  //     return false;
+  //   }
 
-    return true;
-  }
+  //   return true;
+  // }
 
-  void submitPinAnswer(String pinId, String answer) {
-    final MapPin? pin = mapPins[pinId];
-    if (pin != null) {
-      if (isCorrectAnswer(pinId, answer)) {
-        state = state.copyWith(
-          lastSubmissionResult: '正解！',
-          solvedPinIds: {...state.solvedPinIds, pinId},
-          ownKeyCount: state.ownKeyCount + 1,
-        );
-        _saveToCookie();
-        print('正解！');
-      } else {
-        state = state.copyWith(lastSubmissionResult: '不正解！');
-        _saveToCookie();
-        print('不正解！');
-      }
-    } else {
-      state = state.copyWith(lastSubmissionResult: 'ピンが見つかりません');
+  Future<bool> checkAnswer(int pinId, String answer) async {
+    if (await isCorrectAnswer(pinId, answer)) {
+      state = state.copyWith(
+        solvedPinIds: {...state.solvedPinIds, pinId},
+        ownKeyCount: state.ownKeyCount + 1,
+      );
       _saveToCookie();
-      print('ピンが見つかりません');
+      print('正解！');
+      return true;
+    } else {
+      print('不正解！');
+      return false;
     }
   }
 
   void clearSubmissionResult() {
-    state = state.copyWith(lastSubmissionResult: '');
     _saveToCookie();
-  }
-
-  Future<Quiz> getQuiz(String quizId) async {
-    return _quizService.getQuiz(quizId);
   }
 
   int get solvedPinCount => state.solvedPinIds.length;
@@ -149,5 +138,46 @@ class MapPageController extends StateNotifier<MapPageState> {
     } else {
       return false;
     }
+  }
+
+  Future<void> createUserId() async {
+    final userId = await _userService.createUserId();
+    state = state.copyWith(userId: userId);
+  }
+
+  Future<List<int>> getProgress() async {
+    if (state.userId == '') {
+      await createUserId();
+    }
+    final userId = state.userId;
+    return _userService.getProgress(userId);
+  }
+
+  Future<Quiz> getQuiz(int quizId) async {
+    return _quizService.getQuiz(quizId.toString());
+  }
+
+  Future<bool> isCorrectAnswer(int quizId, String answer) async {
+    if (state.userId == '') {
+      await createUserId();
+    }
+    final userId = state.userId;
+    print(
+      "Checking answer for quizId: $quizId, answer: $answer, userId: $userId",
+    );
+    final checkAnsResult = await _quizService.checkAnswer(
+      quizId,
+      answer,
+      userId,
+    );
+    if (checkAnsResult == 'success') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<double> getCorrectAnswerRate(int quizId) async {
+    return _quizService.getCorrectAnswerRate(quizId);
   }
 }

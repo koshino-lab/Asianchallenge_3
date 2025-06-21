@@ -13,10 +13,10 @@ import 'package:quiz_rally/ui/pages/map_page/widgets/wrong_contents.dart';
 
 class AnswerPictureDialog extends ConsumerWidget {
   final String riddle;
-  final String pinId;
+  final int pinId;
   final String hint;
-  final void Function(String answer) onSubmit;
-  final bool Function(String answer) isCorrectAns;
+  final Future<bool> Function(String answer) onSubmit;
+  //final Future<bool> Function(String answer) isCorrectAns;
   final VoidCallback? onCameraPressed;
   final XFile? imageFile;
 
@@ -25,7 +25,7 @@ class AnswerPictureDialog extends ConsumerWidget {
     required this.riddle,
     required this.pinId,
     required this.onSubmit,
-    required this.isCorrectAns,
+    //required this.isCorrectAns,
     required this.hint,
     this.onCameraPressed,
     this.imageFile,
@@ -35,9 +35,9 @@ class AnswerPictureDialog extends ConsumerWidget {
     required BuildContext context,
     required WidgetRef ref,
     required String riddle,
-    required String pinId,
-    required void Function(String answer) onSubmit,
-    required bool Function(String answer) isCorrectAns,
+    required int pinId,
+    required Future<bool> Function(String answer) onSubmit,
+    required Future<bool> Function(String answer) isCorrectAns,
     required String hint,
   }) {
     return showDialog<void>(
@@ -48,7 +48,7 @@ class AnswerPictureDialog extends ConsumerWidget {
           riddle: riddle,
           pinId: pinId,
           onSubmit: onSubmit,
-          isCorrectAns: isCorrectAns,
+          // isCorrectAns: isCorrectAns,
           hint: hint,
         ),
       ),
@@ -87,7 +87,7 @@ class AnswerPictureDialog extends ConsumerWidget {
                       const SizedBox(height: 26),
                       DarkBrownTexts(riddle, 20),
                       const SizedBox(height: 26),
-                      if (pinId != '1')
+                      if (pinId != 1)
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 35),
                           child: TextField(
@@ -143,36 +143,19 @@ class AnswerPictureDialog extends ConsumerWidget {
                         children: [
                           InkWell(
                             onTap: () async {
-                              if (pinId == '1') {
-                                if (imageFile != null) {
-                                  const answer = '__photo_submission__';
-                                  onSubmit(answer);
-                                  if (isCorrectAns(answer)) {
-                                    ref
-                                            .read(dialogIndexProvider.notifier)
-                                            .state =
-                                        1; // 正解画面へ
-                                  } else {
-                                    ref
-                                            .read(dialogIndexProvider.notifier)
-                                            .state =
-                                        2; // 不正解画面へ
-                                  }
+                              if (imageFile != null) {
+                                const answer = '__photo_submission__';
+                                final isCorrectAns = await onSubmit(answer);
+                                if (isCorrectAns) {
+                                  ref.read(dialogIndexProvider.notifier).state =
+                                      1; // 正解画面へ
+                                } else {
+                                  ref.read(dialogIndexProvider.notifier).state =
+                                      2; // 不正解画面へ
                                 }
-                                // 写真がなければ何もしない
-                                return;
                               }
-
-                              final ans = _answerController.text;
-                              onSubmit(ans);
-                              _answerController.dispose();
-                              if (isCorrectAns(ans)) {
-                                ref.read(dialogIndexProvider.notifier).state =
-                                    1; // 正解画面へ
-                              } else {
-                                ref.read(dialogIndexProvider.notifier).state =
-                                    2; // 不正解画面へ
-                              }
+                              // 写真がなければ何もしない
+                              return;
                             },
                             child: UniversalImage(
                               Assets.images.redDecoratedButtonSubmit.path,

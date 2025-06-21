@@ -14,7 +14,7 @@ class PositionedQuestionPin extends ConsumerWidget {
   final double? right;
   final double? left;
   final double? bottom;
-  final String pinId;
+  final int pinId;
   final double pinSize = 80.0;
 
   const PositionedQuestionPin({
@@ -60,9 +60,8 @@ class PositionedQuestionPin extends ConsumerWidget {
                         return AnswerPictureDialog(
                           riddle: riddle,
                           hint: hint,
-                          onSubmit: (answer) {
-                            mapPageController.submitPinAnswer(pinId, answer);
-                          },
+                          onSubmit: (answer) =>
+                              mapPageController.checkAnswer(pinId, answer),
                           onCameraPressed: () async {
                             final picker = ImagePicker();
                             final pickedFile = await picker.pickImage(
@@ -79,12 +78,12 @@ class PositionedQuestionPin extends ConsumerWidget {
                           },
                           imageFile: imageFile,
                           pinId: pinId,
-                          isCorrectAns: (answer) {
-                            return mapPageController.isCorrectAnswer(
-                              pinId,
-                              answer,
-                            );
-                          },
+                          // isCorrectAns: (answer) {
+                          //   return mapPageController.isCorrectAnswer(
+                          //     pinId,
+                          //     answer,
+                          //   );
+                          // },
                         );
                       },
                     );
@@ -97,12 +96,11 @@ class PositionedQuestionPin extends ConsumerWidget {
                   riddle: riddle,
                   pinId: pinId,
                   hint: hint,
-                  onSubmit: (answer) {
-                    mapPageController.submitPinAnswer(pinId, answer);
-                  },
-                  isCorrectAns: (answer) {
-                    return mapPageController.isCorrectAnswer(pinId, answer);
-                  },
+                  onSubmit: (answer) =>
+                      mapPageController.checkAnswer(pinId, answer),
+                  // isCorrectAns: (answer) {
+                  //   return mapPageController.isCorrectAnswer(pinId, answer);
+                  // },
                 );
               }
             } catch (e) {
@@ -118,15 +116,15 @@ class PositionedQuestionPin extends ConsumerWidget {
     );
   }
 
-  String _getImageAsset(String pinId) {
+  String _getImageAsset(int pinId) {
     switch (pinId) {
-      case '1':
+      case 1:
         return Assets.images.pin1;
-      case '2':
+      case 2:
         return Assets.images.pin2;
-      case '3':
+      case 3:
         return Assets.images.pin3;
-      case '4':
+      case 4:
         return Assets.images.pin4;
       default:
         return Assets.images.pin1;

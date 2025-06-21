@@ -4,7 +4,7 @@ import 'package:quiz_rally/ui/components/theme_text.dart';
 import 'package:quiz_rally/ui/components/universal_image.dart';
 
 class WrongContents extends StatelessWidget {
-  final String pinId;
+  final int pinId;
   final String hint;
   final void Function() back;
 

@@ -12,17 +12,17 @@ final dialogIndexProvider = StateProvider.autoDispose<int>(
 
 class AnswerTextDialog extends ConsumerWidget {
   final String riddle;
-  final String pinId;
+  final int pinId;
   final String hint;
-  final void Function(String answer) onSubmit;
-  final bool Function(String answer) isCorrectAns;
+  final Future<bool> Function(String answer) onSubmit;
+  //final Future<bool> Function(String answer) isCorrectAns;
 
   const AnswerTextDialog({
     super.key,
     required this.riddle,
     required this.pinId,
     required this.onSubmit,
-    required this.isCorrectAns,
+    //  required this.isCorrectAns,
     this.hint = '',
   });
 
@@ -30,9 +30,9 @@ class AnswerTextDialog extends ConsumerWidget {
     required BuildContext context,
     required WidgetRef ref,
     required String riddle,
-    required String pinId,
-    required void Function(String answer) onSubmit,
-    required bool Function(String answer) isCorrectAns,
+    required int pinId,
+    required Future<bool> Function(String answer) onSubmit,
+    //required Future<bool> Function(String answer) isCorrectAns,
     required String hint,
   }) {
     return showDialog<void>(
@@ -43,7 +43,7 @@ class AnswerTextDialog extends ConsumerWidget {
           riddle: riddle,
           pinId: pinId,
           onSubmit: onSubmit,
-          isCorrectAns: isCorrectAns,
+          // isCorrectAns: isCorrectAns,
           hint: hint,
         ),
       ),
@@ -103,9 +103,9 @@ class AnswerTextDialog extends ConsumerWidget {
                           InkWell(
                             onTap: () async {
                               final ans = _answerController.text;
-                              onSubmit(ans);
+                              final isCorrectAns = await onSubmit(ans);
                               _answerController.dispose();
-                              if (isCorrectAns(ans)) {
+                              if (isCorrectAns) {
                                 ref.read(dialogIndexProvider.notifier).state =
                                     1; // 正解画面へ
                               } else {

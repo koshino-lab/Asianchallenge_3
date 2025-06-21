@@ -10,31 +10,31 @@ _$MapPageStateImpl _$$MapPageStateImplFromJson(Map<String, dynamic> json) =>
     _$MapPageStateImpl(
       tutorialPageIndex: (json['tutorialPageIndex'] as num?)?.toInt() ?? 0,
       isFirstOpen: json['isFirstOpen'] as bool? ?? true,
-      lastSubmissionResult: json['lastSubmissionResult'] as String? ?? '',
       solvedPinIds:
           (json['solvedPinIds'] as List<dynamic>?)
-              ?.map((e) => e as String)
+              ?.map((e) => (e as num).toInt())
               .toSet() ??
-          const <String>{},
+          const <int>{},
       usedKeyIds:
           (json['usedKeyIds'] as List<dynamic>?)
-              ?.map((e) => e as String)
+              ?.map((e) => (e as num).toInt())
               .toList() ??
-          const <String>[],
+          const <int>[],
       ownKeyCount: (json['ownKeyCount'] as num?)?.toInt() ?? 0,
       isLastQuestionAvailable:
           json['isLastQuestionAvailable'] as bool? ?? false,
       isGameCleared: json['isGameCleared'] as bool? ?? false,
+      userId: json['userId'] as String? ?? '',
     );
 
 Map<String, dynamic> _$$MapPageStateImplToJson(_$MapPageStateImpl instance) =>
     <String, dynamic>{
       'tutorialPageIndex': instance.tutorialPageIndex,
       'isFirstOpen': instance.isFirstOpen,
-      'lastSubmissionResult': instance.lastSubmissionResult,
       'solvedPinIds': instance.solvedPinIds.toList(),
       'usedKeyIds': instance.usedKeyIds,
       'ownKeyCount': instance.ownKeyCount,
       'isLastQuestionAvailable': instance.isLastQuestionAvailable,
       'isGameCleared': instance.isGameCleared,
+      'userId': instance.userId,
     };
