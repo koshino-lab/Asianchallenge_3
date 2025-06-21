@@ -172,6 +172,7 @@ def initdb():
     {'quizID': 1, 'problem': "1+1は？", 'answer': "2", 'type': 0},
     {'quizID': 2, 'problem': "天照大神、月読命、素戔嗚尊、この三柱をまとめて何という？", 'answer': "三貴子", 'type': 0},
     {'quizID': 3, 'problem': "Asian Bridge's logo", 'answer': "asian_logo.pt", 'type': 1},
+    {'quizID': 4, 'problem': "サメだ！殴れ！", 'answer': "SPC", 'type': 0},
   ]
   stmt = insert(Quiz).values(quizzes)
 
