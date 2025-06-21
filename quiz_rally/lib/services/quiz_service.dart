@@ -26,4 +26,32 @@ class QuizService {
       );
     }
   }
+
+  Future<String> checkQuiz(int quizId, String answer, String userId) async {
+    final uri = Uri.parse('$_baseUrl/api/quiz');
+
+    final response = await http.post(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'quizID': quizId,
+        'answer': answer,
+        'userID': userId,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final body = jsonDecode(response.body);
+      return body['status'];
+    } else if (response.statusCode == 400) {
+      final errorBody = jsonDecode(response.body);
+      throw Exception('Failed to check quiz: ${errorBody['error']}');
+    } else {
+      throw Exception(
+        'Failed to check quiz with status code: ${response.statusCode}',
+      );
+    }
+  }
 }

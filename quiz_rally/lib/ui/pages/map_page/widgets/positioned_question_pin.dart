@@ -31,7 +31,6 @@ class PositionedQuestionPin extends ConsumerWidget {
     final mapPageState = ref.watch(mapPageProvider);
     final mapPageController = ref.read(mapPageProvider.notifier);
     final isSolved = mapPageState.solvedPinIds.contains(pinId);
-    final hint = MapPageController.mapPins[pinId]?.hint ?? '';
     // 画像アセット名をpinIdから取得
     final imageAsset = _getImageAsset(pinId);
 
@@ -49,6 +48,8 @@ class PositionedQuestionPin extends ConsumerWidget {
               final quiz = await mapPageController.getQuiz(pinId);
               final riddle = quiz.quiz;
               final type = quiz.type;
+              final hint = quiz.hint;
+              print('✅ Quiz fetched: $riddle, type: $type, hint: $hint');
               if (type == 1) {
                 XFile? imageFile;
                 showDialog(
