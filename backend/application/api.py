@@ -167,6 +167,8 @@ def correctAnswerRate():
 
 @app.route('/XsGCKgHtlP/initdb')
 def initdb():
+  app.logger.info(f"DATABASE_URL: {os.getenv('DATABASE_URL')}")
+  app.logger.info(f"FRONTEND_URL: {os.getenv('FRONTEND_URL')}")
   db.create_all()
   quizzes = [
     {'quizID': 1, 'problem': "1+1は？", 'answer': "2", "hint": "田じゃないよ", 'type': 0},
