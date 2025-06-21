@@ -7,5 +7,6 @@ class MapPin with _$MapPin {
   const factory MapPin({
     required String riddle,
     required String correctAnswer,
+    @Default('') String hint,
   }) = _MapPin;
 }

@@ -19,6 +19,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$MapPin {
   String get riddle => throw _privateConstructorUsedError;
   String get correctAnswer => throw _privateConstructorUsedError;
+  String get hint => throw _privateConstructorUsedError;
 
   /// Create a copy of MapPin
   /// with the given fields replaced by the non-null parameter values.
@@ -31,7 +32,7 @@ abstract class $MapPinCopyWith<$Res> {
   factory $MapPinCopyWith(MapPin value, $Res Function(MapPin) then) =
       _$MapPinCopyWithImpl<$Res, MapPin>;
   @useResult
-  $Res call({String riddle, String correctAnswer});
+  $Res call({String riddle, String correctAnswer, String hint});
 }
 
 /// @nodoc
@@ -48,7 +49,11 @@ class _$MapPinCopyWithImpl<$Res, $Val extends MapPin>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? riddle = null, Object? correctAnswer = null}) {
+  $Res call({
+    Object? riddle = null,
+    Object? correctAnswer = null,
+    Object? hint = null,
+  }) {
     return _then(
       _value.copyWith(
             riddle: null == riddle
@@ -58,6 +63,10 @@ class _$MapPinCopyWithImpl<$Res, $Val extends MapPin>
             correctAnswer: null == correctAnswer
                 ? _value.correctAnswer
                 : correctAnswer // ignore: cast_nullable_to_non_nullable
+                      as String,
+            hint: null == hint
+                ? _value.hint
+                : hint // ignore: cast_nullable_to_non_nullable
                       as String,
           )
           as $Val,
@@ -73,7 +82,7 @@ abstract class _$$MapPinImplCopyWith<$Res> implements $MapPinCopyWith<$Res> {
   ) = __$$MapPinImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String riddle, String correctAnswer});
+  $Res call({String riddle, String correctAnswer, String hint});
 }
 
 /// @nodoc
@@ -89,7 +98,11 @@ class __$$MapPinImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? riddle = null, Object? correctAnswer = null}) {
+  $Res call({
+    Object? riddle = null,
+    Object? correctAnswer = null,
+    Object? hint = null,
+  }) {
     return _then(
       _$MapPinImpl(
         riddle: null == riddle
@@ -100,6 +113,10 @@ class __$$MapPinImplCopyWithImpl<$Res>
             ? _value.correctAnswer
             : correctAnswer // ignore: cast_nullable_to_non_nullable
                   as String,
+        hint: null == hint
+            ? _value.hint
+            : hint // ignore: cast_nullable_to_non_nullable
+                  as String,
       ),
     );
   }
@@ -108,16 +125,23 @@ class __$$MapPinImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$MapPinImpl implements _MapPin {
-  const _$MapPinImpl({required this.riddle, required this.correctAnswer});
+  const _$MapPinImpl({
+    required this.riddle,
+    required this.correctAnswer,
+    this.hint = '',
+  });
 
   @override
   final String riddle;
   @override
   final String correctAnswer;
+  @override
+  @JsonKey()
+  final String hint;
 
   @override
   String toString() {
-    return 'MapPin(riddle: $riddle, correctAnswer: $correctAnswer)';
+    return 'MapPin(riddle: $riddle, correctAnswer: $correctAnswer, hint: $hint)';
   }
 
   @override
@@ -127,11 +151,12 @@ class _$MapPinImpl implements _MapPin {
             other is _$MapPinImpl &&
             (identical(other.riddle, riddle) || other.riddle == riddle) &&
             (identical(other.correctAnswer, correctAnswer) ||
-                other.correctAnswer == correctAnswer));
+                other.correctAnswer == correctAnswer) &&
+            (identical(other.hint, hint) || other.hint == hint));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, riddle, correctAnswer);
+  int get hashCode => Object.hash(runtimeType, riddle, correctAnswer, hint);
 
   /// Create a copy of MapPin
   /// with the given fields replaced by the non-null parameter values.
@@ -146,12 +171,15 @@ abstract class _MapPin implements MapPin {
   const factory _MapPin({
     required final String riddle,
     required final String correctAnswer,
+    final String hint,
   }) = _$MapPinImpl;
 
   @override
   String get riddle;
   @override
   String get correctAnswer;
+  @override
+  String get hint;
 
   /// Create a copy of MapPin
   /// with the given fields replaced by the non-null parameter values.

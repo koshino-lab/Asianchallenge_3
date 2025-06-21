@@ -26,7 +26,7 @@ class AnswerPictureDialog extends ConsumerWidget {
     required this.pinId,
     required this.onSubmit,
     required this.isCorrectAns,
-    this.hint = '',
+    required this.hint,
     this.onCameraPressed,
     this.imageFile,
   });
@@ -38,6 +38,7 @@ class AnswerPictureDialog extends ConsumerWidget {
     required String pinId,
     required void Function(String answer) onSubmit,
     required bool Function(String answer) isCorrectAns,
+    required String hint,
   }) {
     return showDialog<void>(
       context: context,
@@ -48,6 +49,7 @@ class AnswerPictureDialog extends ConsumerWidget {
           pinId: pinId,
           onSubmit: onSubmit,
           isCorrectAns: isCorrectAns,
+          hint: hint,
         ),
       ),
     );

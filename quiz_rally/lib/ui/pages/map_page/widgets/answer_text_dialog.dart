@@ -33,6 +33,7 @@ class AnswerTextDialog extends ConsumerWidget {
     required String pinId,
     required void Function(String answer) onSubmit,
     required bool Function(String answer) isCorrectAns,
+    required String hint,
   }) {
     return showDialog<void>(
       context: context,
@@ -43,6 +44,7 @@ class AnswerTextDialog extends ConsumerWidget {
           pinId: pinId,
           onSubmit: onSubmit,
           isCorrectAns: isCorrectAns,
+          hint: hint,
         ),
       ),
     );

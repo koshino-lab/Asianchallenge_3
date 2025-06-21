@@ -31,6 +31,7 @@ class PositionedQuestionPin extends ConsumerWidget {
     final mapPageController = ref.read(mapPageProvider.notifier);
     final isSolved = mapPageState.solvedPinIds.contains(pinId);
     final riddle = MapPageController.mapPins[pinId]?.riddle ?? '';
+    final hint = MapPageController.mapPins[pinId]?.hint ?? '';
     // 画像アセット名をpinIdから取得
     final imageAsset = _getImageAsset(pinId);
 
@@ -53,6 +54,7 @@ class PositionedQuestionPin extends ConsumerWidget {
                     builder: (context, setState) {
                       return AnswerPictureDialog(
                         riddle: riddle,
+                        hint: hint,
                         onSubmit: (answer) {
                           mapPageController.submitPinAnswer(pinId, answer);
                         },
@@ -89,6 +91,7 @@ class PositionedQuestionPin extends ConsumerWidget {
                 ref: ref,
                 riddle: riddle,
                 pinId: pinId,
+                hint: hint,
                 onSubmit: (answer) {
                   mapPageController.submitPinAnswer(pinId, answer);
                 },
