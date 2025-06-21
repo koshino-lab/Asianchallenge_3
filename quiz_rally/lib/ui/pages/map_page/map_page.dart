@@ -52,10 +52,10 @@ class MapPage extends HookConsumerWidget {
           ? Stack(
               children: [
                 SizedBox(width: double.infinity, child: image),
-                PositionedQuestionPin(top: 100, left: 50, pinId: 'pin1'),
-                PositionedQuestionPin(top: 200, right: 80, pinId: 'pin2'),
-                PositionedQuestionPin(bottom: 150, left: 120, pinId: 'pin3'),
-                PositionedQuestionPin(bottom: 50, right: 20, pinId: 'pin4'),
+                PositionedQuestionPin(top: 100, left: 50, pinId: '1'),
+                PositionedQuestionPin(top: 200, right: 80, pinId: '2'),
+                PositionedQuestionPin(bottom: 150, left: 120, pinId: '3'),
+                PositionedQuestionPin(bottom: 50, right: 20, pinId: '4'),
               ],
             )
           : Center(child: CircularProgressIndicator()),

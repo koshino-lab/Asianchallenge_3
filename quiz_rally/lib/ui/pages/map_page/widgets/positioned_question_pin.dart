@@ -44,7 +44,7 @@ class PositionedQuestionPin extends ConsumerWidget {
           if (isSolved) {
             await SolvedDialog.show(context, pinId);
           } else {
-            if (pinId == 'pin1') {
+            if (pinId == '1') {
               XFile? imageFile;
               showDialog(
                 context: context,
@@ -106,13 +106,13 @@ class PositionedQuestionPin extends ConsumerWidget {
 
   String _getImageAsset(String pinId) {
     switch (pinId) {
-      case 'pin1':
+      case '1':
         return Assets.images.pin1;
-      case 'pin2':
+      case '2':
         return Assets.images.pin2;
-      case 'pin3':
+      case '3':
         return Assets.images.pin3;
-      case 'pin4':
+      case '4':
         return Assets.images.pin4;
       default:
         return Assets.images.pin1;
