@@ -137,6 +137,15 @@ class $AssetsImagesGen {
   /// File path: assets/images/story3.png
   AssetGenImage get story3 => const AssetGenImage('assets/images/story3.png');
 
+  /// File path: assets/images/succes_page.jpg
+  AssetGenImage get succesPage =>
+      const AssetGenImage('assets/images/succes_page.jpg');
+
+  /// File path: assets/images/succes_page2.png
+  AssetGenImage get succesPage2 =>
+      const AssetGenImage('assets/images/succes_page2.png');
+
+
   /// List of all assets
   List<dynamic> get values => [
     icon,
@@ -172,6 +181,8 @@ class $AssetsImagesGen {
     story1,
     story2,
     story3,
+    succesPage,
+    succesPage2,
   ];
 }
 
