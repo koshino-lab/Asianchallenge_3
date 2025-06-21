@@ -8,6 +8,7 @@ class DefaultConfig:
   TESTING = False
   PERMANENT_SESSION_LIFETIME = timedelta(days=2)
   SECRET_KEY = os.getenv('SECRET_KEY', "AAAAA")
+  SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "postgresql://flaskuser:password@localhost:5432/quiz_rally")
 
 
 class DevelopmentConfig(DefaultConfig):

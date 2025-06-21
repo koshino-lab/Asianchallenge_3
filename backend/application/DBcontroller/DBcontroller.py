@@ -1,84 +1,30 @@
-import mysql.connector
-from mysql.connector import Error
-import threading
-import json
-import time
+from application.DBcontroller import db
+from datetime import datetime
 
-class MysqlOperator:
-  def __init__(self, config_path:str):
-    self.config_path = config_path
-    self.con = None
-    self.query_lock = threading.Lock()
-    self.start_connection(config_path)
+class Users(db.Model):
+  __tablename__ = 'users'
 
-  @classmethod
-  def connect_mysql(self, user:str, password:str, host:str, database:str):
-    for _ in range(10):
-      try:
-        con = mysql.connector.connect(user=user, password=password, host=host, database=database)
-      except Error as e:
-        print(f"Error connecting to MySQL: {e}")
-        print("Retrying in 5 seconds...")
-        time.sleep(5)
-    if not con.is_connected():
-      raise Exception("Failed to connect to MySQL server")
-    con.ping(reconnect=True)
-    con.autocommit = False
-    return con
+  userID = db.Column(db.String(16), nullable=False, primary_key=True)
+  time = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
-  @classmethod
-  def load_config(self, path:str):
-    return json.load(open(path, 'r'))
-    
-  def __del__(self):
-    self.close_connection()
+class Quiz(db.Model):
+  __tablename__ = 'quiz'
 
-  def start_connection(self, path):
-    password = self.set_config(path)
-    self.con = MysqlOperator.connect_mysql(user=self.user, password=password, host=self.host, database=self.database)
+  quizID = db.Column(db.SmallInteger, primary_key=True)
+  problem = db.Column(db.String(512), nullable=False)
+  answer = db.Column(db.String(64), nullable=False)
+  type = db.Column(db.SmallInteger, nullable=False)  # TinyInt 相当
 
-  def set_config(self, path:str):
-    config = MysqlOperator.load_config(path)
-    self.user = config['user']
-    self.host = config['host']
-    self.database = config['database']
-    return config['password']
+  def __repr__(self):
+    return f"<Quiz {self.quizID}: {self.problem[:30]}>"
 
-  def close_connection(self):
-    self.query_lock.acquire()
-    if self.con is not None:
-      self.con.close()
-      self.con = None
-    self.query_lock.release()
+class CorrectAnswer(db.Model):
+  __tablename__ = 'correct_answer'
 
-  def commit(self):
-    self.con.commit()
-  def rollback(self):
-    self.con.rollback()
+  userID = db.Column(db.String(16), db.ForeignKey('users.userID', onupdate="CASCADE"), nullable=False, primary_key=True)
+  quizID = db.Column(db.SmallInteger, db.ForeignKey('quiz.quizID', onupdate="CASCADE"), nullable=False, primary_key=True)
+  time = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
-  def query(self, stmt:str, commit=False, args=None, many=False, prepared=True, debug=False, **kwargs):
-    self.query_lock.acquire()
-    try:
-      if self.con is None or not self.con.is_connected():
-        self.start_connection(self.config_path)
-      cur = self.con.cursor(prepared=prepared, **kwargs)
-      exefunc = cur.executemany if many else cur.execute
-      exefunc(stmt, args) if args else exefunc(stmt)
-
-      if debug:
-        print('----executed----')
-        print(cur._executed)
-        print('----------------')
-
-      res = cur.fetchall()
-      if commit:
-        self.commit()
-    except Exception as e:
-      self.rollback()
-      raise e
-    finally:
-      cur.close()
-      self.query_lock.release()
-    return res
-
+  def __repr__(self):
+    return f"<CorrectAnswer user={self.userID}, quiz={self.quizID}>"
 
