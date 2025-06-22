@@ -60,8 +60,6 @@ class AnswerPictureDialog extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dialogIndex = ref.watch(dialogIndexProvider);
-    final TextEditingController _answerController = TextEditingController();
-
     return Dialog(
       backgroundColor: Colors.transparent,
       insetPadding: EdgeInsets.zero,
@@ -93,22 +91,7 @@ class AnswerPictureDialog extends ConsumerWidget {
                       if (pinId != 1)
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 35),
-                          child: TextField(
-                            controller: _answerController,
-                            decoration: const InputDecoration(
-                              hintText: '解答を入力してください',
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 8,
-                              ),
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
                         ),
-                      IconButton(
-                        icon: const Icon(Icons.camera_alt),
-                        onPressed: onCameraPressed,
-                      ),
                       if (imageFile != null)
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
@@ -121,8 +104,8 @@ class AnswerPictureDialog extends ConsumerWidget {
                                         snapshot.hasData) {
                                       return ConstrainedBox(
                                         constraints: const BoxConstraints(
-                                          maxWidth: 50,
-                                          maxHeight: 50,
+                                          maxWidth: 60,
+                                          maxHeight: 60,
                                         ),
                                         child: Image.memory(
                                           snapshot.data!,
@@ -141,6 +124,10 @@ class AnswerPictureDialog extends ConsumerWidget {
                                   fit: BoxFit.cover,
                                 ),
                         ),
+                      IconButton(
+                        icon: const Icon(Icons.camera_alt),
+                        onPressed: onCameraPressed,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
