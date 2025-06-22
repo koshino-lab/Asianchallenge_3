@@ -10,6 +10,7 @@ import random
 import string
 import os
 import base64
+import json
 from io import BytesIO
 
 
@@ -43,13 +44,17 @@ def quiz():
   elif request.method == 'POST' or request.method == 'OPTIONS':
     # クイズの答え合わせ
     # データはformで取得
-    if request.is_json:
+    if request.is_json and 'quizID' in request.json:
       data = request.json
-    elif request.form is not None:
+    elif request.form and 'quizID' in request.form:
       data = request.form
     else:
-      app.logger.debug(f"request.form or request.json does not exist")
-      return jsonify({ "error": "Bad Request" }), 400
+      try:
+        data = request.data.decode('utf-8')
+        data = json.loads(data)
+      except:
+        app.logger.debug(f"request.form or request.json does not exist and request.data is not None({request.data})")
+        return jsonify({ "error": "Bad Request" }), 400
 
     userID = data.get("userID", None)
     if userID is None:
