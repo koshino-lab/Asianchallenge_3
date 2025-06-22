@@ -110,7 +110,7 @@ class MapPageController extends StateNotifier<MapPageState> {
   /// 最後の問題の回答を判定し、正解ならisGameClearedをtrueにする
   bool checkLastAnswer(String answer) {
     // 正解は「アジア」など、必要に応じて変更
-    if (answer.trim() == 'アジア') {
+    if (answer.trim() == '高専の森') {
       state = state.copyWith(isGameCleared: true);
       _saveToCookie();
       return true;

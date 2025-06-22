@@ -50,13 +50,8 @@ class ProblemPage extends ConsumerWidget {
                     const SizedBox(height: 24),
                     if (isLastQuestionShow) ...[
                       // if (true) ...[
-                      const Text(
-                        '最後の問題:\n"アジアのチャレンジ"の合言葉は？',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
+                        Image.asset(Assets.images.finalQuestion.path, // ← あなたの画像アセット名に合わせて変更してください
+                        fit: BoxFit.contain,
                       ),
                       const SizedBox(height: 24),
                       TextField(

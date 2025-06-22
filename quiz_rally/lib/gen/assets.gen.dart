@@ -38,6 +38,10 @@ class $AssetsImagesGen {
   AssetGenImage get designdRedButtom =>
       const AssetGenImage('assets/images/designd_red_buttom.png');
 
+  /// File path: assets/images/final_question.png
+  AssetGenImage get finalQuestion =>
+      const AssetGenImage('assets/images/final_question.png');
+
   /// File path: assets/images/key.png
   AssetGenImage get key => const AssetGenImage('assets/images/key.png');
 
@@ -148,7 +152,6 @@ class $AssetsImagesGen {
   AssetGenImage get succesPage2 =>
       const AssetGenImage('assets/images/succes_page2.png');
 
-
   /// List of all assets
   List<dynamic> get values => [
     icon,
@@ -158,6 +161,7 @@ class $AssetsImagesGen {
     closeRedButton,
     container,
     designdRedButtom,
+    finalQuestion,
     key,
     keyWithShadow,
     letterDialogRectangle,
@@ -193,7 +197,11 @@ class $AssetsImagesGen {
 class Assets {
   const Assets._();
 
+  static const String aEnv = '.env';
   static const $AssetsImagesGen images = $AssetsImagesGen();
+
+  /// List of all assets
+  static List<String> get values => [aEnv];
 }
 
 class AssetGenImage {
