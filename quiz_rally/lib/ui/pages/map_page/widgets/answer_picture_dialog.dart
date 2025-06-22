@@ -16,7 +16,7 @@ class AnswerPictureDialog extends ConsumerWidget {
   final int pinId;
   final String hint;
   final Future<bool> Function(String answer) onSubmit;
-  //final Future<bool> Function(String answer) isCorrectAns;
+  final double correctAnsRate;
   final VoidCallback? onCameraPressed;
   final XFile? imageFile;
 
@@ -25,7 +25,7 @@ class AnswerPictureDialog extends ConsumerWidget {
     required this.riddle,
     required this.pinId,
     required this.onSubmit,
-    //required this.isCorrectAns,
+    required this.correctAnsRate,
     required this.hint,
     this.onCameraPressed,
     this.imageFile,
@@ -39,6 +39,7 @@ class AnswerPictureDialog extends ConsumerWidget {
     required Future<bool> Function(String answer) onSubmit,
     required Future<bool> Function(String answer) isCorrectAns,
     required String hint,
+    required double correctAnsRate,
   }) {
     return showDialog<void>(
       context: context,
@@ -48,8 +49,8 @@ class AnswerPictureDialog extends ConsumerWidget {
           riddle: riddle,
           pinId: pinId,
           onSubmit: onSubmit,
-          // isCorrectAns: isCorrectAns,
           hint: hint,
+          correctAnsRate: correctAnsRate,
         ),
       ),
     );
@@ -78,6 +79,7 @@ class AnswerPictureDialog extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                DarkBrownTexts('正答率: $correctAnsRate', 20),
                 if (dialogIndex == 0)
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,

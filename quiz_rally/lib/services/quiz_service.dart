@@ -41,7 +41,6 @@ class QuizService {
         'userID': userId,
       }),
     );
-    print('✅ header: ${response.headers}, body: ${response.body}');
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body);
       return body['status'];
@@ -57,11 +56,11 @@ class QuizService {
 
   Future<double> getCorrectAnswerRate(int quizId) async {
     final uri = Uri.parse(
-      '$_baseUrl/api/quiz/rate',
+      '$_baseUrl/api/correctAnswerRate',
     ).replace(queryParameters: {'quizID': quizId.toString()});
 
     final response = await http.get(uri);
-
+    print('✅ header: ${response.headers}, body: ${response.body}');
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body);
       return (body['correctAnswerRate'] as num).toDouble();
