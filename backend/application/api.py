@@ -20,7 +20,7 @@ def createUserID():
   return ''.join(random.choices(chars, k=16))
 
 
-@app.route("/api/quiz", methods=['GET', 'POST', 'OPTIONS'])
+@app.route("/api/quiz", methods=['GET', 'POST'])
 def quiz():
   if request.method == 'GET':
     # クイズを取得
@@ -41,7 +41,7 @@ def quiz():
 
     return jsonify({ "quiz": res.problem, "hint": res.hint, "type": res.type })
 
-  elif request.method == 'POST' or request.method == 'OPTIONS':
+  elif request.method == 'POST':
     # クイズの答え合わせ
     # データはformで取得
     if request.is_json and 'quizID' in request.json:
