@@ -177,7 +177,7 @@ def correctAnswerRate():
 
   qres = db.session.query(CorrectAnswer.quizID, func.count()).group_by(CorrectAnswer.quizID).all()
   qres = { q[0]: q[1] for q in qres }
-  qres = [ qres.get(i, 0) for i in range(quiz_num) ]
+  qres = [ qres.get(i, 0) for i in range(1, quiz_num+1) ]
   quizID = request.args.get("quizID", None)
   if quizID is None:
     return jsonify([ {"correctAnswerRate": 100 * q / user_num} for q in qres ]), 200
