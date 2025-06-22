@@ -183,10 +183,10 @@ def correctAnswerRate():
     return jsonify([ {"correctAnswerRate": 100 * q / user_num} for q in qres ]), 200
   else:
     try:
-      quizID = int(quizID)
+      quizID = int(quizID) - 1
     except ValueError:
       return jsonify({ "error": "Bad Request" }), 400
-    if quizID >= quiz_num or quizID < 0:
+    if quizID > quiz_num or quizID < 0:
       return jsonify({ "error": "Bad Request" }), 400
     return jsonify({"correctAnswerRate": 100 * qres[quizID] / user_num}), 200
 
