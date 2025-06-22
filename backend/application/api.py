@@ -167,11 +167,14 @@ def progress():
 # quizID is Noneの時、全て取得
 @app.route("/api/correctAnswerRate", methods=['GET'])
 def correctAnswerRate():
-  user_num = len(Users.__table__.columns)
+  user_num = Users.query.count()
+  quiz_num = Quiz.query.count()
   if user_num == 0:
-    return jsonify({"correctAnswerRate": 0.0}), 200
+    if request.args.get("quizID", None) is None:
+      return jsonify([{"correctAnswerRate": 0.0} for i in range(quiz_num)]), 200
+    else:
+      return jsonify({"correctAnswerRate": 0.0}), 200
 
-  quiz_num = len(Quiz.__table__.columns)
   qres = db.session.query(CorrectAnswer.quizID, func.count()).group_by(CorrectAnswer.quizID).all()
   qres = { q[0]: q[1] for q in qres }
   qres = [ qres.get(i, 0) for i in range(quiz_num) ]
