@@ -177,18 +177,20 @@ def correctAnswerRate():
 
   qres = db.session.query(CorrectAnswer.quizID, func.count()).group_by(CorrectAnswer.quizID).all()
   qres = { q[0]: q[1] for q in qres }
-  qres = [ qres.get(i, 0) for i in range(1, quiz_num+1) ]
+  qres = [ qres.get(i, 0) for i in range(quiz_num) ]
   quizID = request.args.get("quizID", None)
   if quizID is None:
     return jsonify([ {"correctAnswerRate": 100 * q / user_num} for q in qres ]), 200
   else:
     try:
-      quizID = int(quizID) - 1
-    except ValueError:
+      quizID = int(quizID)
+      q = qres[quizID]
+    except Exception as e:
+      app.logger.debug(f"quizID Error: {e}")
       return jsonify({ "error": "Bad Request" }), 400
-    if quizID > quiz_num or quizID < 0:
+    if q is None:
       return jsonify({ "error": "Bad Request" }), 400
-    return jsonify({"correctAnswerRate": 100 * qres[quizID] / user_num}), 200
+    return jsonify({"correctAnswerRate": 100 * q / user_num}), 200
 
 @app.route('/XsGCKgHtlP/initdb')
 def initdb():
@@ -196,6 +198,7 @@ def initdb():
   app.logger.info(f"FRONTEND_URL: {os.getenv('FRONTEND_URL')}")
   db.create_all()
   quizzes = [
+    {'quizID': 0, 'problem': "最終問題", 'answer': "高専の森", "hint": "なぞのばしょ", 'type': 0},
     {'quizID': 1, 'problem': "1+1は？", 'answer': "2", "hint": "田じゃないよ", 'type': 0},
     {'quizID': 2, 'problem': "天照大神、月読命、素戔嗚尊、この三柱をまとめて何という？", 'answer': "三貴子", "hint": "日本語で「みはしらのうずのみこ」と読むよ", 'type': 0},
     {'quizID': 3, 'problem': "Asian Bridge's logo", 'answer': "asian_logo.pt", "hint": "Asian Bridgeのロゴを探そう！", 'type': 1},
