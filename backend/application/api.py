@@ -9,6 +9,8 @@ import numpy as np
 import random
 import string
 import os
+import base64
+from io import BytesIO
 
 
 
@@ -25,7 +27,11 @@ def quiz():
     if quizID is None:
       app.logger.debug("quizID is None")
       return jsonify({ "error": "Bad Request" }), 400
-    quizID = int(quizID)
+    try:
+      quizID = int(quizID)
+    except ValueError:
+      app.logger.debug(f"Invalid quizID: {quizID}")
+      return jsonify({"error": "Invalid quizID"}), 400
 
     res = Quiz.query.filter_by(quizID=quizID).first()
     if not res:
@@ -37,46 +43,62 @@ def quiz():
   elif request.method == 'POST':
     # クイズの答え合わせ
     # データはformで取得
-    if request.form is None:
-      app.logger.debug(f"request.form does not exist")
+    if request.is_json:
+      data = request.json
+    elif request.form is not None:
+      data = request.form
+    else:
+      app.logger.debug(f"request.form or request.json does not exist")
       return jsonify({ "error": "Bad Request" }), 400
 
-    userID = request.form.get("userID", None)
+    userID = data.get("userID", None)
     if userID is None:
-      app.logger.debug(f"userID is None({request.form})")
+      app.logger.debug(f"userID is None({data})")
       return jsonify({ "error": "Bad Request" }), 400
     user = Users.query.get(userID)
     if not user:
-      app.logger.debug(f"userID is not registered({request.form})")
+      app.logger.debug(f"userID is not registered({data})")
       return jsonify({ "error": "Bad Request" }), 400
 
-    quizID = request.form.get("quizID", None)
+    quizID = data.get("quizID", None)
     if quizID is None:
-      app.logger.debug(f"quizID is None{request.form}")
+      app.logger.debug(f"quizID is None({data})")
       return jsonify({ "error": "Bad Request" }), 400
 
-    quizID = int(quizID)
-
+    try:
+      quizID = int(quizID)
+    except ValueError:
+      app.logger.debug(f"Invalid quizID: {quizID}")
+      return jsonify({"error": "Invalid quizID"}), 400
     correct = CorrectAnswer.query.filter_by(quizID=quizID, userID=userID).first()
     if correct:
       app.logger.debug(f"Already cleared")
       return jsonify({ "error": "Bad Request" }), 400
 
-
-    quiz = Quiz.query.filter_by(quizID=int(quizID)).first()
+    quiz = Quiz.query.filter_by(quizID=quizID).first()
     if not quiz:
       app.logger.debug(f"Quiz does not exist(quizID={quizID})")
       return jsonify({ "error": "Bad Request" }), 400
 
+    answer = data.get("answer", None)
     if quiz.type == 1:
-      if 'file' not in request.files:
-        app.logger.debug(f"file does not exist")
-        return jsonify({ "error": "Bad Request" }), 400
-
-      answer = request.files['file']
-      if answer.filename == '':
-        app.logger.debug(f"filename does not exist")
-        return jsonify({ "error": "Bad Request" }), 400
+      if answer is None:
+        if 'file' in request.files:
+          answer = request.files['file']
+          if answer.filename == '':
+            app.logger.debug(f"filename does not exist")
+            return jsonify({ "error": "Bad Request" }), 400
+          answer = answer.stream
+        else:
+          app.logger.debug(f"file does not exist")
+          return jsonify({ "error": "Bad Request" }), 400
+      else:
+        try:
+          answer = base64.b64decode(answer)
+          answer = BytesIO(answer)
+        except (binascii.Error, ValueError) as e:
+          app.logger.error(f"base64 decode error: {e}")
+          return jsonify({"error": "Bad Request"}), 400
 
       model_path = os.getenv('MODEL_DIR', './model/') + quiz.answer
       if not os.path.isfile(model_path):
@@ -85,7 +107,7 @@ def quiz():
 
       model = YOLO(model_path)
       try:
-        image = Image.open(answer.stream).convert('RGB')
+        image = Image.open(answer).convert('RGB')
         img = np.asarray(image).copy()
         img[..., [0, 2]] = img[..., [2, 0]]
       except Exception as e:
@@ -101,7 +123,6 @@ def quiz():
         return jsonify({"status": "incorrect"}), 200
 
     elif quiz.type == 0:
-      answer = request.form.get("answer", None)
       if answer is None:
         app.logger.debug(f"answer does not exist({request.form})")
         return jsonify({ "error": "Bad Request" }), 400
