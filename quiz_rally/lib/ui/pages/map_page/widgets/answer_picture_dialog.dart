@@ -17,7 +17,7 @@ class AnswerPictureDialog extends ConsumerWidget {
   final int pinId;
   final String hint;
   final Future<bool> Function(String answer) onSubmit;
-  final double correctAnsRate;
+  final int correctAnsRate;
   final VoidCallback? onCameraPressed;
   final XFile? imageFile;
 
@@ -40,7 +40,7 @@ class AnswerPictureDialog extends ConsumerWidget {
     required Future<bool> Function(String answer) onSubmit,
     required Future<bool> Function(String answer) isCorrectAns,
     required String hint,
-    required double correctAnsRate,
+    required int correctAnsRate,
   }) {
     return showDialog<void>(
       context: context,
@@ -80,7 +80,7 @@ class AnswerPictureDialog extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                DarkBrownTexts('正答率: $correctAnsRate', 20),
+                DarkBrownTexts('正答率: $correctAnsRate %', 20),
                 if (dialogIndex == 0)
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -147,7 +147,8 @@ class AnswerPictureDialog extends ConsumerWidget {
                           InkWell(
                             onTap: () async {
                               if (imageFile != null) {
-                                List<int> imageBytes = await imageFile!.readAsBytes();
+                                List<int> imageBytes = await imageFile!
+                                    .readAsBytes();
                                 final answer = base64Encode(imageBytes);
                                 final isCorrectAns = await onSubmit(answer);
                                 if (isCorrectAns) {

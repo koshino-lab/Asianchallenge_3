@@ -16,7 +16,7 @@ class AnswerTextDialog extends ConsumerWidget {
   final int pinId;
   final String hint;
   final Future<bool> Function(String answer) onSubmit;
-  final double correctAnsRate;
+  final int correctAnsRate;
   //final Future<bool> Function(String answer) isCorrectAns;
 
   const AnswerTextDialog({
@@ -34,7 +34,7 @@ class AnswerTextDialog extends ConsumerWidget {
     required String riddle,
     required int pinId,
     required Future<bool> Function(String answer) onSubmit,
-    required double correctAnsRate,
+    required int correctAnsRate,
     required String hint,
   }) {
     return showDialog<void>(
@@ -75,7 +75,7 @@ class AnswerTextDialog extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                DarkBrownTexts('正答率: $correctAnsRate', 20),
+                DarkBrownTexts('正答率: $correctAnsRate %', 20),
                 if (dialogIndex == 0)
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,

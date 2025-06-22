@@ -82,7 +82,7 @@ class PositionedQuestionPin extends ConsumerWidget {
                           },
                           imageFile: imageFile,
                           pinId: pinId,
-                          correctAnsRate: correctAnsRate,
+                          correctAnsRate: correctAnsRate.toInt(),
                         );
                       },
                     );
@@ -95,7 +95,7 @@ class PositionedQuestionPin extends ConsumerWidget {
                   riddle: riddle,
                   pinId: pinId,
                   hint: hint,
-                  correctAnsRate: correctAnsRate,
+                  correctAnsRate: correctAnsRate.toInt(),
                   onSubmit: (answer) =>
                       mapPageController.checkAnswer(pinId, answer),
                 );
