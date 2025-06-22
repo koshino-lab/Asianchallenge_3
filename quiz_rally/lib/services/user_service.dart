@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class UserService {
-  final String _baseUrl = 'http://127.0.0.1:5000';
+  final _baseUrl = dotenv.env['BASE_URL'];
+  final String getQuizPath = '/api/quiz';
 
   Future<String> createUserId() async {
     final uri = Uri.parse('$_baseUrl/api/createID');

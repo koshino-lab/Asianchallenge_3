@@ -42,6 +42,7 @@ dependencies:
   web: ^0.5.1
   image_picker: ^1.1.2
   http: ^1.4.0
+  flutter_dotenv: ^5.2.1
 
 dev_dependencies:
   freezed: ^2.4.6
@@ -56,3 +57,4 @@ flutter:
 
   assets:
     - assets/images/
+    - .env
