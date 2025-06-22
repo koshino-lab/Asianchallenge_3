@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:quiz_rally/models/quiz.dart';
 
 class QuizService {
-  final String _baseUrl = 'http://127.0.0.1:5000';
+  final _baseUrl = dotenv.env['BASE_URL'];
 
   Future<Quiz> getQuiz(String quizId) async {
     final uri = Uri.parse(
