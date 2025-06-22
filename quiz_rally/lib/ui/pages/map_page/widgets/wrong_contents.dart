@@ -24,7 +24,7 @@ class WrongContents extends StatelessWidget {
         DarkBrownTexts.bold('Q U I Z  $pinId', 48),
         const SizedBox(height: 4),
         DarkBrownTexts.bold('不正解！', 36),
-        const SizedBox(height: 180),
+        const SizedBox(height: 140),
         DarkBrownTexts('ヒント：${hint.isEmpty ? 'なし' : hint}', 20),
         const SizedBox(height: 4),
         Row(

@@ -127,14 +127,21 @@ class AnswerTextDialog extends ConsumerWidget {
                       const SizedBox(height: 16),
                     ],
                   ),
-                if (dialogIndex == 1) CorrectContents(pinId: pinId),
+                if (dialogIndex == 1)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: CorrectContents(pinId: pinId),
+                  ),
                 if (dialogIndex == 2)
-                  WrongContents(
-                    pinId: pinId,
-                    hint: hint,
-                    back: () {
-                      ref.read(dialogIndexProvider.notifier).state = 0;
-                    },
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: WrongContents(
+                      pinId: pinId,
+                      hint: hint,
+                      back: () {
+                        ref.read(dialogIndexProvider.notifier).state = 0;
+                      },
+                    ),
                   ),
               ],
             ),

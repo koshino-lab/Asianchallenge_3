@@ -3,7 +3,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class UserService {
-  final _baseUrl = dotenv.env['BASE_URL'];
+  final _baseUrl = "https://asianchallenge-3.onrender.com";
+  // final _baseUrl = dotenv.env['BASE_URL'];
   final String getQuizPath = '/api/quiz';
 
   Future<String> createUserId() async {
