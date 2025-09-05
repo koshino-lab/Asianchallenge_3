@@ -1,5 +1,12 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: EC2 instance with nginx and Application Load Balancer
+Description: EC2 instance with Fest Quest backend, ALB, and CodeDeploy
+
+Parameters:
+  GitHubRepo:
+    Type: String
+    Default: https://github.com/Matsumgen/Asianchallenge_3.git
+    Description: GitHub repository URL for the application
+
 Resources:
   MyVPC:
     Type: AWS::EC2::VPC
@@ -58,6 +65,50 @@ Resources:
       SubnetId: !Ref PublicSubnet2
       RouteTableId: !Ref PublicRouteTable
 
+  # CodeDeploy用のIAMロール (EC2がCodeDeployと通信するための権限)
+  EC2Role:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
+      Policies:
+        - PolicyName: CodeDeployEC2Policy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - codedeploy:*
+                  - ec2:DescribeTags
+                Resource: "*"
+
+  EC2InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - !Ref EC2Role
+
+  # CodeDeployサービスロール (CodeDeployがEC2を管理するための権限)
+  CodeDeployRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: codedeploy.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole
+
   InstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -72,6 +123,7 @@ Resources:
           FromPort: 80
           ToPort: 80
           SourceSecurityGroupId: !Ref ALBSecurityGroup
+
   MyInstance:
     Type: AWS::EC2::Instance
     Properties:
@@ -80,14 +132,117 @@ Resources:
       SubnetId: !Ref PublicSubnet1
       SecurityGroupIds:
         - !Ref InstanceSecurityGroup
-      UserData: # EC2インスタンスの起動時にnginxをインストールして起動
+      IamInstanceProfile: !Ref EC2InstanceProfile
+      Tags:
+        - Key: Name
+          Value: fest-quest-backend-server
+        - Key: Environment
+          Value: production
+      UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
           yum update -y
+
+          # Python 3.9とGitをインストール
+          yum install -y python3.9 python3.9-pip python3.9-devel git
+
+          # PostgreSQL開発ヘッダーをインストール（psycopg2用）
+          yum install -y postgresql-devel gcc
+
+          # nginxをインストール
           yum install -y nginx
-          systemctl start nginx
+
+          # CodeDeployエージェントをインストール
+          yum install -y ruby wget
+          cd /home/ec2-user
+          wget https://aws-codedeploy-${AWS::Region}.s3.${AWS::Region}.amazonaws.com/latest/install
+          chmod +x ./install
+          ./install auto
+
+          # アプリケーション用ディレクトリを作成
+          mkdir -p /opt/app
+          cd /opt/app
+
+          # 初回のアプリケーションセットアップ
+          git clone ${GitHubRepo} .
+          cd backend
+
+          # Python仮想環境を作成
+          python3.9 -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+          # systemdサービスファイルを作成
+          cat > /etc/systemd/system/flask-app.service << EOF
+          [Unit]
+          Description=Flask Application
+          After=network.target
+
+          [Service]
+          User=ec2-user
+          Group=ec2-user
+          WorkingDirectory=/opt/app/backend
+          Environment="PATH=/opt/app/backend/venv/bin"
+          ExecStart=/opt/app/backend/venv/bin/python main.py
+          Restart=always
+
+          [Install]
+          WantedBy=multi-user.target
+          EOF
+
+          # nginx設定ファイルを作成
+          cat > /etc/nginx/conf.d/flask-app.conf << EOF
+          server {
+              listen 80;
+              server_name _;
+              
+              location / {
+                  proxy_pass http://127.0.0.1:5000;
+                  proxy_set_header Host \$host;
+                  proxy_set_header X-Real-IP \$remote_addr;
+                  proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+                  proxy_set_header X-Forwarded-Proto \$scheme;
+              }
+          }
+          EOF
+
+          # デフォルトのnginx設定を無効化
+          mv /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.disabled 2>/dev/null || true
+
+          # 所有権を設定
+          chown -R ec2-user:ec2-user /opt/app
+
+          # サービスを起動
+          systemctl daemon-reload
+          systemctl enable flask-app
+          systemctl start flask-app
           systemctl enable nginx
-          echo "<h1>Welcome to nginx on AWS!</h1>" > /usr/share/nginx/html/index.html
+          systemctl restart nginx
+
+  # CodeDeployアプリケーション
+  CodeDeployApplication:
+    Type: AWS::CodeDeploy::Application
+    Properties:
+      ApplicationName: fest-quest-backend
+      ComputePlatform: Server
+
+  # CodeDeployデプロイメントグループ
+  CodeDeployDeploymentGroup:
+    Type: AWS::CodeDeploy::DeploymentGroup
+    Properties:
+      ApplicationName: !Ref CodeDeployApplication
+      DeploymentGroupName: production
+      ServiceRoleArn: !GetAtt CodeDeployRole.Arn
+      DeploymentConfigName: CodeDeployDefault.AllAtOnceInPlace
+      Ec2TagFilters:
+        - Type: KEY_AND_VALUE
+          Key: Environment
+          Value: production
+      AutoRollbackConfiguration:
+        Enabled: true
+        Events:
+          - DEPLOYMENT_FAILURE
 
   ALBSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -117,6 +272,10 @@ Resources:
       Protocol: HTTP
       VpcId: !Ref MyVPC
       HealthCheckPath: /
+      HealthCheckIntervalSeconds: 30
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 3
       Targets:
         - Id: !Ref MyInstance
 
@@ -134,3 +293,15 @@ Outputs:
   ALBDNSName:
     Description: DNS name of the Application Load Balancer
     Value: !GetAtt MyALB.DNSName
+
+  ApplicationURL:
+    Description: URL to access the Flask application
+    Value: !Sub "http://${MyALB.DNSName}"
+
+  CodeDeployApplicationName:
+    Description: CodeDeploy Application Name
+    Value: !Ref CodeDeployApplication
+
+  CodeDeployDeploymentGroupName:
+    Description: CodeDeploy Deployment Group Name
+    Value: !Ref CodeDeployDeploymentGroup
