@@ -7,6 +7,13 @@ Parameters:
     Default: https://github.com/Matsumgen/Asianchallenge_3.git
     Description: GitHub repository URL for the application
 
+  DBPassword:
+    Type: String
+    NoEcho: true
+    MinLength: 8
+    Description: Password for the PostgreSQL database user
+    Default: Koshino512!
+
 Resources:
   MyVPC:
     Type: AWS::EC2::VPC
@@ -152,6 +159,27 @@ Resources:
           # nginxをインストール
           yum install -y nginx
 
+          # PostgreSQLをインストール・設定
+          amazon-linux-extras install postgresql14 -y
+          yum install -y postgresql14-server postgresql14
+          /usr/bin/postgresql-14-setup initdb
+
+          # PostgreSQLの設定を変更（ローカル接続を許可）
+          sed -i "s/#listen_addresses = 'localhost'/listen_addresses = 'localhost'/" /var/lib/pgsql/14/data/postgresql.conf
+          sed -i "s/local   all             all                                     peer/local   all             all                                     md5/" /var/lib/pgsql/14/data/pg_hba.conf
+          sed -i "s/host    all             all             127.0.0.1\/32            ident/host    all             all             127.0.0.1\/32            md5/" /var/lib/pgsql/14/data/pg_hba.conf
+
+          # PostgreSQLを起動
+          systemctl enable postgresql-14
+          systemctl start postgresql-14
+
+          # データベースとユーザーを作成
+          sudo -u postgres psql << EOSQL
+          CREATE USER flaskuser WITH PASSWORD '${DBPassword}';
+          CREATE DATABASE quiz_rally OWNER flaskuser;
+          GRANT ALL PRIVILEGES ON DATABASE quiz_rally TO flaskuser;
+          EOSQL
+
           # CodeDeployエージェントをインストール
           yum install -y ruby wget
           cd /home/ec2-user
@@ -184,6 +212,8 @@ Resources:
           Group=ec2-user
           WorkingDirectory=/opt/app/backend
           Environment="PATH=/opt/app/backend/venv/bin"
+          Environment="DATABASE_URL=postgresql://flaskuser:${DBPassword}@localhost:5432/quiz_rally"
+          Environment="SECRET_KEY=your-secret-key-here-change-in-production"
           ExecStart=/opt/app/backend/venv/bin/python main.py
           Restart=always
 
@@ -234,7 +264,7 @@ Resources:
       ApplicationName: !Ref CodeDeployApplication
       DeploymentGroupName: production
       ServiceRoleArn: !GetAtt CodeDeployRole.Arn
-      DeploymentConfigName: CodeDeployDefault.AllAtOnceInPlace
+      DeploymentConfigName: CodeDeployDefault.AllAtOnce
       Ec2TagFilters:
         - Type: KEY_AND_VALUE
           Key: Environment
