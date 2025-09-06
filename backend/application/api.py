@@ -1,6 +1,6 @@
 from application import app
 from application.DBcontroller import db, Quiz, CorrectAnswer, Users
-from ultralytics import YOLO
+# from ultralytics import YOLO
 from flask import request, jsonify
 from sqlalchemy import func
 from sqlalchemy.dialects.postgresql import insert
@@ -110,7 +110,7 @@ def quiz():
         app.logger.error(f"model does not exist(path={model_path})")
         return jsonify({ "error": "Internal Server Error" }), 500
 
-      model = YOLO(model_path)
+#      model = YOLO(model_path)
       try:
         image = Image.open(answer).convert('RGB')
         img = np.asarray(image).copy()

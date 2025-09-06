@@ -38,8 +38,12 @@ setuptools==80.9.0
 six==1.17.0
 SQLAlchemy==2.0.41
 sympy==1.14.0
+torch==2.7.1
+torchvision==0.22.1
 tqdm==4.67.1
 typing_extensions==4.14.0
 tzdata==2025.2
+ultralytics==8.3.157
+ultralytics-thop==2.0.14
 urllib3==2.5.0
 Werkzeug==3.1.3
