@@ -1,5 +1,12 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: EC2 instance with nginx and Application Load Balancer
+
+Parameters:
+  KeyName:
+    Description: EC2 Key Pair for SSH access
+    Type: AWS::EC2::KeyPair::KeyName
+    Default: asianchallenge-key
+
 Resources:
   MyVPC:
     Type: AWS::EC2::VPC
@@ -77,6 +84,7 @@ Resources:
     Properties:
       ImageId: ami-07faa35bbd2230d90
       InstanceType: t3.micro
+      KeyName: !Ref KeyName
       SubnetId: !Ref PublicSubnet1
       SecurityGroupIds:
         - !Ref InstanceSecurityGroup
