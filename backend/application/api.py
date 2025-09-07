@@ -13,8 +13,6 @@ import base64
 import json
 from io import BytesIO
 
-# テスト
-
 def createUserID():
   chars = string.ascii_letters + string.digits
   return ''.join(random.choices(chars, k=16))
