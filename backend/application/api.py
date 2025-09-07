@@ -22,7 +22,7 @@ def createUserID():
 
 @app.route("/api/quiz", methods=['GET', 'POST'])
 def quiz():
-  # CI/CDテスト - 2025/09/07
+  
   if request.method == 'GET':
     # クイズを取得
     quizID = request.args.get("quizID", None)
