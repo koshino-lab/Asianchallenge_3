@@ -13,4 +13,4 @@ class Quiz with _$Quiz {
   const Quiz._();
 
   factory Quiz.fromJson(Map<String, dynamic> json) => _$QuizFromJson(json);
-}
+} //
