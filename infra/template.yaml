@@ -154,7 +154,7 @@ Resources:
           # アプリケーションをクローン（backendのみ）
           cd /opt/app
           sudo -u ec2-user git init
-          sudo -u ec2-user git remote add origin https://github.com/Matsumgen/Asianchallenge_3.git
+          sudo -u ec2-user git remote add origin https://github.com/koshino-lab/Asianchallenge_3.git
           sudo -u ec2-user git sparse-checkout init
           sudo -u ec2-user git sparse-checkout set backend
           sudo -u ec2-user git pull origin main
