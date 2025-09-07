@@ -26,11 +26,10 @@ jobs:
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_KEY }}
         script: |
-          cd /opt/app
+          cd /opt/app/backend
           git fetch origin
           git reset --hard origin/main
-          cd backend
           source venv/bin/activate
-          pip install -r requirements.txt
+          pip install -r backend/requirements.txt
           sudo systemctl restart flask-app
 
