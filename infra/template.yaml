@@ -153,7 +153,7 @@ Resources:
 
           # アプリケーションをクローン
           cd /opt/app
-          sudo -u ec2-user git clone git@github.com:koshino-lab/Asianchallenge_3.git
+          sudo -u ec2-user git clone https://github.com/koshino-lab/Asianchallenge_3.git
 
           # 5. Python仮想環境とアプリケーションのセットアップ
           echo "=== Setting up Python environment ==="
