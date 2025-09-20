@@ -1,14 +1,20 @@
 from application import app
 from application.DBcontroller import db, Quiz, CorrectAnswer, Users
-from ultralytics import YOLO
 from flask import request, jsonify
 from sqlalchemy import func
 from sqlalchemy.dialects.postgresql import insert
-from PIL import Image
-import numpy as np
 import random
 import string
 import os
+
+try:
+  from ultralytics import YOLO
+  from PIL import Image
+  import numpy as np
+  USE_YOLO = True
+except ImportError:
+  app.logger.info("Image recognition library is not available. Some functions are limited.")
+  USE_YOLO = False
 
 
 
@@ -68,6 +74,12 @@ def quiz():
       return jsonify({ "error": "Bad Request" }), 400
 
     if quiz.type == 1:
+      # 画像認識についての処理
+      if not USE_YOLO:
+        app.logger.info(f"No image recognition libraries have been imported.")
+        return jsonify({ "error": "Bad Request" }), 400
+
+
       if 'file' not in request.files:
         app.logger.debug(f"file does not exist")
         return jsonify({ "error": "Bad Request" }), 400
@@ -100,6 +112,7 @@ def quiz():
         return jsonify({"status": "incorrect"}), 200
 
     elif quiz.type == 0:
+      # 画像認識以外についての処理
       answer = request.form.get("answer", None)
       if answer is None:
         app.logger.debug(f"answer does not exist({request.form})")
@@ -179,7 +192,8 @@ def initdb():
   update_dict = {
     'problem': stmt.excluded.problem,
     'answer': stmt.excluded.answer,
-    'type': stmt.excluded.type
+    'type': stmt.excluded.type,
+    'hint': stmt.excluded.hint
   }
   stmt = stmt.on_conflict_do_update(
     index_elements=['quizID'],
