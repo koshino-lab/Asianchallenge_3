@@ -79,7 +79,7 @@ Resources:
           FromPort: 80
           ToPort: 80
           SourceSecurityGroupId: !Ref ALBSecurityGroup
-  MyInstance:
+  MyInstanceV2:
     Type: AWS::EC2::Instance
     Properties:
       ImageId: ami-07faa35bbd2230d90
@@ -229,7 +229,7 @@ Resources:
       VpcId: !Ref MyVPC
       HealthCheckPath: /
       Targets:
-        - Id: !Ref MyInstance
+        - Id: !Ref MyInstanceV2
 
   MyALBListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
