@@ -94,38 +94,38 @@ Resources:
           # ログ出力の設定
           exec > >(tee /var/log/user-data.log)
           exec 2>&1
-          
+
           # システムの更新
           yum update -y
-          
+
           # 1. PostgreSQL 15のインストールと設定
           echo "=== Installing PostgreSQL 15 ==="
           yum install -y postgresql15 postgresql15-server
           postgresql-setup --initdb
-          
+
           # PostgreSQLの認証設定を変更
           sed -i 's/ident/md5/g' /var/lib/pgsql/data/pg_hba.conf
           sed -i 's/peer/md5/g' /var/lib/pgsql/data/pg_hba.conf
-          
+
           # PostgreSQLを起動
           systemctl enable postgresql
           systemctl start postgresql
-          
+
           # データベースとユーザーの作成
           sudo -u postgres psql << EOF
           CREATE USER flaskuser WITH PASSWORD 'password';
           CREATE DATABASE quiz_rally OWNER flaskuser;
           GRANT ALL PRIVILEGES ON DATABASE quiz_rally TO flaskuser;
           EOF
-          
+
           # 2. Python 3.12とGitのインストール
           echo "=== Installing Python 3.12 and Git ==="
           yum install -y python3.12 python3.12-pip python3.12-devel git gcc
-          
+
           # 3. nginxのインストールと設定
           echo "=== Installing and configuring nginx ==="
           yum install -y nginx
-          
+
           # Flask用のnginx設定
           cat > /etc/nginx/conf.d/flask-app.conf << 'NGINX_EOF'
           server {
@@ -141,67 +141,63 @@ Resources:
               }
           }
           NGINX_EOF
-          
+
           # nginxを起動
           systemctl enable nginx
           systemctl start nginx
-          
+
           # 4. アプリケーションのデプロイ
           echo "=== Deploying Flask application ==="
           mkdir -p /opt/app
           chown ec2-user:ec2-user /opt/app
-          
-          # アプリケーションをクローン（backendのみ）
+
+          # アプリケーションをクローン
           cd /opt/app
-          sudo -u ec2-user git init
-          sudo -u ec2-user git remote add origin https://github.com/koshino-lab/Asianchallenge_3.git
-          sudo -u ec2-user git sparse-checkout init
-          sudo -u ec2-user git sparse-checkout set backend
-          sudo -u ec2-user git pull origin main
-          
+          sudo -u ec2-user git clone git@github.com:koshino-lab/Asianchallenge_3.git
+
           # 5. Python仮想環境とアプリケーションのセットアップ
           echo "=== Setting up Python environment ==="
-          cd /opt/app/backend
+          cd /opt/app/Asianchallenge_3/backend
           sudo -u ec2-user python3.12 -m venv venv
-          sudo -u ec2-user /opt/app/backend/venv/bin/pip install --upgrade pip
-          
+          sudo -u ec2-user /opt/app/Asianchallenge_3/backend/venv/bin/pip install --upgrade pip
+
           # 依存関係をインストール（PyTorch関連は既に削除済み）
-          sudo -u ec2-user /opt/app/backend/venv/bin/pip install -r requirements.txt
-          
+          sudo -u ec2-user /opt/app/Asianchallenge_3/backend/venv/bin/pip install -r requirements.txt
+
           # 環境変数ファイルの作成
-          sudo -u ec2-user cat > /opt/app/backend/.env << 'ENV_EOF'
+          sudo -u ec2-user cat > /opt/app/Asianchallenge_3/backend/.env << 'ENV_EOF'
           DATABASE_URL=postgresql://flaskuser:password@localhost:5432/quiz_rally
           SECRET_KEY=your-secret-key-here-change-this
           ENV_EOF
-          chmod 600 /opt/app/backend/.env
-          chown ec2-user:ec2-user /opt/app/backend/.env
-          
+          chmod 600 /opt/app/Asianchallenge_3/backend/.env
+          chown ec2-user:ec2-user /opt/app/Asianchallenge_3/backend/.env
+
           # 6. systemdサービスの設定
           echo "=== Creating systemd service ==="
           cat > /etc/systemd/system/flask-app.service << 'SERVICE_EOF'
           [Unit]
           Description=Flask Backend Application
           After=network.target postgresql.service
-          
+
           [Service]
           Type=simple
           User=ec2-user
           Group=ec2-user
-          WorkingDirectory=/opt/app/backend
-          Environment="PATH=/opt/app/backend/venv/bin"
-          ExecStart=/opt/app/backend/venv/bin/python /opt/app/backend/main.py
+          WorkingDirectory=/opt/app/Asianchallenge_3/backend
+          Environment="PATH=/opt/app/Asianchallenge_3/backend/venv/bin"
+          ExecStart=/opt/app/Asianchallenge_3/backend/venv/bin/python /opt/app/Asianchallenge_3/backend/main.py
           Restart=always
           RestartSec=10
-          
+
           [Install]
           WantedBy=multi-user.target
           SERVICE_EOF
-          
+
           # サービスを有効化して起動
           systemctl daemon-reload
           systemctl enable flask-app.service
           systemctl start flask-app.service
-          
+
           echo "=== Setup completed! ==="
 
   ALBSecurityGroup:
