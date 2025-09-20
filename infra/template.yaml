@@ -103,20 +103,23 @@ Resources:
           yum install -y postgresql15 postgresql15-server
           postgresql-setup --initdb
 
-          # PostgreSQLの認証設定を変更
-          sed -i 's/ident/md5/g' /var/lib/pgsql/data/pg_hba.conf
-          sed -i 's/peer/md5/g' /var/lib/pgsql/data/pg_hba.conf
-
-          # PostgreSQLを起動
+          # PostgreSQLを起動（認証変更前）
           systemctl enable postgresql
           systemctl start postgresql
 
-          # データベースとユーザーの作成
+          # データベースとユーザーの作成（認証変更前に実行）
           sudo -u postgres psql << EOF
           CREATE USER flaskuser WITH PASSWORD 'password';
           CREATE DATABASE quiz_rally OWNER flaskuser;
           GRANT ALL PRIVILEGES ON DATABASE quiz_rally TO flaskuser;
           EOF
+
+          # PostgreSQLの認証設定を変更
+          sed -i 's/ident/md5/g' /var/lib/pgsql/data/pg_hba.conf
+          sed -i 's/peer/md5/g' /var/lib/pgsql/data/pg_hba.conf
+          
+          # PostgreSQLを再起動して設定を反映
+          systemctl restart postgresql
 
           # 2. Python 3.12とGitのインストール
           echo "=== Installing Python 3.12 and Git ==="
