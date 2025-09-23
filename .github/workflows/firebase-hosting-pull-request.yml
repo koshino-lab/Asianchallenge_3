@@ -29,8 +29,8 @@ jobs:
       - name: Build Flutter Web (release)
         working-directory: quiz_rally
         run: |
-          # Ensure .env exists before build
-          echo "BASE_URL=fest-q-MyALB-6oCJ4wjLhASo-1476798795.ap-northeast-1.elb.amazonaws.com" > .env
+          touch .env
+          echo BASE_URL=${{secrets.BASE_URL}} >> .env
           # Build Flutter web
           flutter build web --release
           # Copy .env to the assets folder after build
