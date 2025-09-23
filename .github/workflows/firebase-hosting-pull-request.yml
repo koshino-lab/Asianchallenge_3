@@ -41,4 +41,5 @@ jobs:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FESTQUEST_V2_8BC13 }}
           projectId: festquest-v2-8bc13
+          entryPoint: ./quiz_rally
           # target: your_hosting_target   # (optional if you use Hosting targets)
