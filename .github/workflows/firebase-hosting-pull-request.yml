@@ -23,9 +23,11 @@ jobs:
           channel: stable
 
       - name: Flutter pub get
+        working-directory: quiz_rally
         run: flutter pub get
 
       - name: Build Flutter Web (release)
+        working-directory: quiz_rally
         run: flutter build web --release
 
       # Deploy a PR preview to Firebase Hosting
