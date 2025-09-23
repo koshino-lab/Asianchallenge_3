@@ -29,7 +29,15 @@ jobs:
         run: |
           # Create .env file from secrets
           echo "Creating .env file..."
-          echo "BASE_URL=${{secrets.BASE_URL}}" > .env
+          echo "BASE_URL value length: ${#BASE_URL}"
+          if [ -z "${{secrets.BASE_URL}}" ]; then
+            echo "WARNING: BASE_URL secret is empty or not set!"
+            echo "Using fallback URL..."
+            echo "BASE_URL=http://fest-q-myalb-6ocj4wjlhaso-1476798795.ap-northeast-1.elb.amazonaws.com" > .env
+          else
+            echo "BASE_URL=${{secrets.BASE_URL}}" > .env
+          fi
+          echo "Content of .env:"
           cat .env
 
           # Build Flutter web

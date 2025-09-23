@@ -31,7 +31,19 @@ jobs:
         run: |
           # Create .env file from secrets
           echo "Creating .env file..."
-          echo "BASE_URL=${{secrets.BASE_URL}}" > .env
+          echo "Checking if BASE_URL secret exists..."
+          if [ -z "${{secrets.BASE_URL}}" ]; then
+            echo "WARNING: BASE_URL secret is empty or not set!"
+            echo "Please check:"
+            echo "1. Organization secrets at https://github.com/organizations/koshino-lab/settings/secrets/actions"
+            echo "2. Repository access permissions for this secret"
+            echo "Using fallback URL..."
+            echo "BASE_URL=http://fest-q-myalb-6ocj4wjlhaso-1476798795.ap-northeast-1.elb.amazonaws.com" > .env
+          else
+            echo "SUCCESS: BASE_URL secret found!"
+            echo "BASE_URL=${{secrets.BASE_URL}}" > .env
+          fi
+          echo "Content of .env:"
           cat .env
 
           # Build Flutter web
