@@ -43,3 +43,5 @@ jobs:
           projectId: festquest-v2-8bc13
           entryPoint: ./quiz_rally
           # target: your_hosting_target   # (optional if you use Hosting targets)
+        env:
+          FIREBASE_CLI_EXPERIMENTS: webframeworks
