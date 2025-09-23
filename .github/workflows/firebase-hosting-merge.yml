@@ -21,10 +21,49 @@ jobs:
           channel: stable
 
       - name: Flutter pub get
+        working-directory: quiz_rally
         run: flutter pub get
 
       - name: Build Flutter Web (release)
-        run: flutter build web --release
+        working-directory: quiz_rally
+        run: |
+          # Create .env file from secrets
+          echo "Creating .env file..."
+          echo "BASE_URL=${{secrets.BASE_URL}}" > .env
+          cat .env
+
+          # Build Flutter web
+          echo "Building Flutter web..."
+          flutter build web --release
+
+          # Ensure .env is in the assets folder after build
+          echo "Copying .env to build/web/assets/..."
+          cp .env build/web/assets/.env
+
+          # Verify the file exists and has content
+          echo "Verifying .env in assets:"
+          ls -la build/web/assets/.env
+          echo "Content of .env in assets:"
+          cat build/web/assets/.env
+
+      - name: Verify build output
+        working-directory: quiz_rally
+        run: |
+          echo "=== Checking build output structure ==="
+          ls -la build/web/
+          echo ""
+          echo "=== Checking assets directory ==="
+          ls -la build/web/assets/
+          echo ""
+          echo "=== Checking if index.html exists ==="
+          cat build/web/index.html | head -5
+          echo ""
+          echo "=== Ensuring .env is in assets ==="
+          if [ ! -f build/web/assets/.env ]; then
+            echo "Copying .env to build/web/assets/"
+            cp .env build/web/assets/.env
+          fi
+          ls -la build/web/assets/.env
 
       # Deploy to LIVE Firebase Hosting
       - uses: FirebaseExtended/action-hosting-deploy@v0
@@ -33,4 +72,5 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FESTQUEST_V2_8BC13 }}
           projectId: festquest-v2-8bc13
           channelId: live              # explicitly deploy live on merge
+          entryPoint: ./quiz_rally
           # target: your_hosting_target # (optional if you use Hosting targets)
