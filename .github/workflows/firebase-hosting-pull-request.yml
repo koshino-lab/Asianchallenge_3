@@ -35,6 +35,20 @@ jobs:
         working-directory: quiz_rally
         run: flutter build web --release
 
+      - name: Verify build output
+        working-directory: quiz_rally
+        run: |
+          echo "Checking build output structure:"
+          ls -la build/web/
+          echo "Checking if index.html exists:"
+          ls -la build/web/index.html
+          echo "Checking if .env is in assets:"
+          ls -la build/web/assets/.env || echo ".env not found in assets, copying it manually"
+          # If .env is not in assets, copy it manually
+          if [ ! -f build/web/assets/.env ]; then
+            cp .env build/web/assets/.env
+          fi
+
       # Deploy a PR preview to Firebase Hosting
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
