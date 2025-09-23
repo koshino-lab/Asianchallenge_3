@@ -22,32 +22,40 @@ jobs:
         with:
           channel: stable
 
-      - name: Create .env file
-        working-directory: quiz_rally
-        run: |
-          echo "BASE_URL=fest-q-MyALB-6oCJ4wjLhASo-1476798795.ap-northeast-1.elb.amazonaws.com" > .env
-
       - name: Flutter pub get
         working-directory: quiz_rally
         run: flutter pub get
 
       - name: Build Flutter Web (release)
         working-directory: quiz_rally
-        run: flutter build web --release
+        run: |
+          # Ensure .env exists before build
+          echo "BASE_URL=fest-q-MyALB-6oCJ4wjLhASo-1476798795.ap-northeast-1.elb.amazonaws.com" > .env
+          # Build Flutter web
+          flutter build web --release
+          # Copy .env to the assets folder after build
+          cp .env build/web/assets/.env
+          echo "Contents of build/web/assets after build:"
+          ls -la build/web/assets/
 
       - name: Verify build output
         working-directory: quiz_rally
         run: |
-          echo "Checking build output structure:"
+          echo "=== Checking build output structure ==="
           ls -la build/web/
-          echo "Checking if index.html exists:"
-          ls -la build/web/index.html
-          echo "Checking if .env is in assets:"
-          ls -la build/web/assets/.env || echo ".env not found in assets, copying it manually"
-          # If .env is not in assets, copy it manually
+          echo ""
+          echo "=== Checking assets directory ==="
+          ls -la build/web/assets/
+          echo ""
+          echo "=== Checking if index.html exists ==="
+          cat build/web/index.html | head -5
+          echo ""
+          echo "=== Ensuring .env is in assets ==="
           if [ ! -f build/web/assets/.env ]; then
+            echo "Copying .env to build/web/assets/"
             cp .env build/web/assets/.env
           fi
+          ls -la build/web/assets/.env
 
       # Deploy a PR preview to Firebase Hosting
       - uses: FirebaseExtended/action-hosting-deploy@v0
