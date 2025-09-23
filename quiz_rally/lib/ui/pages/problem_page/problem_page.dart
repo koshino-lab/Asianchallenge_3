@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:quiz_rally/config/styles.dart';
@@ -50,7 +52,11 @@ class ProblemPage extends ConsumerWidget {
                     const SizedBox(height: 24),
                     if (isLastQuestionShow) ...[
                       // if (true) ...[
-                        Image.asset(Assets.images.finalQuestion.path, // ← あなたの画像アセット名に合わせて変更してください
+                      Image.asset(
+                        Assets
+                            .images
+                            .finalQuestion
+                            .path, // ← あなたの画像アセット名に合わせて変更してください
                         fit: BoxFit.contain,
                       ),
                       const SizedBox(height: 24),
@@ -88,10 +94,19 @@ class ProblemPage extends ConsumerWidget {
 
               children: [
                 Container(
+                  width: double.infinity,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage(Assets.images.problemPageFilter.path),
-                      fit: BoxFit.fitHeight,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
+                Positioned.fill(
+                  child: ImageFiltered(
+                    imageFilter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                    child: Container(
+                      color: Colors.transparent, // ※透明なContainerでも必要
                     ),
                   ),
                 ),

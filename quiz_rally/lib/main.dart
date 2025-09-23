@@ -6,7 +6,8 @@ import 'package:quiz_rally/config/styles.dart';
 import 'package:quiz_rally/page_router.dart';
 
 Future<void> main() async {
-  await dotenv.load(fileName: '.env');
+  // await dotenv.load(fileName: '.env');
+
   WidgetsFlutterBinding.ensureInitialized();
   runApp(ProviderScope(child: QuizRally()));
 }

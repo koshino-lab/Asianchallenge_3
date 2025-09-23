@@ -4,7 +4,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:quiz_rally/models/quiz.dart';
 
 class QuizService {
-  final _baseUrl = dotenv.env['BASE_URL'];
+  final _baseUrl = "https://asianchallenge-3.onrender.com";
+  // = dotenv.env['BASE_URL'];
 
   Future<Quiz> getQuiz(String quizId) async {
     final uri = Uri.parse(
