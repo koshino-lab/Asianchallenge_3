@@ -7,9 +7,18 @@ class QuizService {
   final _baseUrl = dotenv.env['BASE_URL'];
 
   Future<Quiz> getQuiz(String quizId) async {
+    print('🔍 QuizService - BASE_URL: $_baseUrl');
+    print('🔍 QuizService - Requesting quiz ID: $quizId');
+
+    if (_baseUrl == null || _baseUrl.isEmpty) {
+      throw Exception('BASE_URL is not configured');
+    }
+
     final uri = Uri.parse(
       '$_baseUrl/api/quiz',
     ).replace(queryParameters: {'quizID': quizId});
+
+    print('🔍 QuizService - Full URL: $uri');
 
     final response = await http.get(uri);
 

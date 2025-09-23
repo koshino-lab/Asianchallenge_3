@@ -7,7 +7,14 @@ class UserService {
   final String getQuizPath = '/api/quiz';
 
   Future<String> createUserId() async {
+    print('🔍 UserService - BASE_URL: $_baseUrl');
+
+    if (_baseUrl == null || _baseUrl.isEmpty) {
+      throw Exception('BASE_URL is not configured');
+    }
+
     final uri = Uri.parse('$_baseUrl/api/createID');
+    print('🔍 UserService - Creating user ID at: $uri');
 
     final response = await http.get(uri);
 
