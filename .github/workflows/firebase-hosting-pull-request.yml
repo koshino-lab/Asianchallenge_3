@@ -29,14 +29,24 @@ jobs:
       - name: Build Flutter Web (release)
         working-directory: quiz_rally
         run: |
-          touch .env
-          echo BASE_URL=${{secrets.BASE_URL}} >> .env
+          # Create .env file from secrets
+          echo "Creating .env file..."
+          echo "BASE_URL=${{secrets.BASE_URL}}" > .env
+          cat .env
+
           # Build Flutter web
+          echo "Building Flutter web..."
           flutter build web --release
-          # Copy .env to the assets folder after build
+
+          # Ensure .env is in the assets folder after build
+          echo "Copying .env to build/web/assets/..."
           cp .env build/web/assets/.env
-          echo "Contents of build/web/assets after build:"
-          ls -la build/web/assets/
+
+          # Verify the file exists and has content
+          echo "Verifying .env in assets:"
+          ls -la build/web/assets/.env
+          echo "Content of .env in assets:"
+          cat build/web/assets/.env
 
       - name: Verify build output
         working-directory: quiz_rally
