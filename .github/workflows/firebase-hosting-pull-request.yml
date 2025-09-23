@@ -32,8 +32,7 @@ jobs:
           # Create .env file from secrets
           echo "Creating .env file..."
           echo "BASE_URL=${{secrets.BASE_URL}}" > .env
-          touch .env
-          echo BASE_URL=${{secrets.BASE_URL}} >> .env
+          cat .env
 
           # Build Flutter web
           echo "Building Flutter web..."
