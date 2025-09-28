@@ -5,7 +5,7 @@ import 'package:quiz_rally/models/quiz.dart';
 
 class QuizService {
   // 一時的にハードコード（デバッグ用）
-  final _baseUrl = dotenv.env['BASE_URL'] ?? 'http://fest-q-myalb-6ocj4wjlhaso-1476798795.ap-northeast-1.elb.amazonaws.com';
+  final _baseUrl = dotenv.env['BASE_URL'] ?? 'https://fest-q-myalb-6ocj4wjlhaso-1476798795.ap-northeast-1.elb.amazonaws.com';
 
   Future<Quiz> getQuiz(String quizId) async {
     print('🔍 QuizService - BASE_URL: $_baseUrl');

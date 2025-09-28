@@ -38,7 +38,7 @@ jobs:
             echo "1. Organization secrets at https://github.com/organizations/koshino-lab/settings/secrets/actions"
             echo "2. Repository access permissions for this secret"
             echo "Using fallback URL..."
-            echo "BASE_URL=http://fest-q-myalb-6ocj4wjlhaso-1476798795.ap-northeast-1.elb.amazonaws.com" > .env
+            echo "BASE_URL=https://fest-q-myalb-6ocj4wjlhaso-1476798795.ap-northeast-1.elb.amazonaws.com" > .env
           else
             echo "SUCCESS: BASE_URL secret found!"
             echo "BASE_URL=${{secrets.BASE_URL}}" > .env
