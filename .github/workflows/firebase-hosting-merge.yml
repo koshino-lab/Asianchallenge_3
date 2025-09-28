@@ -33,7 +33,7 @@ jobs:
           if [ -z "${{secrets.BASE_URL}}" ]; then
             echo "WARNING: BASE_URL secret is empty or not set!"
             echo "Using fallback URL..."
-            echo "BASE_URL=https://fest-q-myalb-6ocj4wjlhaso-1476798795.ap-northeast-1.elb.amazonaws.com" > .env
+            echo "BASE_URL=https://roten-app.com" > .env
           else
             echo "BASE_URL=${{secrets.BASE_URL}}" > .env
           fi
