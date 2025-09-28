@@ -82,3 +82,8 @@ jobs:
           channelId: live              # explicitly deploy live on merge
           entryPoint: ./quiz_rally
           # target: your_hosting_target # (optional if you use Hosting targets)
+
+      - name: Print deployed URLs
+        run: |
+          echo "Hosting URLs: ${{ steps.deploy.outputs.urls }}"
+          echo "Details URL (often empty for live): ${{ steps.deploy.outputs.details_url }}"
