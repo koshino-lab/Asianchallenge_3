@@ -4,12 +4,22 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:quiz_rally/models/quiz.dart';
 
 class QuizService {
-  final _baseUrl = dotenv.env['BASE_URL'];
+  // 一時的にハードコード（デバッグ用）
+  final _baseUrl = 'https://roten-app.com';
 
   Future<Quiz> getQuiz(String quizId) async {
+    print('🔍 QuizService - BASE_URL: $_baseUrl');
+    print('🔍 QuizService - Requesting quiz ID: $quizId');
+
+    if (_baseUrl == null || _baseUrl.isEmpty) {
+      throw Exception('BASE_URL is not configured');
+    }
+
     final uri = Uri.parse(
       '$_baseUrl/api/quiz',
     ).replace(queryParameters: {'quizID': quizId});
+
+    print('🔍 QuizService - Full URL: $uri');
 
     final response = await http.get(uri);
 

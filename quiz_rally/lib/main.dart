@@ -7,6 +7,16 @@ import 'package:quiz_rally/page_router.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: '.env');
+
+  // Debug: Print BASE_URL to console
+  final baseUrl = dotenv.env['BASE_URL'];
+  print('🔍 BASE_URL loaded from .env: $baseUrl');
+  if (baseUrl == null || baseUrl.isEmpty) {
+    print('⚠️ WARNING: BASE_URL is null or empty!');
+  } else if (!baseUrl.startsWith('http://') && !baseUrl.startsWith('https://')) {
+    print('⚠️ WARNING: BASE_URL does not start with http:// or https://');
+  }
+
   WidgetsFlutterBinding.ensureInitialized();
   runApp(ProviderScope(child: QuizRally()));
 }

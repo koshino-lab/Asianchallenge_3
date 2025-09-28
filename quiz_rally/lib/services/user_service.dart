@@ -3,11 +3,19 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class UserService {
-  final _baseUrl = dotenv.env['BASE_URL'];
+  // 一時的にハードコード（デバッグ用）
+  final _baseUrl = 'https://roten-app.com';
   final String getQuizPath = '/api/quiz';
 
   Future<String> createUserId() async {
+    print('🔍 UserService - BASE_URL: $_baseUrl');
+
+    if (_baseUrl == null || _baseUrl.isEmpty) {
+      throw Exception('BASE_URL is not configured');
+    }
+
     final uri = Uri.parse('$_baseUrl/api/createID');
+    print('🔍 UserService - Creating user ID at: $uri');
 
     final response = await http.get(uri);
 

@@ -1,0 +1,89 @@
+name: Deploy to Firebase Hosting on PR
+
+on: pull_request
+
+permissions:
+  checks: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  build_and_preview:
+    # Prevents secrets from running on forked PRs
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Set up Flutter
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Flutter pub get
+        working-directory: quiz_rally
+        run: flutter pub get
+
+      - name: Build Flutter Web (release)
+        working-directory: quiz_rally
+        run: |
+          # Create .env file from secrets
+          echo "Creating .env file..."
+          echo "Checking if BASE_URL secret exists..."
+          if [ -z "${{secrets.BASE_URL}}" ]; then
+            echo "WARNING: BASE_URL secret is empty or not set!"
+            echo "Please check:"
+            echo "1. Organization secrets at https://github.com/organizations/koshino-lab/settings/secrets/actions"
+            echo "2. Repository access permissions for this secret"
+            echo "Using fallback URL..."
+            echo "BASE_URL=https://roten-app.com" > .env
+          else
+            echo "SUCCESS: BASE_URL secret found!"
+            echo "BASE_URL=${{secrets.BASE_URL}}" > .env
+          fi
+          echo "Content of .env:"
+          cat .env
+
+          # Build Flutter web
+          echo "Building Flutter web..."
+          flutter build web --release
+
+          # Ensure .env is in the assets folder after build
+          echo "Copying .env to build/web/assets/..."
+          cp .env build/web/assets/.env
+
+          # Verify the file exists and has content
+          echo "Verifying .env in assets:"
+          ls -la build/web/assets/.env
+          echo "Content of .env in assets:"
+          cat build/web/assets/.env
+
+      - name: Verify build output
+        working-directory: quiz_rally
+        run: |
+          echo "=== Checking build output structure ==="
+          ls -la build/web/
+          echo ""
+          echo "=== Checking assets directory ==="
+          ls -la build/web/assets/
+          echo ""
+          echo "=== Checking if index.html exists ==="
+          cat build/web/index.html | head -5
+          echo ""
+          echo "=== Ensuring .env is in assets ==="
+          if [ ! -f build/web/assets/.env ]; then
+            echo "Copying .env to build/web/assets/"
+            cp .env build/web/assets/.env
+          fi
+          ls -la build/web/assets/.env
+
+      # Deploy a PR preview to Firebase Hosting
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FESTQUEST_V2_8BC13 }}
+          projectId: festquest-v2-8bc13
+          entryPoint: ./quiz_rally
+          # target: your_hosting_target   # (optional if you use Hosting targets)
