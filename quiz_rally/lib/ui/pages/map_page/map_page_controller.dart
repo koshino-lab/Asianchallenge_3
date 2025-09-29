@@ -1,6 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:quiz_rally/models/map_pin.dart';
 import 'package:quiz_rally/cookie_manager/cookie_manager.dart';
 import 'package:quiz_rally/models/quiz.dart';
 import 'package:quiz_rally/services/quiz_service.dart';
