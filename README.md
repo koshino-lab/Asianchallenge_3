@@ -13,7 +13,7 @@ https://www.notion.so/2129461408b280a6b83bcb3f7030f0b5?source=copy_link
 ビルドコマンド:
 - chromeの場合
 ```
-flutter run -d chrome
+flutter run --dart-define-from-file=.env --web-port 5555
 ```
 - ローカルサーバを立ててアクセスする場合
   

@@ -16,7 +16,7 @@ CORS(
     supports_credentials=True,
     resources={
         r"/api/*": {
-            "origins": os.getenv("FRONTEND_URL", "https://festquest-v2-8bc13.web.app"),
+            "origins": os.getenv("FRONTEND_URL", "http://localhost:5555"),
             "methods": ["GET", "POST", "OPTIONS"],
         }
     },

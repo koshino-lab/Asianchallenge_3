@@ -10,7 +10,6 @@ Future<void> main() async {
 
   // Debug: Print BASE_URL to console
   var baseUrl = dotenv.env['BASE_URL'];
-  // print('🔍 BASE_URL loaded from .env: $baseUrl');
   
   try {
   if (baseUrl == null || baseUrl.isEmpty) {
