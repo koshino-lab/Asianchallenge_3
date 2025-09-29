@@ -30,13 +30,7 @@ jobs:
           # Create .env file from secrets
           echo "Creating .env file..."
           echo "BASE_URL value length: ${#BASE_URL}"
-          if [ -z "${{secrets.BASE_URL}}" ]; then
-            echo "WARNING: BASE_URL secret is empty or not set!"
-            echo "Using fallback URL..."
-            echo "BASE_URL=https://roten-app.com" > .env
-          else
-            echo "BASE_URL=${{secrets.BASE_URL}}" > .env
-          fi
+          echo "BASE_URL=${{secrets.BASE_URL}}" > .env
           echo "Content of .env:"
           cat .env
 
