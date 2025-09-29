@@ -27,7 +27,8 @@ Future<void> main() async {
   print(stackTrace);
 }
 
-  // print("dotenv.env['BASE_URL']${dotenv.env['BASE_URL']}");
+
+  print("dotenv.env['BASE_URL']${dotenv.env['BASE_URL']}"); //web deploy時は読み込まれない
 
   WidgetsFlutterBinding.ensureInitialized();
   runApp(ProviderScope(child: QuizRally()));
