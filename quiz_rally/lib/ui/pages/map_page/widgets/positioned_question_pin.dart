@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:quiz_rally/services/quiz_service.dart';
+import 'package:quiz_rally/data/quiz_data.dart';
 import 'package:quiz_rally/ui/pages/map_page/map_page_controller.dart';
 import 'package:quiz_rally/gen/assets.gen.dart';
 import 'package:quiz_rally/ui/components/universal_image.dart';
@@ -50,10 +50,14 @@ class PositionedQuestionPin extends ConsumerWidget {
                 .getCorrectAnswerRate(pinId);
             //print('✅ Fetching quiz for pinId: $pinId, correctAnsRate: $correctAnsRate');
             try {
-              final quiz = await mapPageController.getQuiz(pinId);
-              final riddle = quiz.quiz;
-              final type = quiz.type;
-              final hint = quiz.hint;
+              final quizData = getQuizDataById(pinId);
+              if (quizData == null) {
+                throw Exception('クイズが見つかりません');
+              }
+              final riddle = quizData.question;
+              final type = quizData.type;
+              final hint = quizData.hint;
+              final imagePath = quizData.imagePath;
               if (type == 1) {
                 XFile? imageFile;
                 showDialog(
@@ -96,6 +100,7 @@ class PositionedQuestionPin extends ConsumerWidget {
                   pinId: pinId,
                   hint: hint,
                   correctAnsRate: correctAnsRate.toInt(),
+                  imagePath: imagePath,
                   onSubmit: (answer) =>
                       mapPageController.checkAnswer(pinId, answer),
                 );

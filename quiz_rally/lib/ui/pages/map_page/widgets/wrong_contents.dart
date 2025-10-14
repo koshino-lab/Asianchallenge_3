@@ -17,30 +17,51 @@ class WrongContents extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        const SizedBox(height: 10),
-        DarkBrownTexts.bold('Q U I Z  $pinId', 48),
-        const SizedBox(height: 4),
-        DarkBrownTexts.bold('不正解！', 36),
-        const SizedBox(height: 180),
-        DarkBrownTexts('ヒント：${hint.isEmpty ? 'なし' : hint}', 20),
-        const SizedBox(height: 4),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const SizedBox(width: 40),
-            InkWell(
-              onTap: back,
-              child: UniversalImage(
-                Assets.images.rectangleBack.path,
-                height: 30,
-              ),
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          const SizedBox(height: 10),
+          DarkBrownTexts.bold('Q U I Z  $pinId', 48),
+          const SizedBox(height: 4),
+          DarkBrownTexts.bold('不正解！', 36),
+          const SizedBox(height: 40),
+          Container(
+            constraints: const BoxConstraints(maxWidth: 280),
+            child: Column(
+              children: [
+                DarkBrownTexts('ヒント：', 20),
+                const SizedBox(height: 8),
+                Text(
+                  hint.isEmpty ? 'なし' : hint,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    color: Color(0xFF4A3C28),
+                  ),
+                  textAlign: TextAlign.center,
+                  maxLines: 5,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
             ),
-          ],
-        ),
-      ],
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const SizedBox(width: 40),
+              InkWell(
+                onTap: back,
+                child: UniversalImage(
+                  Assets.images.rectangleBack.path,
+                  height: 30,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

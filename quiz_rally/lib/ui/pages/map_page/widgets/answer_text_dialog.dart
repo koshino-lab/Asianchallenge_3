@@ -17,6 +17,7 @@ class AnswerTextDialog extends ConsumerWidget {
   final String hint;
   final Future<bool> Function(String answer) onSubmit;
   final int correctAnsRate;
+  final String? imagePath;
   //final Future<bool> Function(String answer) isCorrectAns;
 
   const AnswerTextDialog({
@@ -26,6 +27,7 @@ class AnswerTextDialog extends ConsumerWidget {
     required this.onSubmit,
     required this.correctAnsRate,
     this.hint = '',
+    this.imagePath,
   });
 
   static Future<void> show({
@@ -36,6 +38,7 @@ class AnswerTextDialog extends ConsumerWidget {
     required Future<bool> Function(String answer) onSubmit,
     required int correctAnsRate,
     required String hint,
+    String? imagePath,
   }) {
     return showDialog<void>(
       context: context,
@@ -47,6 +50,7 @@ class AnswerTextDialog extends ConsumerWidget {
           onSubmit: onSubmit,
           correctAnsRate: correctAnsRate,
           hint: hint,
+          imagePath: imagePath,
         ),
       ),
     );
@@ -72,18 +76,29 @@ class AnswerTextDialog extends ConsumerWidget {
                 fit: BoxFit.fitHeight,
               ),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                DarkBrownTexts('正答率: $correctAnsRate %', 20),
-                if (dialogIndex == 0)
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  DarkBrownTexts('正答率: $correctAnsRate %', 20),
+                  if (dialogIndex == 0)
+                    Expanded(
+                      child: SingleChildScrollView(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
                       const SizedBox(height: 26),
                       DarkBrownTexts.bold('Q U I Z  $pinId', 48),
                       const SizedBox(height: 26),
                       DarkBrownTexts(riddle, 20),
+                      if (imagePath != null) ...[
+                        const SizedBox(height: 16),
+                        Container(
+                          constraints: const BoxConstraints(maxHeight: 200),
+                          child: UniversalImage(imagePath!),
+                        ),
+                      ],
                       const SizedBox(height: 26),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 35),
@@ -127,17 +142,22 @@ class AnswerTextDialog extends ConsumerWidget {
                       const SizedBox(height: 16),
                     ],
                   ),
-                if (dialogIndex == 1) CorrectContents(pinId: pinId),
+                ),
+              ),
+                if (dialogIndex == 1) Expanded(child: CorrectContents(pinId: pinId)),
                 if (dialogIndex == 2)
-                  WrongContents(
-                    pinId: pinId,
-                    hint: hint,
-                    back: () {
-                      ref.read(dialogIndexProvider.notifier).state = 0;
-                    },
+                  Expanded(
+                    child: WrongContents(
+                      pinId: pinId,
+                      hint: hint,
+                      back: () {
+                        ref.read(dialogIndexProvider.notifier).state = 0;
+                      },
+                    ),
                   ),
               ],
             ),
+          ),
           ),
           Container(
             padding: const EdgeInsets.all(6),

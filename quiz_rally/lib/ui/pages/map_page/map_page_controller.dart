@@ -2,7 +2,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:quiz_rally/models/map_pin.dart';
 import 'package:quiz_rally/cookie_manager/cookie_manager.dart';
-import 'package:quiz_rally/models/quiz.dart';
 import 'package:quiz_rally/services/quiz_service.dart';
 import 'package:quiz_rally/services/user_service.dart';
 
@@ -132,28 +131,13 @@ class MapPageController extends StateNotifier<MapPageState> {
     return _userService.getProgress(userId);
   }
 
-  Future<Quiz> getQuiz(int quizId) async {
-    return _quizService.getQuiz(quizId.toString());
-  }
-
   Future<bool> isCorrectAnswer(int quizId, String answer) async {
     if (state.userId == '') {
       await createUserId();
     }
     final userId = state.userId;
-    print(
-      "Checking answer for quizId: $quizId, answer: $answer, userId: $userId",
-    );
-    final checkAnsResult = await _quizService.checkAnswer(
-      quizId,
-      answer,
-      userId,
-    );
-    if (checkAnsResult == 'success') {
-      return true;
-    } else {
-      return false;
-    }
+    final status = await _quizService.checkAnswer(quizId, answer, userId);
+    return status == 'correct';
   }
 
   Future<double> getCorrectAnswerRate(int quizId) async {
