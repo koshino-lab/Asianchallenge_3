@@ -145,14 +145,16 @@ def quiz():
       if answer is None:
         app.logger.debug(f"answer does not exist({request.form})")
         return jsonify({ "error": "Bad Request" }), 400
-
-      # 大文字や全角への対応が必要になるかも
-      if answer == quiz.answer:
-        db.session.add(CorrectAnswer(quizID=quizID, userID=userID))
-        db.session.commit()
-        return jsonify({"status": "success"}), 200
-      else:
-        return jsonify({"status": "incorrect"}), 200
+        
+      answers = quiz.answer.split('|')
+      for ans in answers:
+        # 大文字や全角への対応が必要になるかも
+        if answer == ans:
+          db.session.add(CorrectAnswer(quizID=quizID, userID=userID))
+          db.session.commit()
+          return jsonify({"status": "success"}), 200
+        else:
+          return jsonify({"status": "incorrect"}), 200
 
   return jsonify({ "error": "Bad Request" }), 400
 
