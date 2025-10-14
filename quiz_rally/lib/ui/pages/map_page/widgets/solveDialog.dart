@@ -4,7 +4,7 @@ import 'package:quiz_rally/ui/components/universal_image.dart';
 import 'package:quiz_rally/ui/pages/map_page/widgets/solved_contents.dart';
 
 class SolvedDialog {
-  static Future<String?> show(BuildContext context, String pinId) {
+  static Future<String?> show(BuildContext context, int pinId) {
     return showDialog<String>(
       context: context,
       barrierDismissible: false,

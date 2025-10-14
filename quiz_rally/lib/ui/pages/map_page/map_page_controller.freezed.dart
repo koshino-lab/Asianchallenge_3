@@ -24,12 +24,12 @@ mixin _$MapPageState {
   int get tutorialPageIndex =>
       throw _privateConstructorUsedError; // ↓cokieで保存したいデータ
   bool get isFirstOpen => throw _privateConstructorUsedError;
-  String get lastSubmissionResult => throw _privateConstructorUsedError;
-  Set<String> get solvedPinIds => throw _privateConstructorUsedError;
-  List<String> get usedKeyIds => throw _privateConstructorUsedError;
+  Set<int> get solvedPinIds => throw _privateConstructorUsedError;
+  List<int> get usedKeyIds => throw _privateConstructorUsedError;
   int get ownKeyCount => throw _privateConstructorUsedError;
   bool get isLastQuestionAvailable => throw _privateConstructorUsedError;
   bool get isGameCleared => throw _privateConstructorUsedError;
+  String get userId => throw _privateConstructorUsedError;
 
   /// Serializes this MapPageState to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -51,12 +51,12 @@ abstract class $MapPageStateCopyWith<$Res> {
   $Res call({
     int tutorialPageIndex,
     bool isFirstOpen,
-    String lastSubmissionResult,
-    Set<String> solvedPinIds,
-    List<String> usedKeyIds,
+    Set<int> solvedPinIds,
+    List<int> usedKeyIds,
     int ownKeyCount,
     bool isLastQuestionAvailable,
     bool isGameCleared,
+    String userId,
   });
 }
 
@@ -77,12 +77,12 @@ class _$MapPageStateCopyWithImpl<$Res, $Val extends MapPageState>
   $Res call({
     Object? tutorialPageIndex = null,
     Object? isFirstOpen = null,
-    Object? lastSubmissionResult = null,
     Object? solvedPinIds = null,
     Object? usedKeyIds = null,
     Object? ownKeyCount = null,
     Object? isLastQuestionAvailable = null,
     Object? isGameCleared = null,
+    Object? userId = null,
   }) {
     return _then(
       _value.copyWith(
@@ -94,18 +94,14 @@ class _$MapPageStateCopyWithImpl<$Res, $Val extends MapPageState>
                 ? _value.isFirstOpen
                 : isFirstOpen // ignore: cast_nullable_to_non_nullable
                       as bool,
-            lastSubmissionResult: null == lastSubmissionResult
-                ? _value.lastSubmissionResult
-                : lastSubmissionResult // ignore: cast_nullable_to_non_nullable
-                      as String,
             solvedPinIds: null == solvedPinIds
                 ? _value.solvedPinIds
                 : solvedPinIds // ignore: cast_nullable_to_non_nullable
-                      as Set<String>,
+                      as Set<int>,
             usedKeyIds: null == usedKeyIds
                 ? _value.usedKeyIds
                 : usedKeyIds // ignore: cast_nullable_to_non_nullable
-                      as List<String>,
+                      as List<int>,
             ownKeyCount: null == ownKeyCount
                 ? _value.ownKeyCount
                 : ownKeyCount // ignore: cast_nullable_to_non_nullable
@@ -118,6 +114,10 @@ class _$MapPageStateCopyWithImpl<$Res, $Val extends MapPageState>
                 ? _value.isGameCleared
                 : isGameCleared // ignore: cast_nullable_to_non_nullable
                       as bool,
+            userId: null == userId
+                ? _value.userId
+                : userId // ignore: cast_nullable_to_non_nullable
+                      as String,
           )
           as $Val,
     );
@@ -136,12 +136,12 @@ abstract class _$$MapPageStateImplCopyWith<$Res>
   $Res call({
     int tutorialPageIndex,
     bool isFirstOpen,
-    String lastSubmissionResult,
-    Set<String> solvedPinIds,
-    List<String> usedKeyIds,
+    Set<int> solvedPinIds,
+    List<int> usedKeyIds,
     int ownKeyCount,
     bool isLastQuestionAvailable,
     bool isGameCleared,
+    String userId,
   });
 }
 
@@ -161,12 +161,12 @@ class __$$MapPageStateImplCopyWithImpl<$Res>
   $Res call({
     Object? tutorialPageIndex = null,
     Object? isFirstOpen = null,
-    Object? lastSubmissionResult = null,
     Object? solvedPinIds = null,
     Object? usedKeyIds = null,
     Object? ownKeyCount = null,
     Object? isLastQuestionAvailable = null,
     Object? isGameCleared = null,
+    Object? userId = null,
   }) {
     return _then(
       _$MapPageStateImpl(
@@ -178,18 +178,14 @@ class __$$MapPageStateImplCopyWithImpl<$Res>
             ? _value.isFirstOpen
             : isFirstOpen // ignore: cast_nullable_to_non_nullable
                   as bool,
-        lastSubmissionResult: null == lastSubmissionResult
-            ? _value.lastSubmissionResult
-            : lastSubmissionResult // ignore: cast_nullable_to_non_nullable
-                  as String,
         solvedPinIds: null == solvedPinIds
             ? _value._solvedPinIds
             : solvedPinIds // ignore: cast_nullable_to_non_nullable
-                  as Set<String>,
+                  as Set<int>,
         usedKeyIds: null == usedKeyIds
             ? _value._usedKeyIds
             : usedKeyIds // ignore: cast_nullable_to_non_nullable
-                  as List<String>,
+                  as List<int>,
         ownKeyCount: null == ownKeyCount
             ? _value.ownKeyCount
             : ownKeyCount // ignore: cast_nullable_to_non_nullable
@@ -202,6 +198,10 @@ class __$$MapPageStateImplCopyWithImpl<$Res>
             ? _value.isGameCleared
             : isGameCleared // ignore: cast_nullable_to_non_nullable
                   as bool,
+        userId: null == userId
+            ? _value.userId
+            : userId // ignore: cast_nullable_to_non_nullable
+                  as String,
       ),
     );
   }
@@ -213,12 +213,12 @@ class _$MapPageStateImpl implements _MapPageState {
   const _$MapPageStateImpl({
     this.tutorialPageIndex = 0,
     this.isFirstOpen = true,
-    this.lastSubmissionResult = '',
-    final Set<String> solvedPinIds = const <String>{},
-    final List<String> usedKeyIds = const <String>[],
+    final Set<int> solvedPinIds = const <int>{},
+    final List<int> usedKeyIds = const <int>[],
     this.ownKeyCount = 0,
     this.isLastQuestionAvailable = false,
     this.isGameCleared = false,
+    this.userId = '',
   }) : _solvedPinIds = solvedPinIds,
        _usedKeyIds = usedKeyIds;
 
@@ -232,22 +232,19 @@ class _$MapPageStateImpl implements _MapPageState {
   @override
   @JsonKey()
   final bool isFirstOpen;
+  final Set<int> _solvedPinIds;
   @override
   @JsonKey()
-  final String lastSubmissionResult;
-  final Set<String> _solvedPinIds;
-  @override
-  @JsonKey()
-  Set<String> get solvedPinIds {
+  Set<int> get solvedPinIds {
     if (_solvedPinIds is EqualUnmodifiableSetView) return _solvedPinIds;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableSetView(_solvedPinIds);
   }
 
-  final List<String> _usedKeyIds;
+  final List<int> _usedKeyIds;
   @override
   @JsonKey()
-  List<String> get usedKeyIds {
+  List<int> get usedKeyIds {
     if (_usedKeyIds is EqualUnmodifiableListView) return _usedKeyIds;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_usedKeyIds);
@@ -262,10 +259,13 @@ class _$MapPageStateImpl implements _MapPageState {
   @override
   @JsonKey()
   final bool isGameCleared;
+  @override
+  @JsonKey()
+  final String userId;
 
   @override
   String toString() {
-    return 'MapPageState(tutorialPageIndex: $tutorialPageIndex, isFirstOpen: $isFirstOpen, lastSubmissionResult: $lastSubmissionResult, solvedPinIds: $solvedPinIds, usedKeyIds: $usedKeyIds, ownKeyCount: $ownKeyCount, isLastQuestionAvailable: $isLastQuestionAvailable, isGameCleared: $isGameCleared)';
+    return 'MapPageState(tutorialPageIndex: $tutorialPageIndex, isFirstOpen: $isFirstOpen, solvedPinIds: $solvedPinIds, usedKeyIds: $usedKeyIds, ownKeyCount: $ownKeyCount, isLastQuestionAvailable: $isLastQuestionAvailable, isGameCleared: $isGameCleared, userId: $userId)';
   }
 
   @override
@@ -277,8 +277,6 @@ class _$MapPageStateImpl implements _MapPageState {
                 other.tutorialPageIndex == tutorialPageIndex) &&
             (identical(other.isFirstOpen, isFirstOpen) ||
                 other.isFirstOpen == isFirstOpen) &&
-            (identical(other.lastSubmissionResult, lastSubmissionResult) ||
-                other.lastSubmissionResult == lastSubmissionResult) &&
             const DeepCollectionEquality().equals(
               other._solvedPinIds,
               _solvedPinIds,
@@ -295,7 +293,8 @@ class _$MapPageStateImpl implements _MapPageState {
                 ) ||
                 other.isLastQuestionAvailable == isLastQuestionAvailable) &&
             (identical(other.isGameCleared, isGameCleared) ||
-                other.isGameCleared == isGameCleared));
+                other.isGameCleared == isGameCleared) &&
+            (identical(other.userId, userId) || other.userId == userId));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -304,12 +303,12 @@ class _$MapPageStateImpl implements _MapPageState {
     runtimeType,
     tutorialPageIndex,
     isFirstOpen,
-    lastSubmissionResult,
     const DeepCollectionEquality().hash(_solvedPinIds),
     const DeepCollectionEquality().hash(_usedKeyIds),
     ownKeyCount,
     isLastQuestionAvailable,
     isGameCleared,
+    userId,
   );
 
   /// Create a copy of MapPageState
@@ -330,12 +329,12 @@ abstract class _MapPageState implements MapPageState {
   const factory _MapPageState({
     final int tutorialPageIndex,
     final bool isFirstOpen,
-    final String lastSubmissionResult,
-    final Set<String> solvedPinIds,
-    final List<String> usedKeyIds,
+    final Set<int> solvedPinIds,
+    final List<int> usedKeyIds,
     final int ownKeyCount,
     final bool isLastQuestionAvailable,
     final bool isGameCleared,
+    final String userId,
   }) = _$MapPageStateImpl;
 
   factory _MapPageState.fromJson(Map<String, dynamic> json) =
@@ -346,17 +345,17 @@ abstract class _MapPageState implements MapPageState {
   @override
   bool get isFirstOpen;
   @override
-  String get lastSubmissionResult;
+  Set<int> get solvedPinIds;
   @override
-  Set<String> get solvedPinIds;
-  @override
-  List<String> get usedKeyIds;
+  List<int> get usedKeyIds;
   @override
   int get ownKeyCount;
   @override
   bool get isLastQuestionAvailable;
   @override
   bool get isGameCleared;
+  @override
+  String get userId;
 
   /// Create a copy of MapPageState
   /// with the given fields replaced by the non-null parameter values.

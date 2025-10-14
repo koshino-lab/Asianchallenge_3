@@ -23,6 +23,9 @@ class $AssetsImagesGen {
   AssetGenImage get beforeChain =>
       const AssetGenImage('assets/images/before_chain.png');
 
+  /// File path: assets/images/check.svg
+  String get check => 'assets/images/check.svg';
+
   /// File path: assets/images/close_red_button.png
   AssetGenImage get closeRedButton =>
       const AssetGenImage('assets/images/close_red_button.png');
@@ -34,6 +37,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/designd_red_buttom.png
   AssetGenImage get designdRedButtom =>
       const AssetGenImage('assets/images/designd_red_buttom.png');
+
+  /// File path: assets/images/final_question.png
+  AssetGenImage get finalQuestion =>
+      const AssetGenImage('assets/images/final_question.png');
 
   /// File path: assets/images/key.png
   AssetGenImage get key => const AssetGenImage('assets/images/key.png');
@@ -137,14 +144,24 @@ class $AssetsImagesGen {
   /// File path: assets/images/story3.png
   AssetGenImage get story3 => const AssetGenImage('assets/images/story3.png');
 
+  /// File path: assets/images/succes_page.jpg
+  AssetGenImage get succesPage =>
+      const AssetGenImage('assets/images/succes_page.jpg');
+
+  /// File path: assets/images/succes_page2.png
+  AssetGenImage get succesPage2 =>
+      const AssetGenImage('assets/images/succes_page2.png');
+
   /// List of all assets
   List<dynamic> get values => [
     icon,
     afterChain,
     beforeChain,
+    check,
     closeRedButton,
     container,
     designdRedButtom,
+    finalQuestion,
     key,
     keyWithShadow,
     letterDialogRectangle,
@@ -172,13 +189,19 @@ class $AssetsImagesGen {
     story1,
     story2,
     story3,
+    succesPage,
+    succesPage2,
   ];
 }
 
 class Assets {
   const Assets._();
 
+  static const String aEnv = '.env';
   static const $AssetsImagesGen images = $AssetsImagesGen();
+
+  /// List of all assets
+  static List<String> get values => [aEnv];
 }
 
 class AssetGenImage {

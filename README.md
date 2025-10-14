@@ -23,3 +23,8 @@ flutter run -d web-server --web-port=
 8000 --web-hostname=0.0.0.0
 ```
 
+## 注意
+ローカルで動かす際は/quiz_rallyに.envを追加し以下を記入してください。
+```
+BASE_URL=http://127.0.0.1:5000
+```

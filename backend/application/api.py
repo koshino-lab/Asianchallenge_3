@@ -6,6 +6,10 @@ from sqlalchemy.dialects.postgresql import insert
 import random
 import string
 import os
+import base64
+import json
+import binascii
+from io import BytesIO
 
 try:
   from ultralytics import YOLO
@@ -17,7 +21,6 @@ except ImportError:
   USE_YOLO = False
 
 
-
 def createUserID():
   chars = string.ascii_letters + string.digits
   return ''.join(random.choices(chars, k=16))
@@ -25,12 +28,18 @@ def createUserID():
 
 @app.route("/api/quiz", methods=['GET', 'POST'])
 def quiz():
+  
   if request.method == 'GET':
     # クイズを取得
     quizID = request.args.get("quizID", None)
     if quizID is None:
       app.logger.debug("quizID is None")
       return jsonify({ "error": "Bad Request" }), 400
+    try:
+      quizID = int(quizID)
+    except ValueError:
+      app.logger.debug(f"Invalid quizID: {quizID}")
+      return jsonify({"error": "Invalid quizID"}), 400
 
     res = Quiz.query.filter_by(quizID=quizID).first()
     if not res:
@@ -42,52 +51,71 @@ def quiz():
   elif request.method == 'POST':
     # クイズの答え合わせ
     # データはformで取得
-    if request.form is None:
-      app.logger.debug(f"request.form does not exist")
-      return jsonify({ "error": "Bad Request" }), 400
+    if request.is_json and 'quizID' in request.json:
+      data = request.json
+    elif request.form and 'quizID' in request.form:
+      data = request.form
+    else:
+      try:
+        data = request.data.decode('utf-8')
+        data = json.loads(data)
+      except:
+        app.logger.debug(f"request.form or request.json does not exist and request.data is not None({request.data})")
+        return jsonify({ "error": "Bad Request" }), 400
 
-    userID = request.form.get("userID", None)
+    userID = data.get("userID", None)
     if userID is None:
-      app.logger.debug(f"userID is None({request.form})")
+      app.logger.debug(f"userID is None({data})")
       return jsonify({ "error": "Bad Request" }), 400
     user = Users.query.get(userID)
     if not user:
-      app.logger.debug(f"userID is not registered({request.form})")
+      app.logger.debug(f"userID is not registered({data})")
       return jsonify({ "error": "Bad Request" }), 400
 
-    quizID = request.form.get("quizID", None)
+    quizID = data.get("quizID", None)
     if quizID is None:
-      app.logger.debug(f"quizID is None{request.form}")
+      app.logger.debug(f"quizID is None({data})")
       return jsonify({ "error": "Bad Request" }), 400
 
-    quizID = int(quizID)
-
+    try:
+      quizID = int(quizID)
+    except ValueError:
+      app.logger.debug(f"Invalid quizID: {quizID}")
+      return jsonify({"error": "Invalid quizID"}), 400
     correct = CorrectAnswer.query.filter_by(quizID=quizID, userID=userID).first()
     if correct:
       app.logger.debug(f"Already cleared")
       return jsonify({ "error": "Bad Request" }), 400
 
-
-    quiz = Quiz.query.filter_by(quizID=int(quizID)).first()
+    quiz = Quiz.query.filter_by(quizID=quizID).first()
     if not quiz:
       app.logger.debug(f"Quiz does not exist(quizID={quizID})")
       return jsonify({ "error": "Bad Request" }), 400
 
+    answer = data.get("answer", None)
     if quiz.type == 1:
       # 画像認識についての処理
       if not USE_YOLO:
         app.logger.info(f"No image recognition libraries have been imported.")
         return jsonify({ "error": "Bad Request" }), 400
 
-
-      if 'file' not in request.files:
-        app.logger.debug(f"file does not exist")
-        return jsonify({ "error": "Bad Request" }), 400
-
-      answer = request.files['file']
-      if answer.filename == '':
-        app.logger.debug(f"filename does not exist")
-        return jsonify({ "error": "Bad Request" }), 400
+      if answer is None:
+        if 'file' in request.files:
+          answer = request.files['file']
+          if answer.filename == '':
+            app.logger.debug(f"filename does not exist")
+            return jsonify({ "error": "Bad Request" }), 400
+          answer = answer.stream
+        else:
+          app.logger.debug(f"file does not exist")
+          return jsonify({ "error": "Bad Request" }), 400
+      else:
+        try:
+          answer = base64.b64decode(answer)
+          answer = BytesIO(answer)
+        except (binascii.Error, ValueError) as e:
+          app.logger.error(f"base64 decode error: {e}")
+          return jsonify({"error": "Bad Request"}), 400
 
       model_path = os.getenv('MODEL_DIR', './model/') + quiz.answer
       if not os.path.isfile(model_path):
@@ -96,7 +124,7 @@ def quiz():
 
       model = YOLO(model_path)
       try:
-        image = Image.open(answer.stream).convert('RGB')
+        image = Image.open(answer).convert('RGB')
         img = np.asarray(image).copy()
         img[..., [0, 2]] = img[..., [2, 0]]
       except Exception as e:
@@ -158,11 +186,14 @@ def progress():
 # quizID is Noneの時、全て取得
 @app.route("/api/correctAnswerRate", methods=['GET'])
 def correctAnswerRate():
-  user_num = len(Users.__table__.columns)
+  user_num = Users.query.count()
+  quiz_num = Quiz.query.count()
   if user_num == 0:
-    return jsonify({"correctAnswerRate": 0.0}), 200
+    if request.args.get("quizID", None) is None:
+      return jsonify([{"correctAnswerRate": 0.0} for i in range(quiz_num)]), 200
+    else:
+      return jsonify({"correctAnswerRate": 0.0}), 200
 
-  quiz_num = len(Quiz.__table__.columns)
   qres = db.session.query(CorrectAnswer.quizID, func.count()).group_by(CorrectAnswer.quizID).all()
   qres = { q[0]: q[1] for q in qres }
   qres = [ qres.get(i, 0) for i in range(quiz_num) ]
@@ -172,33 +203,11 @@ def correctAnswerRate():
   else:
     try:
       quizID = int(quizID)
-    except ValueError:
+      q = qres[quizID]
+    except Exception as e:
+      app.logger.debug(f"quizID Error: {e}")
       return jsonify({ "error": "Bad Request" }), 400
-    if quizID >= quiz_num or quizID < 0:
+    if q is None:
       return jsonify({ "error": "Bad Request" }), 400
-    return jsonify({"correctAnswerRate": 100 * qres[quizID] / user_num}), 200
+    return jsonify({"correctAnswerRate": 100 * q / user_num}), 200
 
-@app.route('/XsGCKgHtlP/initdb')
-def initdb():
-  db.create_all()
-  quizzes = [
-    {'quizID': 1, 'problem': "1+1は？", 'answer': "2", "hint": "田じゃないよ", 'type': 0},
-    {'quizID': 2, 'problem': "天照大神、月読命、素戔嗚尊、この三柱をまとめて何という？", 'answer': "三貴子", "hint": "日本語で「みはしらのうずのみこ」と読むよ", 'type': 0},
-    {'quizID': 3, 'problem': "Asian Bridge's logo", 'answer': "asian_logo.pt", "hint": "Asian Bridgeのロゴを探そう！", 'type': 1},
-    {'quizID': 4, 'problem': "サメだ！殴れ！", 'answer': "SPC", "hint": "サメ殴りセンター", 'type': 0},
-  ]
-  stmt = insert(Quiz).values(quizzes)
-
-  update_dict = {
-    'problem': stmt.excluded.problem,
-    'answer': stmt.excluded.answer,
-    'type': stmt.excluded.type,
-    'hint': stmt.excluded.hint
-  }
-  stmt = stmt.on_conflict_do_update(
-    index_elements=['quizID'],
-    set_=update_dict
-  )
-  db.session.execute(stmt)
-  db.session.commit()
-  return jsonify({"status": "success"}), 200

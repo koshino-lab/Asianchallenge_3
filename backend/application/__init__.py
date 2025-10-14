@@ -10,7 +10,7 @@ app.config.from_object(f'application.config.{os.getenv("FLASK_CONFIGURATION", "D
 
 import application.log
 
-CORS(app, supports_credentials=True, resources={r'/api/*' : {'origins': os.getenv("FRONTEND_URL", "http://localhost:3000"), 'methods': ['GET', 'POST']}})
+CORS(app, supports_credentials=True, resources={r'/api/*' : {'origins': os.getenv("FRONTEND_URL", "http://localhost:3000"), 'methods': ['GET', 'POST', 'OPTIONS']}})
 
 from application.DBcontroller import db
 db.init_app(app)

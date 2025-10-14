@@ -50,13 +50,8 @@ class ProblemPage extends ConsumerWidget {
                     const SizedBox(height: 24),
                     if (isLastQuestionShow) ...[
                       // if (true) ...[
-                      const Text(
-                        '最後の問題:\n"アジアのチャレンジ"の合言葉は？',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
+                        Image.asset(Assets.images.finalQuestion.path, // ← あなたの画像アセット名に合わせて変更してください
+                        fit: BoxFit.contain,
                       ),
                       const SizedBox(height: 24),
                       TextField(
@@ -105,7 +100,7 @@ class ProblemPage extends ConsumerWidget {
                   children: List.generate(4, (index) {
                     // Assuming key IDs are 1, 2, 3, 4
                     final keyId = index + 1;
-                    final image = usedKeyIds.contains(keyId.toString())
+                    final image = usedKeyIds.contains(keyId)
                         ? Assets.images.afterChain
                         : Assets.images.beforeChain;
                     return Transform.rotate(

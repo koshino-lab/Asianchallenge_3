@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert';
 
 import 'package:flutter/foundation.dart' show kIsWeb, Uint8List;
 import 'package:flutter/material.dart';
@@ -13,10 +14,10 @@ import 'package:quiz_rally/ui/pages/map_page/widgets/wrong_contents.dart';
 
 class AnswerPictureDialog extends ConsumerWidget {
   final String riddle;
-  final String pinId;
+  final int pinId;
   final String hint;
-  final void Function(String answer) onSubmit;
-  final bool Function(String answer) isCorrectAns;
+  final Future<bool> Function(String answer) onSubmit;
+  final int correctAnsRate;
   final VoidCallback? onCameraPressed;
   final XFile? imageFile;
 
@@ -25,7 +26,7 @@ class AnswerPictureDialog extends ConsumerWidget {
     required this.riddle,
     required this.pinId,
     required this.onSubmit,
-    required this.isCorrectAns,
+    required this.correctAnsRate,
     required this.hint,
     this.onCameraPressed,
     this.imageFile,
@@ -35,10 +36,11 @@ class AnswerPictureDialog extends ConsumerWidget {
     required BuildContext context,
     required WidgetRef ref,
     required String riddle,
-    required String pinId,
-    required void Function(String answer) onSubmit,
-    required bool Function(String answer) isCorrectAns,
+    required int pinId,
+    required Future<bool> Function(String answer) onSubmit,
+    required Future<bool> Function(String answer) isCorrectAns,
     required String hint,
+    required int correctAnsRate,
   }) {
     return showDialog<void>(
       context: context,
@@ -48,8 +50,8 @@ class AnswerPictureDialog extends ConsumerWidget {
           riddle: riddle,
           pinId: pinId,
           onSubmit: onSubmit,
-          isCorrectAns: isCorrectAns,
           hint: hint,
+          correctAnsRate: correctAnsRate,
         ),
       ),
     );
@@ -58,8 +60,6 @@ class AnswerPictureDialog extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dialogIndex = ref.watch(dialogIndexProvider);
-    final TextEditingController _answerController = TextEditingController();
-
     return Dialog(
       backgroundColor: Colors.transparent,
       insetPadding: EdgeInsets.zero,
@@ -78,6 +78,7 @@ class AnswerPictureDialog extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                DarkBrownTexts('正答率: $correctAnsRate %', 20),
                 if (dialogIndex == 0)
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -87,25 +88,10 @@ class AnswerPictureDialog extends ConsumerWidget {
                       const SizedBox(height: 26),
                       DarkBrownTexts(riddle, 20),
                       const SizedBox(height: 26),
-                      if (pinId != '1')
+                      if (pinId != 1)
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 35),
-                          child: TextField(
-                            controller: _answerController,
-                            decoration: const InputDecoration(
-                              hintText: '解答を入力してください',
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 8,
-                              ),
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
                         ),
-                      IconButton(
-                        icon: const Icon(Icons.camera_alt),
-                        onPressed: onCameraPressed,
-                      ),
                       if (imageFile != null)
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
@@ -118,8 +104,8 @@ class AnswerPictureDialog extends ConsumerWidget {
                                         snapshot.hasData) {
                                       return ConstrainedBox(
                                         constraints: const BoxConstraints(
-                                          maxWidth: 50,
-                                          maxHeight: 50,
+                                          maxWidth: 60,
+                                          maxHeight: 60,
                                         ),
                                         child: Image.memory(
                                           snapshot.data!,
@@ -138,41 +124,30 @@ class AnswerPictureDialog extends ConsumerWidget {
                                   fit: BoxFit.cover,
                                 ),
                         ),
+                      IconButton(
+                        icon: const Icon(Icons.camera_alt),
+                        onPressed: onCameraPressed,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           InkWell(
                             onTap: () async {
-                              if (pinId == '1') {
-                                if (imageFile != null) {
-                                  const answer = '__photo_submission__';
-                                  onSubmit(answer);
-                                  if (isCorrectAns(answer)) {
-                                    ref
-                                            .read(dialogIndexProvider.notifier)
-                                            .state =
-                                        1; // 正解画面へ
-                                  } else {
-                                    ref
-                                            .read(dialogIndexProvider.notifier)
-                                            .state =
-                                        2; // 不正解画面へ
-                                  }
+                              if (imageFile != null) {
+                                List<int> imageBytes = await imageFile!
+                                    .readAsBytes();
+                                final answer = base64Encode(imageBytes);
+                                final isCorrectAns = await onSubmit(answer);
+                                if (isCorrectAns) {
+                                  ref.read(dialogIndexProvider.notifier).state =
+                                      1; // 正解画面へ
+                                } else {
+                                  ref.read(dialogIndexProvider.notifier).state =
+                                      2; // 不正解画面へ
                                 }
-                                // 写真がなければ何もしない
-                                return;
                               }
-
-                              final ans = _answerController.text;
-                              onSubmit(ans);
-                              _answerController.dispose();
-                              if (isCorrectAns(ans)) {
-                                ref.read(dialogIndexProvider.notifier).state =
-                                    1; // 正解画面へ
-                              } else {
-                                ref.read(dialogIndexProvider.notifier).state =
-                                    2; // 不正解画面へ
-                              }
+                              // 写真がなければ何もしない
+                              return;
                             },
                             child: UniversalImage(
                               Assets.images.redDecoratedButtonSubmit.path,
