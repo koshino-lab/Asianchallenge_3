@@ -1,19 +1,25 @@
 from application import app
 from application.DBcontroller import db, Quiz, CorrectAnswer, Users
-# from ultralytics import YOLO
 from flask import request, jsonify
 from sqlalchemy import func
 from sqlalchemy.dialects.postgresql import insert
-from PIL import Image
-import numpy as np
 import random
 import string
 import os
 import base64
 import json
+import binascii
 from io import BytesIO
 
-# テストです！！！！！！
+try:
+  from ultralytics import YOLO
+  from PIL import Image
+  import numpy as np
+  USE_YOLO = True
+except ImportError:
+  app.logger.info("Image recognition library is not available. Some functions are limited.")
+  USE_YOLO = False
+
 
 def createUserID():
   chars = string.ascii_letters + string.digits
@@ -88,6 +94,11 @@ def quiz():
 
     answer = data.get("answer", None)
     if quiz.type == 1:
+      # 画像認識についての処理
+      if not USE_YOLO:
+        app.logger.info(f"No image recognition libraries have been imported.")
+        return jsonify({ "error": "Bad Request" }), 400
+
       if answer is None:
         if 'file' in request.files:
           answer = request.files['file']
@@ -111,7 +122,7 @@ def quiz():
         app.logger.error(f"model does not exist(path={model_path})")
         return jsonify({ "error": "Internal Server Error" }), 500
 
-#      model = YOLO(model_path)
+      model = YOLO(model_path)
       try:
         image = Image.open(answer).convert('RGB')
         img = np.asarray(image).copy()
@@ -129,17 +140,21 @@ def quiz():
         return jsonify({"status": "incorrect"}), 200
 
     elif quiz.type == 0:
+      # 画像認識以外についての処理
+      answer = request.form.get("answer", None)
       if answer is None:
         app.logger.debug(f"answer does not exist({request.form})")
         return jsonify({ "error": "Bad Request" }), 400
-
-      # 大文字や全角への対応が必要になるかも
-      if answer == quiz.answer:
-        db.session.add(CorrectAnswer(quizID=quizID, userID=userID))
-        db.session.commit()
-        return jsonify({"status": "success"}), 200
-      else:
-        return jsonify({"status": "incorrect"}), 200
+        
+      answers = quiz.answer.split('|')
+      for ans in answers:
+        # 大文字や全角への対応が必要になるかも
+        if answer == ans:
+          db.session.add(CorrectAnswer(quizID=quizID, userID=userID))
+          db.session.commit()
+          return jsonify({"status": "success"}), 200
+        else:
+          return jsonify({"status": "incorrect"}), 200
 
   return jsonify({ "error": "Bad Request" }), 400
 
@@ -198,29 +213,3 @@ def correctAnswerRate():
       return jsonify({ "error": "Bad Request" }), 400
     return jsonify({"correctAnswerRate": 100 * q / user_num}), 200
 
-@app.route('/XsGCKgHtlP/initdb')
-def initdb():
-  app.logger.info(f"DATABASE_URL: {os.getenv('DATABASE_URL')}")
-  app.logger.info(f"FRONTEND_URL: {os.getenv('FRONTEND_URL')}")
-  db.create_all()
-  quizzes = [
-    {'quizID': 0, 'problem': "最終問題", 'answer': "高専の森", "hint": "なぞのばしょ", 'type': 0},
-    {'quizID': 1, 'problem': "1+1は？", 'answer': "2", "hint": "田じゃないよ", 'type': 0},
-    {'quizID': 2, 'problem': "天照大神、月読命、素戔嗚尊、この三柱をまとめて何という？", 'answer': "三貴子", "hint": "日本語で「みはしらのうずのみこ」と読むよ", 'type': 0},
-    {'quizID': 3, 'problem': "Asian Bridge's logo", 'answer': "asian_logo.pt", "hint": "Asian Bridgeのロゴを探そう！", 'type': 1},
-    {'quizID': 4, 'problem': "サメだ！殴れ！", 'answer': "SPC", "hint": "サメ殴りセンター", 'type': 0},
-  ]
-  stmt = insert(Quiz).values(quizzes)
-
-  update_dict = {
-    'problem': stmt.excluded.problem,
-    'answer': stmt.excluded.answer,
-    'type': stmt.excluded.type
-  }
-  stmt = stmt.on_conflict_do_update(
-    index_elements=['quizID'],
-    set_=update_dict
-  )
-  db.session.execute(stmt)
-  db.session.commit()
-  return jsonify({"status": "success"}), 200
