@@ -45,11 +45,11 @@ class PositionedQuestionPin extends ConsumerWidget {
           if (isSolved) {
             await SolvedDialog.show(context, pinId);
           } else {
-            final correctAnsRate = await ref
-                .read(mapPageProvider.notifier)
-                .getCorrectAnswerRate(pinId);
-            //print('✅ Fetching quiz for pinId: $pinId, correctAnsRate: $correctAnsRate');
             try {
+              final correctAnsRate = await ref
+                  .read(mapPageProvider.notifier)
+                  .getCorrectAnswerRate(pinId);
+              //print('✅ Fetching quiz for pinId: $pinId, correctAnsRate: $correctAnsRate');
               final quizData = getQuizDataById(pinId);
               if (quizData == null) {
                 throw Exception('クイズが見つかりません');
