@@ -49,11 +49,11 @@ werkzeug_handler.setFormatter(logging.Formatter(DEFAULT_LOG_FORMAT))
 
 app.logger.removeHandler(flask.logging.default_handler)
 app.logger.addHandler(app_handler)
-app.logger.setLevel(getEnvLogLevel('APP_LOG_LEVEL', 'info'))
+app.logger.setLevel(getEnvLogLevel('APP_LOG_LEVEL', 'debug'))
 
 werkzeug_logger = logging.getLogger('werkzeug')
 werkzeug_logger.addHandler(werkzeug_handler)
-werkzeug_logger.setLevel(getEnvLogLevel('WERKZEUG_LOG_LEVEL', 'info'))
+werkzeug_logger.setLevel(getEnvLogLevel('WERKZEUG_LOG_LEVEL', 'debug'))
 
 
 def _custom_log_request(self, code="-", size="-"):
