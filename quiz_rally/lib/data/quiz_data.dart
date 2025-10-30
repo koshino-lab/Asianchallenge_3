@@ -38,7 +38,7 @@ const List<QuizData> quizDataList = [
   ),
   QuizData(
     id: 4,
-    question: '[画像を表示]\n賞状は無視して！',
+    question: '[画像を表示]\n賞状は無視して！答えは16文字！',
     hint: 'カップや楯に書いてある言葉に注目！',
     type: 0, // テキスト回答
     imagePath: 'assets/images/4_q.png',
@@ -59,21 +59,21 @@ const List<QuizData> quizDataList = [
   ),
   QuizData(
     id: 7,
-    question: '新しい問題',
-    hint: '新しいヒント',
+    question: '太陽が見ている食べ物は何？',
+    hint: '看板を探してみよう！',
     type: 0, // テキスト回答
   ),
   QuizData(
     id: 8,
-    question: '[画像を表示]\n6号館から1号館の方向に並べろ！',
-    hint: '窓から見える',
+    question: '[画像を表示]',
+    hint: '1階を探してみよう!',
     type: 0, // テキスト回答
     imagePath: 'assets/images/8_q.png',
   ),
   QuizData(
     id: 9,
-    question: '誘導2の問題文',
-    hint: '',
+    question: '写真ブースの中に宝箱がある！探せ!',
+    hint: 'がんばって！',
     type: 0, // テキスト回答
   ),
 ];
