@@ -56,6 +56,11 @@ class MapPage extends HookConsumerWidget {
                 PositionedQuestionPin(top: 200, right: 80, pinId: 2),
                 PositionedQuestionPin(bottom: 150, left: 120, pinId: 3),
                 PositionedQuestionPin(bottom: 50, right: 20, pinId: 4),
+                PositionedQuestionPin(top: 300, left: 70, pinId: 5),
+                PositionedQuestionPin(top: 400, right: 100, pinId: 6),
+                PositionedQuestionPin(bottom: 250, left: 20, pinId: 7),
+                PositionedQuestionPin(bottom: 350, right: 50, pinId: 8),
+                PositionedQuestionPin(top: 500, left: 150, pinId: 9),
               ],
             )
           : Center(child: CircularProgressIndicator()),
