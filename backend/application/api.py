@@ -204,12 +204,16 @@ def initdb():
   app.logger.info(f"FRONTEND_URL: {os.getenv('FRONTEND_URL')}")
   db.create_all()
   quizzes = [
-    {'quizID': 0, 'problem': "最終問題", 'answer': "高専の森", "hint": "なぞのばしょ", 'type': 0},
-    {'quizID': 1, 'problem': "1+1は？", 'answer': "2", "hint": "田じゃないよ", 'type': 0},
-    {'quizID': 2, 'problem': "天照大神、月読命、素戔嗚尊、この三柱をまとめて何という？", 'answer': "三貴子", "hint": "日本語で「みはしらのうずのみこ」と読むよ", 'type': 0},
-    {'quizID': 3, 'problem': "Asian Bridge's logo", 'answer': "asian_logo.pt", "hint": "Asian Bridgeのロゴを探そう！", 'type': 1},
-    {'quizID': 4, 'problem': "サメだ！殴れ！", 'answer': "SPC", "hint": "サメ殴りセンター", 'type': 0},
-  ]
+    {'quizID': 1, 'problem': "助けを求めている露店がある。その露店の名前はなんだ", 'answer': "中華まつもっちゃん", 'hint': "モールス信号", 'type': 0},
+    {'quizID': 2, 'problem': "画像を表示", 'answer': "イノシシ", 'hint': "最近できた塔の4階", 'type': 0},
+    {'quizID': 3, 'problem': "学生玄関を入ったら右手の「階段」を上がって二階に行こう。\n階段を上がると上の方に『図書館◀︎50m』と言う案内が書かれている。案内に従って「左」に進もう。\n左手の教員室の扉を二つ越えて右にある渡り廊下を進もう。\n天井の二つの蛍光灯を通り過ぎれば図書館に着く。\nまっすぐ進んでパンフレットの中に紛れ込んだ宝箱の中に答えは記されている。\n※宝箱は持って行かないでね", 'answer': "ラーコモ", 'hint': "", 'type': 0},
+    {'quizID': 4, 'problem': "画像と、「賞状は無視して！」と表示", 'answer': "第35回全国高等専門学校プログラミングコンテスト", 'hint': "カップや楯に書いてある言葉に注目！", 'type': 0},
+    {'quizID': 5, 'problem': "画像と、「間違いを探せ」と表示", 'answer': "テクノパレット", 'hint': "間違い探しの答えが最終の答えではない。また、C科塔ではない。", 'type': 0},
+    {'quizID': 6, 'problem': "画像を表示", 'answer': "建築", 'hint': "写真に写っている文字と問題の文字を除くと…", 'type': 0},
+    {'quizID': 7, 'problem': "太陽が見ている食べ物は何？", 'answer': "アイス", 'hint': "看板を探してみよう！", 'type': 0},
+    {'quizID': 8, 'problem': "画像を表示、「6号館から1号館の方向に並べろ！」", 'answer': "はつでん", 'hint': "窓から見える", 'type': 0},
+    {'quizID': 9, 'problem': "写真ブースの中に宝箱がある！探せ", 'answer': "60th", 'hint': "", 'type': 0}
+]
   stmt = insert(Quiz).values(quizzes)
 
   update_dict = {
