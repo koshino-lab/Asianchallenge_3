@@ -48,7 +48,7 @@ const List<QuizData> quizDataList = [
     question: '[画像を表示]\n間違いを探せ',
     hint: '間違い探しの答えが最終の答えではない。また、C科塔ではない。',
     type: 0, // テキスト回答
-    imagePath: 'assets/images/5_9.png',
+    imagePath: 'assets/images/5_q.png',
   ),
   QuizData(
     id: 6,
@@ -59,10 +59,9 @@ const List<QuizData> quizDataList = [
   ),
   QuizData(
     id: 7,
-    question: '[画像を表示]',
-    hint: '色のパターンを探してみよう！',
+    question: '新しい問題',
+    hint: '新しいヒント',
     type: 0, // テキスト回答
-    imagePath: 'assets/images/7_q.png',
   ),
   QuizData(
     id: 8,

@@ -12,6 +12,21 @@ import 'package:flutter/widgets.dart';
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/2_q.png
+  AssetGenImage get a2Q => const AssetGenImage('assets/images/2_q.png');
+
+  /// File path: assets/images/4_q.png
+  AssetGenImage get a4Q => const AssetGenImage('assets/images/4_q.png');
+
+  /// File path: assets/images/5_q.png
+  AssetGenImage get a5Q => const AssetGenImage('assets/images/5_q.png');
+
+  /// File path: assets/images/6_q.png
+  AssetGenImage get a6Q => const AssetGenImage('assets/images/6_q.png');
+
+  /// File path: assets/images/8_q.png
+  AssetGenImage get a8Q => const AssetGenImage('assets/images/8_q.png');
+
   /// File path: assets/images/Icon.svg
   String get icon => 'assets/images/Icon.svg';
 
@@ -154,6 +169,11 @@ class $AssetsImagesGen {
 
   /// List of all assets
   List<dynamic> get values => [
+    a2Q,
+    a4Q,
+    a5Q,
+    a6Q,
+    a8Q,
     icon,
     afterChain,
     beforeChain,
