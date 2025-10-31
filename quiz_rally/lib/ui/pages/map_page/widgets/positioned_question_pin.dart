@@ -142,13 +142,13 @@ class PositionedQuestionPin extends ConsumerWidget {
       case 5:
         return Assets.images.pin5;
       case 6:
-        return Assets.images.pin6;
+        return Assets.images.pin6.path;
       case 7:
-        return Assets.images.pin7;
+        return Assets.images.pin7.path;
       case 8:
-        return Assets.images.pin8;
+        return Assets.images.pin8.path;
       case 9:
-        return Assets.images.pin9;
+        return Assets.images.pin9.path;
       default:
         return Assets.images.pin1;
     }

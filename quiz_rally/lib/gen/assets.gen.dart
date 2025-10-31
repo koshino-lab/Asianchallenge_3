@@ -24,6 +24,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/6_q.png
   AssetGenImage get a6Q => const AssetGenImage('assets/images/6_q.png');
 
+  /// File path: assets/images/8_q.png
+  AssetGenImage get a8Q => const AssetGenImage('assets/images/8_q.png');
+
   /// File path: assets/images/Icon.svg
   String get icon => 'assets/images/Icon.svg';
 
@@ -119,17 +122,17 @@ class $AssetsImagesGen {
   /// File path: assets/images/pin5.svg
   String get pin5 => 'assets/images/pin5.svg';
 
-  /// File path: assets/images/pin6.svg
-  String get pin6 => 'assets/images/pin6.svg';
+  /// File path: assets/images/pin6.png
+  AssetGenImage get pin6 => const AssetGenImage('assets/images/pin6.png');
 
-  /// File path: assets/images/pin7.svg
-  String get pin7 => 'assets/images/pin7.svg';
+  /// File path: assets/images/pin7.png
+  AssetGenImage get pin7 => const AssetGenImage('assets/images/pin7.png');
 
-  /// File path: assets/images/pin8.svg
-  String get pin8 => 'assets/images/pin8.svg';
+  /// File path: assets/images/pin8.png
+  AssetGenImage get pin8 => const AssetGenImage('assets/images/pin8.png');
 
-  /// File path: assets/images/pin9.svg
-  String get pin9 => 'assets/images/pin9.svg';
+  /// File path: assets/images/pin9.png
+  AssetGenImage get pin9 => const AssetGenImage('assets/images/pin9.png');
 
   /// File path: assets/images/problem_page_filter.png
   AssetGenImage get problemPageFilter =>
@@ -182,6 +185,7 @@ class $AssetsImagesGen {
     a4Q,
     a5Q,
     a6Q,
+    a8Q,
     icon,
     afterChain,
     beforeChain,
