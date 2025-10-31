@@ -59,7 +59,7 @@ const List<QuizData> quizDataList = [
   ),
   QuizData(
     id: 7,
-    question: '太陽が見ている食べ物は何？',
+    question: '心の間にあるものは何？一文字で！',
     hint: '看板を探してみよう！',
     type: 0, // テキスト回答
   ),
