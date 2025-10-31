@@ -53,6 +53,7 @@ class QuizService {
       }),
     );
     if (response.statusCode == 200) {
+      print('Response body: ${response.body}');
       final body = jsonDecode(response.body);
       return body['status'];
     } else if (response.statusCode == 400) {

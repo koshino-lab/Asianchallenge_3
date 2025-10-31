@@ -97,7 +97,7 @@ class ProblemPage extends ConsumerWidget {
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(4, (index) {
+                  children: List.generate(9, (index) {
                     // Assuming key IDs are 1, 2, 3, 4
                     final keyId = index + 1;
                     final image = usedKeyIds.contains(keyId)
