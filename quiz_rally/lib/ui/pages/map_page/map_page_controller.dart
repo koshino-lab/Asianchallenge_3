@@ -1,12 +1,21 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:quiz_rally/models/map_pin.dart';
 import 'package:quiz_rally/cookie_manager/cookie_manager.dart';
-import 'package:quiz_rally/services/quiz_service.dart';
-import 'package:quiz_rally/services/user_service.dart';
 
 part 'map_page_controller.freezed.dart';
 part 'map_page_controller.g.dart';
+
+const Map<int, List<String>> correctAnswers = {
+  1: ['中華まつもっちゃん'],
+  2: ['イノシシ'],
+  3: ['ラーコモ'],
+  4: ['第35回全国高等専門学校プログラミングコンテスト', '第35回プログラミングコンテスト', '第35回全国高等専門学校プログラミングコンテスト自由部門'],
+  5: ['テクノパレット'],
+  6: ['建築'],
+  7: ['アイス'],
+  8: ['はつでん'],
+  9: ['60th'],
+};
 
 @freezed
 class MapPageState with _$MapPageState {
@@ -31,12 +40,9 @@ final mapPageProvider = StateNotifierProvider<MapPageController, MapPageState>(
 );
 
 class MapPageController extends StateNotifier<MapPageState> {
-  MapPageController() : super(MapPageState()) {
+  MapPageController() : super(const MapPageState()) {
     _init();
   }
-
-  final _quizService = QuizService();
-  final _userService = UserService();
 
   void _init() {
     // cookieからデータをloadする. データがない場合は初期化
@@ -57,7 +63,7 @@ class MapPageController extends StateNotifier<MapPageState> {
   }
 
   void resetTutorial() {
-    state = MapPageState(
+    state = const MapPageState(
       tutorialPageIndex: 0,
       solvedPinIds: {},
       usedKeyIds: [],
@@ -70,8 +76,8 @@ class MapPageController extends StateNotifier<MapPageState> {
     // チュートリアルインデックスはcookie保存対象外
   }
 
-  Future<bool> checkAnswer(int pinId, String answer) async {
-    if (await isCorrectAnswer(pinId, answer)) {
+  bool checkAnswer(int pinId, String answer) {
+    if (isCorrectAnswer(pinId, answer)) {
       state = state.copyWith(
         solvedPinIds: {...state.solvedPinIds, pinId},
         ownKeyCount: state.ownKeyCount + 1,
@@ -100,7 +106,7 @@ class MapPageController extends StateNotifier<MapPageState> {
       );
     }
     final usedKeyCount = state.usedKeyIds.length;
-    if (usedKeyCount >= 4) {
+    if (usedKeyCount >= 9) {
       state = state.copyWith(isLastQuestionAvailable: true);
     }
     _saveToCookie();
@@ -108,7 +114,7 @@ class MapPageController extends StateNotifier<MapPageState> {
 
   /// 最後の問題の回答を判定し、正解ならisGameClearedをtrueにする
   bool checkLastAnswer(String answer) {
-    // 正解は「アジア」など、必要に応じて変更
+    // TODO: ユーザーに最後の問題の答えを確認する
     if (answer.trim() == '高専の森') {
       state = state.copyWith(isGameCleared: true);
       _saveToCookie();
@@ -118,29 +124,11 @@ class MapPageController extends StateNotifier<MapPageState> {
     }
   }
 
-  Future<void> createUserId() async {
-    final userId = await _userService.createUserId();
-    state = state.copyWith(userId: userId);
-  }
-
-  Future<List<int>> getProgress() async {
-    if (state.userId == '') {
-      await createUserId();
+  bool isCorrectAnswer(int quizId, String answer) {
+    final answers = correctAnswers[quizId];
+    if (answers == null) {
+      return false;
     }
-    final userId = state.userId;
-    return _userService.getProgress(userId);
-  }
-
-  Future<bool> isCorrectAnswer(int quizId, String answer) async {
-    if (state.userId == '') {
-      await createUserId();
-    }
-    final userId = state.userId;
-    final status = await _quizService.checkAnswer(quizId, answer, userId);
-    return status == 'correct';
-  }
-
-  Future<double> getCorrectAnswerRate(int quizId) async {
-    return _quizService.getCorrectAnswerRate(quizId);
+    return answers.contains(answer.trim());
   }
 }

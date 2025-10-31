@@ -3,7 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:quiz_rally/gen/assets.gen.dart';
 import 'package:quiz_rally/ui/components/theme_text.dart';
 import 'package:quiz_rally/ui/components/universal_image.dart';
-import 'package:quiz_rally/ui/pages/map_page/map_page_controller.dart';
 import 'package:quiz_rally/ui/pages/map_page/widgets/correct_contents.dart';
 import 'package:quiz_rally/ui/pages/map_page/widgets/wrong_contents.dart';
 
@@ -15,17 +14,14 @@ class AnswerTextDialog extends ConsumerWidget {
   final String riddle;
   final int pinId;
   final String hint;
-  final Future<bool> Function(String answer) onSubmit;
-  final int correctAnsRate;
+  final bool Function(String answer) onSubmit;
   final String? imagePath;
-  //final Future<bool> Function(String answer) isCorrectAns;
 
   const AnswerTextDialog({
     super.key,
     required this.riddle,
     required this.pinId,
     required this.onSubmit,
-    required this.correctAnsRate,
     this.hint = '',
     this.imagePath,
   });
@@ -35,8 +31,7 @@ class AnswerTextDialog extends ConsumerWidget {
     required WidgetRef ref,
     required String riddle,
     required int pinId,
-    required Future<bool> Function(String answer) onSubmit,
-    required int correctAnsRate,
+    required bool Function(String answer) onSubmit,
     required String hint,
     String? imagePath,
   }) {
@@ -48,7 +43,6 @@ class AnswerTextDialog extends ConsumerWidget {
           riddle: riddle,
           pinId: pinId,
           onSubmit: onSubmit,
-          correctAnsRate: correctAnsRate,
           hint: hint,
           imagePath: imagePath,
         ),
@@ -80,7 +74,6 @@ class AnswerTextDialog extends ConsumerWidget {
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  DarkBrownTexts('正答率: $correctAnsRate %', 20),
                   if (dialogIndex == 0)
                     Expanded(
                       child: SingleChildScrollView(
@@ -119,9 +112,9 @@ class AnswerTextDialog extends ConsumerWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           InkWell(
-                            onTap: () async {
+                            onTap: () {
                               final ans = _answerController.text;
-                              final isCorrectAns = await onSubmit(ans);
+                              final isCorrectAns = onSubmit(ans);
                               _answerController.dispose();
                               if (isCorrectAns) {
                                 ref.read(dialogIndexProvider.notifier).state =

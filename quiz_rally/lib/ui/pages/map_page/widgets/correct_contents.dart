@@ -10,20 +10,22 @@ class CorrectContents extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        const SizedBox(height: 10),
-        DarkBrownTexts.bold('Q U I Z  $pinId', 48),
-        const SizedBox(height: 4),
-        DarkBrownTexts.bold('正解！', 36),
-        UniversalImage(
-          Assets.images.keyWithShadow.path,
-          width: 180,
-          height: 180,
-        ),
-        DarkBrownTexts('鍵$pinIdをゲットした。\nMap画面で使ってみよう', 20),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          const SizedBox(height: 10),
+          DarkBrownTexts.bold('Q U I Z  $pinId', 48),
+          const SizedBox(height: 4),
+          DarkBrownTexts.bold('正解！', 36),
+          UniversalImage(
+            Assets.images.keyWithShadow.path,
+            width: 180,
+            height: 180,
+          ),
+          DarkBrownTexts('鍵$pinIdをゲットした.\nMap画面で使ってみよう', 20),
+        ],
+      ),
     );
   }
 }

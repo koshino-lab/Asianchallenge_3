@@ -46,10 +46,6 @@ class PositionedQuestionPin extends ConsumerWidget {
             await SolvedDialog.show(context, pinId);
           } else {
             try {
-              final correctAnsRate = await ref
-                  .read(mapPageProvider.notifier)
-                  .getCorrectAnswerRate(pinId);
-              //print('✅ Fetching quiz for pinId: $pinId, correctAnsRate: $correctAnsRate');
               final quizData = getQuizDataById(pinId);
               if (quizData == null) {
                 throw Exception('クイズが見つかりません');
@@ -86,7 +82,6 @@ class PositionedQuestionPin extends ConsumerWidget {
                           },
                           imageFile: imageFile,
                           pinId: pinId,
-                          correctAnsRate: correctAnsRate.toInt(),
                         );
                       },
                     );
@@ -99,7 +94,6 @@ class PositionedQuestionPin extends ConsumerWidget {
                   riddle: riddle,
                   pinId: pinId,
                   hint: hint,
-                  correctAnsRate: correctAnsRate.toInt(),
                   imagePath: imagePath,
                   onSubmit: (answer) =>
                       mapPageController.checkAnswer(pinId, answer),
