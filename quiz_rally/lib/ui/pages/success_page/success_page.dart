@@ -11,22 +11,22 @@ class SuccessPage extends StatelessWidget {
         color: Styles.primaryColor,
         width: double.infinity,
         height: double.infinity,
-        child: Stack(
-          children: <Widget>[
-            // 背景画像（フィルター画像）
-            Positioned.fill(
-              child: Image.asset(
+        child: SingleChildScrollView(
+          child: Stack(
+            children: <Widget>[
+              // 背景画像（フィルター画像）
+              Image.asset(
                 Assets.images.succesPage.path,
                 fit: BoxFit.cover,
+                width: MediaQuery.of(context).size.width,
               ),
-            ),
-            // 成功ページの画像（上に重ねる）
-            Positioned.fill(
-              child: Image.asset(
+              // 成功ページの画像（上に重ねる）
+              Image.asset(
                 Assets.images.succesPage2.path,
+                width: MediaQuery.of(context).size.width,
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

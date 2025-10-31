@@ -17,13 +17,13 @@ class LastQuestionSubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () async {
+      onPressed: () {
         final answer = controller.text.trim();
         final isCorrect = ref
             .read(mapPageProvider.notifier)
             .checkLastAnswer(answer);
         if (isCorrect) {
-          await Navigator.of(this.context).pushReplacementNamed('/success');
+          Navigator.of(this.context).pushReplacementNamed('/success');
         } else {
           ScaffoldMessenger.of(
             this.context,

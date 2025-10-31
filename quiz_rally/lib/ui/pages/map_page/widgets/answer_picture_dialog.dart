@@ -16,8 +16,7 @@ class AnswerPictureDialog extends ConsumerWidget {
   final String riddle;
   final int pinId;
   final String hint;
-  final Future<bool> Function(String answer) onSubmit;
-  final int correctAnsRate;
+  final bool Function(String answer) onSubmit;
   final VoidCallback? onCameraPressed;
   final XFile? imageFile;
 
@@ -26,7 +25,6 @@ class AnswerPictureDialog extends ConsumerWidget {
     required this.riddle,
     required this.pinId,
     required this.onSubmit,
-    required this.correctAnsRate,
     required this.hint,
     this.onCameraPressed,
     this.imageFile,
@@ -37,10 +35,9 @@ class AnswerPictureDialog extends ConsumerWidget {
     required WidgetRef ref,
     required String riddle,
     required int pinId,
-    required Future<bool> Function(String answer) onSubmit,
-    required Future<bool> Function(String answer) isCorrectAns,
+    required bool Function(String answer) onSubmit,
+    required bool Function(String answer) isCorrectAns,
     required String hint,
-    required int correctAnsRate,
   }) {
     return showDialog<void>(
       context: context,
@@ -51,7 +48,6 @@ class AnswerPictureDialog extends ConsumerWidget {
           pinId: pinId,
           onSubmit: onSubmit,
           hint: hint,
-          correctAnsRate: correctAnsRate,
         ),
       ),
     );
@@ -78,7 +74,6 @@ class AnswerPictureDialog extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                DarkBrownTexts('正答率: $correctAnsRate %', 20),
                 if (dialogIndex == 0)
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -137,7 +132,7 @@ class AnswerPictureDialog extends ConsumerWidget {
                                 List<int> imageBytes = await imageFile!
                                     .readAsBytes();
                                 final answer = base64Encode(imageBytes);
-                                final isCorrectAns = await onSubmit(answer);
+                                final isCorrectAns = onSubmit(answer);
                                 if (isCorrectAns) {
                                   ref.read(dialogIndexProvider.notifier).state =
                                       1; // 正解画面へ
