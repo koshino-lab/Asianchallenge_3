@@ -8,6 +8,7 @@ import 'package:quiz_rally/ui/pages/map_page/widgets/answer_text_dialog.dart';
 import 'package:quiz_rally/ui/pages/map_page/widgets/answer_picture_dialog.dart';
 import 'package:quiz_rally/ui/pages/map_page/widgets/solveDialog.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
 
 class PositionedQuestionPin extends ConsumerWidget {
   final double? top;
@@ -68,8 +69,13 @@ class PositionedQuestionPin extends ConsumerWidget {
                         return AnswerPictureDialog(
                           riddle: riddle,
                           hint: hint,
-                          onSubmit: (answer) =>
-                              mapPageController.checkAnswer(pinId, answer),
+                          onSubmit: (answer) async {
+                            http.MultipartFile? file;
+                            if (imageFile != null) {
+                              file = await http.MultipartFile.fromPath('file', imageFile!.path);
+                            }
+                            return mapPageController.checkAnswer(pinId, answer: answer, file: file);
+                          },
                           onCameraPressed: () async {
                             final picker = ImagePicker();
                             final pickedFile = await picker.pickImage(
@@ -102,7 +108,7 @@ class PositionedQuestionPin extends ConsumerWidget {
                   correctAnsRate: correctAnsRate.toInt(),
                   imagePath: imagePath,
                   onSubmit: (answer) =>
-                      mapPageController.checkAnswer(pinId, answer),
+                      mapPageController.checkAnswer(pinId, answer: answer),
                 );
               }
             } catch (e) {

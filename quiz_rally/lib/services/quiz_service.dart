@@ -5,7 +5,7 @@ import 'package:quiz_rally/models/quiz.dart';
 
 class QuizService {
   // 一時的にハードコード（デバッグ用）
-  final _baseUrl = 'https://roten-app.com';
+  final _baseUrl = 'http://127.0.0.1:3000';
 
   Future<Quiz> getQuiz(String quizId) async {
     print('🔍 QuizService - BASE_URL: $_baseUrl');
@@ -38,26 +38,40 @@ class QuizService {
     }
   }
 
-  Future<String> checkAnswer(int quizId, String answer, String userId) async {
+  Future<String> checkAnswer(
+    int quizId,
+    String userId, {
+    String? answer,
+    http.MultipartFile? file,
+  }) async {
     final uri = Uri.parse('$_baseUrl/api/quiz');
+    var request = http.MultipartRequest('POST', uri);
+    request.fields['quizID'] = quizId.toString();
+    request.fields['userID'] = userId;
 
-    final response = await http.post(
-      uri,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, dynamic>{
-        'quizID': quizId,
-        'answer': answer,
-        'userID': userId,
-      }),
-    );
+    if (answer != null) {
+      request.fields['answer'] = answer;
+    }
+
+    if (file != null) {
+      request.files.add(file);
+    }
+
+    print('Request URL: ${request.url}');
+    print('Request Headers: ${request.headers}');
+    print('Request Fields: ${request.fields}');
+    print('Request Files: ${request.files}');
+
+    final response = await request.send();
+
     if (response.statusCode == 200) {
-      print('Response body: ${response.body}');
-      final body = jsonDecode(response.body);
+      final responseBody = await response.stream.bytesToString();
+      print('Response body: $responseBody');
+      final body = jsonDecode(responseBody);
       return body['status'];
     } else if (response.statusCode == 400) {
-      final errorBody = jsonDecode(response.body);
+      final responseBody = await response.stream.bytesToString();
+      final errorBody = jsonDecode(responseBody);
       throw Exception('❌ Failed to check quiz: ${errorBody['error']}');
     } else {
       throw Exception(
@@ -66,16 +80,22 @@ class QuizService {
     }
   }
 
-  Future<double> getCorrectAnswerRate(int quizId) async {
-    final uri = Uri.parse(
-      '$_baseUrl/api/correctAnswerRate',
-    ).replace(queryParameters: {'quizID': quizId.toString()});
+  Future<dynamic> getCorrectAnswerRates({int? quizId}) async {
+    final uri = Uri.parse('$_baseUrl/api/correctAnswerRate').replace(
+      queryParameters: quizId != null ? {'quizID': quizId.toString()} : {},
+    );
 
     final response = await http.get(uri);
     print('✅ header: ${response.headers}, body: ${response.body}');
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body);
-      return (body['correctAnswerRate'] as num).toDouble();
+      if (quizId != null) {
+        return (body['correctAnswerRate'] as num).toDouble();
+      } else {
+        return (body['correctAnswerRate'] as List)
+            .map((e) => (e as num).toDouble())
+            .toList();
+      }
     } else if (response.statusCode == 400) {
       final errorBody = jsonDecode(response.body);
       throw Exception(

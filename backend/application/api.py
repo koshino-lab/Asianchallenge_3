@@ -43,17 +43,7 @@ def quiz():
   elif request.method == 'POST':
     # クイズの答え合わせ
     # データはformで取得
-    if request.is_json and 'quizID' in request.json:
-      data = request.json
-    elif request.form and 'quizID' in request.form:
-      data = request.form
-    else:
-      try:
-        data = request.data.decode('utf-8')
-        data = json.loads(data)
-      except:
-        app.logger.debug(f"request.form or request.json does not exist and request.data is not None({request.data})")
-        return jsonify({ "error": "Bad Request" }), 400
+    data = request.form
 
     userID = data.get("userID", None)
     if userID is None:
@@ -132,7 +122,7 @@ def quiz():
         return jsonify({ "error": "Bad Request" }), 400
 
       # 大文字や全角への対応が必要になるかも
-      if answer == quiz.answer:
+      if answer.strip().lower() == quiz.answer.strip().lower():
         db.session.add(CorrectAnswer(quizID=quizID, userID=userID))
         db.session.commit()
         return jsonify({"status": "success"}), 200

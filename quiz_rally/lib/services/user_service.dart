@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class UserService {
   // 一時的にハードコード（デバッグ用）
-  final _baseUrl = 'https://roten-app.com';
+  final _baseUrl = 'http://127.0.0.1:3000';
   final String getQuizPath = '/api/quiz';
 
   Future<String> createUserId() async {

@@ -4,6 +4,7 @@ import 'package:quiz_rally/models/map_pin.dart';
 import 'package:quiz_rally/cookie_manager/cookie_manager.dart';
 import 'package:quiz_rally/services/quiz_service.dart';
 import 'package:quiz_rally/services/user_service.dart';
+import 'package:http/http.dart' as http;
 
 part 'map_page_controller.freezed.dart';
 part 'map_page_controller.g.dart';
@@ -70,8 +71,8 @@ class MapPageController extends StateNotifier<MapPageState> {
     // チュートリアルインデックスはcookie保存対象外
   }
 
-  Future<bool> checkAnswer(int pinId, String answer) async {
-    if (await isCorrectAnswer(pinId, answer)) {
+  Future<bool> checkAnswer(int pinId, {String? answer, http.MultipartFile? file}) async {
+    if (await isCorrectAnswer(pinId, answer, file: file)) {
       state = state.copyWith(
         solvedPinIds: {...state.solvedPinIds, pinId},
         ownKeyCount: state.ownKeyCount + 1,
@@ -131,16 +132,16 @@ class MapPageController extends StateNotifier<MapPageState> {
     return _userService.getProgress(userId);
   }
 
-  Future<bool> isCorrectAnswer(int quizId, String answer) async {
+  Future<bool> isCorrectAnswer(int quizId, String? answer, {http.MultipartFile? file}) async {
     if (state.userId == '') {
       await createUserId();
     }
     final userId = state.userId;
-    final status = await _quizService.checkAnswer(quizId, answer, userId);
+    final status = await _quizService.checkAnswer(quizId, userId, answer: answer, file: file);
     return status == 'correct';
   }
 
   Future<double> getCorrectAnswerRate(int quizId) async {
-    return _quizService.getCorrectAnswerRate(quizId);
+    return await _quizService.getCorrectAnswerRates(quizId: quizId) as double;
   }
 }
