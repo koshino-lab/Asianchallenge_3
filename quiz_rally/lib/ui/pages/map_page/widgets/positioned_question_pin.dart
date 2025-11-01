@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:quiz_rally/data/quiz_data.dart';
 import 'package:quiz_rally/ui/pages/map_page/map_page_controller.dart';
 import 'package:quiz_rally/gen/assets.gen.dart';
 import 'package:quiz_rally/ui/components/universal_image.dart';
@@ -30,8 +29,6 @@ class PositionedQuestionPin extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mapPageState = ref.watch(mapPageProvider);
-    final mapPageController = ref.read(mapPageProvider.notifier);
-    final isSolved = mapPageState.solvedPinIds.contains(pinId);
     // 画像アセット名をpinIdから取得
     final imageAsset = _getImageAsset(pinId);
 
@@ -40,85 +37,17 @@ class PositionedQuestionPin extends ConsumerWidget {
       right: right,
       left: left,
       bottom: bottom,
-      child: GestureDetector(
-        onTap: () async {
-          if (isSolved) {
-            await SolvedDialog.show(context, pinId);
-          } else {
-            try {
-              final quizData = getQuizDataById(pinId);
-              if (quizData == null) {
-                throw Exception('クイズが見つかりません');
-              }
-              final riddle = quizData.question;
-              final type = quizData.type;
-              final hint = quizData.hint;
-              final imagePath = quizData.imagePath;
-              if (type == 1) {
-                XFile? imageFile;
-                showDialog(
-                  context: context,
-                  builder: (BuildContext dialogContext) {
-                    return StatefulBuilder(
-                      builder: (context, setState) {
-                        return AnswerPictureDialog(
-                          riddle: riddle,
-                          hint: hint,
-                          onSubmit: (answer) =>
-                              mapPageController.checkAnswer(pinId, answer),
-                          onCameraPressed: () async {
-                            final picker = ImagePicker();
-                            final pickedFile = await picker.pickImage(
-                              source: ImageSource.camera,
-                            );
-                            if (pickedFile != null) {
-                              setState(() {
-                                imageFile = pickedFile;
-                              });
-                              ScaffoldMessenger.of(dialogContext).showSnackBar(
-                                const SnackBar(content: Text('写真を撮影しました')),
-                              );
-                            }
-                          },
-                          imageFile: imageFile,
-                          pinId: pinId,
-                        );
-                      },
-                    );
-                  },
-                );
-              } else {
-                AnswerTextDialog.show(
-                  context: context,
-                  ref: ref,
-                  riddle: riddle,
-                  pinId: pinId,
-                  hint: hint,
-                  imagePath: imagePath,
-                  onSubmit: (answer) =>
-                      mapPageController.checkAnswer(pinId, answer),
-                );
-              }
-            } catch (e) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text('クイズの取得に失敗しました: $e')));
-              print('❌ Error fetching quiz: $e');
-            }
-          }
-        },
-        child: Column(
-          children: [
-            SizedBox(
-              width: checkIconSize,
-              height: checkIconSize,
-              child: mapPageState.solvedPinIds.contains(pinId)
-                  ? UniversalImage(Assets.images.check)
-                  : const SizedBox.shrink(),
-            ),
-            UniversalImage(imageAsset, width: pinSize, height: pinSize),
-          ],
-        ),
+      child: Column(
+        children: [
+          SizedBox(
+            width: checkIconSize,
+            height: checkIconSize,
+            child: mapPageState.solvedPinIds.contains(pinId)
+                ? UniversalImage(Assets.images.check)
+                : const SizedBox.shrink(),
+          ),
+          UniversalImage(imageAsset, width: pinSize, height: pinSize),
+        ],
       ),
     );
   }

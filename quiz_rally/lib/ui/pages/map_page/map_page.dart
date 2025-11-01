@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:quiz_rally/config/styles.dart';
 import 'package:quiz_rally/ui/pages/map_page/widgets/map_page_bottom_bar.dart';
 import 'package:quiz_rally/ui/pages/map_page/widgets/positioned_question_pin.dart';
+import 'package:quiz_rally/ui/pages/map_page/widgets/qr_scanner_dialog.dart';
 import 'widgets/tutorial_popup.dart';
 import 'map_page_controller.dart';
 import 'package:quiz_rally/gen/assets.gen.dart';
@@ -101,6 +102,19 @@ class MapPage extends HookConsumerWidget {
             )
           : const Center(child: CircularProgressIndicator()),
       bottomNavigationBar: const MapPageBottomBar(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _showQrScannerDialog(context, ref),
+        child: const Icon(Icons.qr_code_scanner),
+      ),
+    );
+  }
+
+  void _showQrScannerDialog(BuildContext context, WidgetRef ref) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const QrScannerDialog();
+      },
     );
   }
 }

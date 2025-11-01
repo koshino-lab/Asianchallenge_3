@@ -5,17 +5,20 @@ import 'package:quiz_rally/cookie_manager/cookie_manager.dart';
 part 'map_page_controller.freezed.dart';
 part 'map_page_controller.g.dart';
 
-const Map<int, List<String>> correctAnswers = {
-  1: ['中華まつもっちゃん'],
-  2: ['イノシシ'],
-  3: ['ラーコモ'],
-  4: ['第35回全国高等専門学校プログラミングコンテスト', '第35回プログラミングコンテスト', '第35回全国高等専門学校プログラミングコンテスト自由部門'],
-  5: ['テクノパレット'],
-  6: ['建築'],
-  7: ['虹'],
-  8: ['はつでん'],
-  9: ['60th'],
+const Map<int, List<String>> stampQRCodes = {
+  1: ['https://qrly.org/X0bAqb'],
+  2: ['https://qrly.org/mMl2Gy'],
+  3: ['https://qrly.org/tPHJAn'],
+  4: ['https://qrly.org/0VocYO'],
+  5: ['https://qrly.org/C2DCeO'],
+  6: ['https://qrly.org/6qRpSY'],
+  7: ['https://qrly.org/QFrjgf'],
+  8: ['https://qrly.org/cPWTCe'],
+  9: ['https://qrly.org/GdhTBB'],
 };
+
+
+
 
 @freezed
 class MapPageState with _$MapPageState {
@@ -76,18 +79,30 @@ class MapPageController extends StateNotifier<MapPageState> {
     // チュートリアルインデックスはcookie保存対象外
   }
 
-  bool checkAnswer(int pinId, String answer) {
-    if (isCorrectAnswer(pinId, answer)) {
-      state = state.copyWith(
-        solvedPinIds: {...state.solvedPinIds, pinId},
-        ownKeyCount: state.ownKeyCount + 1,
-      );
-      _saveToCookie();
-      print('正解！');
-      return true;
+  String checkQRCode(String code) {
+    final qrCodeContent = code.trim();
+    print(qrCodeContent.toString());
+    int? pinId;
+
+    stampQRCodes.forEach((key, value) {
+      if (value.contains(qrCodeContent)) {
+        pinId = key;
+      }
+    });
+
+    if (pinId != null) {
+      if (state.solvedPinIds.contains(pinId)) {
+        return '使用済みのQRコードです(スタンプ$pinIdはすでに獲得済みです)';
+      } else {
+        state = state.copyWith(
+          solvedPinIds: {...state.solvedPinIds, pinId!},
+          ownKeyCount: state.ownKeyCount + 1,
+        );
+        _saveToCookie();
+        return 'スタンプ$pinIdゲット！鍵$pinIdゲット';
+      }
     } else {
-      print('不正解！');
-      return false;
+      return 'スタンプラリーに関係ないQRコードです';
     }
   }
 
@@ -122,13 +137,5 @@ class MapPageController extends StateNotifier<MapPageState> {
     } else {
       return false;
     }
-  }
-
-  bool isCorrectAnswer(int quizId, String answer) {
-    final answers = correctAnswers[quizId];
-    if (answers == null) {
-      return false;
-    }
-    return answers.contains(answer.trim());
   }
 }
