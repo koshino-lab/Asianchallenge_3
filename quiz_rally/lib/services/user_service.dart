@@ -3,8 +3,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class UserService {
-  // 一時的にハードコード（デバッグ用）
-  final _baseUrl = 'https://roten-app.com';
+  // final _baseUrl = dotenv.get('BASE_URL');  //ローカル用
+  final _baseUrl  = const String.fromEnvironment('BASE_URL'); //web build&デプロイ時
+
   final String getQuizPath = '/api/quiz';
 
   Future<String> createUserId() async {
